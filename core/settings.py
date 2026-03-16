@@ -7,10 +7,15 @@ env.read_env(env_file=str(BASE_DIR / ".env"))
 
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=True)
 
+ASGI_APPLICATION = 'core.asgi.application'
 
+# ============================================
+# INSTALLED APPS - Avec Channels
+# ============================================
 INSTALLED_APPS = [
+    "daphne",  # 🔴 DOIT être PREMIER pour WebSocket support
     "modeltranslation",
     "cities_light",
     "django.contrib.admin",
@@ -24,9 +29,11 @@ INSTALLED_APPS = [
     "strawberry_django",
     "tinymce",
     "fcm_django",
+    "channels",  # ✨ WebSocket support
     "api",
     "guard",
     "shared",
+    "partners",  # ✨ Système Partenaires
 ]
 
 MIDDLEWARE = [
@@ -46,7 +53,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -58,8 +65,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
+# ============================================
+# ASGI & CHANNELS Configuration
+# ============================================
+ASGI_APPLICATION = 'core.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # Pour production, utiliser Redis:
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # },
+    }
+}
+
+WSGI_APPLICATION = "core.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -92,8 +114,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
-MEDIA_URL = "upload/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/upload/"
 MEDIA_ROOT = BASE_DIR / "upload"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -122,23 +144,36 @@ TINYMCE_DEFAULT_CONFIG = {
     "toolbar": "undo redo | bold italic | bullist numlist | link code",
 }
 
-
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ["en", "fr", "ar"]
 CITIES_LIGHT_INCLUDE_COUNTRIES = ["TN", "MA", "DZ", "LY", "EG", "LB", "YE", "SY"]
 CITIES_LIGHT_INCLUDE_CITY_TYPES = ["PPL", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPLC"]
 
+# ============================================
+# AUTH — Guard/Admin (Django standard)
+# ============================================
 LOGIN_URL = "shared:login"
 LOGIN_REDIRECT_URL = "guard:dashboard"
 LOGOUT_REDIRECT_URL = "shared:login"
 
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
-ADMIN_LIST_EMAILS = env.list("ADMIN_LIST_EMAILS")
+# ============================================
+# AUTH — Partenaires (session indépendante)
+# ⚠️  On ne change PAS AUTH_USER_MODEL pour
+#     ne pas casser le Django admin et guard.
+#     Les partenaires utilisent leur propre
+#     session via la clé "partner_id".
+# ============================================
+PARTNER_LOGIN_URL = "/partners/login/"
+PARTNER_DASHBOARD_URL = "/partners/dashboard/"
 
+# ============================================
+# DASHBOARD Configuration
+# ============================================
+SITE_URL_BASE = env("SITE_URL", default="http://localhost:8000")
 
 if DEBUG:
     SITE_URL = "http://localhost:8000"
     CORS_ALLOW_ALL_ORIGINS = DEBUG
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "127.0.0.1:8000"]
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     DATABASES = {
         "default": {
@@ -146,11 +181,10 @@ if DEBUG:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
     STATICFILES_DIRS = [
         BASE_DIR / "static",
     ]
-
+    STATIC_ROOT = BASE_DIR / "staticfiles"
 
 else:
     SITE_URL = env("SITE_URL")
@@ -191,25 +225,22 @@ SHORT_IO_DOMAIN = env("SHORT_IO_DOMAIN")
 SHORT_IO_FOLDER_ID = env("SHORT_IO_FOLDER_ID")
 DJANGO_ADMIN_URL = env("DJANGO_ADMIN_URL")
 
-# Firebase Cloud Messaging (FCM) Configuration
-# Path to Firebase service account JSON file (for server-side push notifications)
+# ============================================
+# Firebase Cloud Messaging (FCM)
+# ============================================
 GOOGLE_APPLICATION_CREDENTIALS = env(
     "GOOGLE_APPLICATION_CREDENTIALS",
     default=str(BASE_DIR / "fielmedinasousse-firebase-adminsdk-fbsvc-32939c9c5a.json"),
 )
 
-# FCM Django Settings (for server-side push notifications)
 FCM_DJANGO_SETTINGS = {
     "FCM_SERVER_KEY": env("FCM_SERVER_KEY", default=None),
-    "ONE_DEVICE_PER_USER": False,  # Allow multiple devices per user
-    "DELETE_INACTIVE_DEVICES": False,  # Keep inactive devices in database
-    "UPDATE_ON_DUPLICATE_REG_ID": True,  # Update device if duplicate registration ID
+    "ONE_DEVICE_PER_USER": False,
+    "DELETE_INACTIVE_DEVICES": False,
+    "UPDATE_ON_DUPLICATE_REG_ID": True,
     "APP_VERBOSE_NAME": "FielMedina",
 }
 
-# Firebase Client Configuration (for mobile/web apps)
-# These values are used by client-side apps (iOS/Android/Web) to connect to Firebase
-# You can expose these via your API/GraphQL if needed
 FIREBASE_CLIENT_CONFIG = {
     "apiKey": env("FIREBASE_API_KEY", default="AIzaSyC7ddaaSc5fo_o8vqShhyf2D9e5fCXJvso"),
     "authDomain": env("FIREBASE_AUTH_DOMAIN", default="fielmedinasousse.firebaseapp.com"),
@@ -219,3 +250,14 @@ FIREBASE_CLIENT_CONFIG = {
     "appId": env("FIREBASE_APP_ID", default="1:797838304877:web:e586351927c5dd38954164"),
     "measurementId": env("FIREBASE_MEASUREMENT_ID", default="G-KMEWT7N3ND"),
 }
+
+# ============================================
+# Konnect Payment Gateway
+# ============================================
+KONNECT_API_KEY = env("KONNECT_API_KEY", default="")
+KONNECT_WALLET_ID = env("KONNECT_WALLET_ID", default="")
+KONNECT_BASE_URL = env(
+    "KONNECT_BASE_URL",
+    default="https://api.preprod.konnect.network/api/v2",  # preprod par défaut
+)
+KONNECT_RECEIVER_WALLET_ID = env("KONNECT_RECEIVER_WALLET_ID", default="")

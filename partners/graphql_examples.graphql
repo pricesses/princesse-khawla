@@ -1,0 +1,102 @@
+# ═══════════════════════════════════════════════════════
+# EXEMPLES DE REQUÊTES GRAPHQL — FielMedina Partners API
+# ═══════════════════════════════════════════════════════
+
+# ── 1. Tous les événements publiés ───────────────────
+query GetEvents {
+  partnerEvents(limit: 10, offset: 0) {
+    id
+    title
+    description
+    startDate
+    endDate
+    link
+    status
+    isBoosted
+    partnerName
+    daysUntilStart
+    media {
+      id
+      fileUrl
+      mediaType
+    }
+  }
+}
+
+# ── 2. Événements boostés seulement ─────────────────
+query GetBoostedEvents {
+  partnerEvents(boostedOnly: true) {
+    id
+    title
+    isBoosted
+    startDate
+    partnerName
+  }
+}
+
+# ── 3. Un événement par ID ───────────────────────────
+query GetEvent($id: Int!) {
+  partnerEvent(id: $id) {
+    id
+    title
+    description
+    media {
+      fileUrl
+      mediaType
+    }
+  }
+}
+
+# ── 4. Publicités actives ────────────────────────────
+query GetAds {
+  partnerAds(limit: 5) {
+    id
+    title
+    imageUrl
+    redirectUrl
+    startDate
+    endDate
+    partnerName
+  }
+}
+
+# ── 5. Liste des partenaires vérifiés ────────────────
+query GetPartners {
+  partners(limit: 20) {
+    id
+    companyName
+    logoUrl
+    phone
+    isVerified
+  }
+}
+
+# ── 6. Un partenaire par ID ──────────────────────────
+query GetPartner($id: ID!) {
+  partner(id: $id) {
+    id
+    companyName
+    logoUrl
+  }
+}
+
+# ── 7. Subscription — nouveaux événements ────────────
+subscription OnNewEvent {
+  newPartnerEvent {
+    id
+    title
+    isBoosted
+    startDate
+    partnerName
+  }
+}
+
+# ── 8. Subscription — nouvelles publicités ───────────
+subscription OnNewAd {
+  newPartnerAd {
+    id
+    title
+    imageUrl
+    redirectUrl
+  }
+}

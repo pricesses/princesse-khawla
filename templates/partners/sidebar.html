@@ -1,0 +1,57 @@
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-sm fixed inset-y-0 left-0 z-10">
+    <div class="px-6 py-5 border-b border-gray-100">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/>
+                </svg>
+            </div>
+            <div>
+                <p class="font-bold text-gray-900 text-sm">FielMedina</p>
+                <p class="text-xs text-gray-400">Espace Partenaire</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-6 space-y-1">
+        <a href="{% url 'partners:dashboard' %}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition
+            {% if request.resolver_match.url_name == 'dashboard' %}bg-blue-50 text-blue-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+            🏠 Tableau de bord
+        </a>
+        <a href="{% url 'partners:event_list' %}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition
+            {% if 'event' in request.resolver_match.url_name %}bg-blue-50 text-blue-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+            📅 Événements
+        </a>
+        <a href="{% url 'partners:ad_list' %}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition
+            {% if 'ad' in request.resolver_match.url_name %}bg-blue-50 text-blue-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+            🖼 Publicités
+        </a>
+        <a href="{% url 'partners:subscription' %}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition">
+            💳 Abonnement
+        </a>
+        <a href="{% url 'partners:account' %}"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition">
+            ⚙️ Mon compte
+        </a>
+    </nav>
+
+    <div class="px-4 py-4 border-t border-gray-100">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-9 h-9 bg-gray-200 rounded-xl flex items-center justify-center text-gray-600 font-bold text-sm">
+                {{ partner.company_name|first|upper }}
+            </div>
+            <div class="min-w-0">
+                <p class="text-sm font-semibold text-gray-900 truncate">{{ partner.company_name }}</p>
+                <p class="text-xs text-gray-400 truncate">{{ partner.email }}</p>
+            </div>
+        </div>
+        <a href="{% url 'partners:logout' %}"
+            class="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 font-medium transition px-2">
+            🚪 Déconnexion
+        </a>
+    </div>
+</aside>

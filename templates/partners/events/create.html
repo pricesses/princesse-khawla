@@ -1,0 +1,160 @@
+{% extends 'partners/base.html' %}
+{% block title %}Nouvel Événement{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex">
+  {% include 'partners/sidebar.html' %}
+
+  <main class="ml-64 flex-1 p-8">
+    <div class="max-w-2xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-8">
+        <a href="{% url 'partners:event_list' %}"
+           class="text-sm text-gray-400 hover:text-gray-600 flex items-center gap-1 mb-4">
+          ← Retour aux événements
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">Nouvel Événement</h1>
+        <p class="text-gray-500 mt-1 text-sm">
+          ⚠️ La date de début doit être au minimum dans <strong>7 jours</strong>.<br>
+          Le bouton <strong>Booster</strong> sera disponible si elle est dans ≥ 14 jours.
+        </p>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+
+          <!-- Erreurs globales -->
+          {% if form.non_field_errors %}
+          <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+            {{ form.non_field_errors.0 }}
+          </div>
+          {% endif %}
+
+          <!-- Titre -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Titre *</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ form.description.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Dates -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Date de début *</label>
+              {{ form.start_date }}
+              {% if form.start_date.errors %}
+              <p class="mt-1 text-xs text-red-500">{{ form.start_date.errors.0 }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Date de fin *</label>
+              {{ form.end_date }}
+              {% if form.end_date.errors %}
+              <p class="mt-1 text-xs text-red-500">{{ form.end_date.errors.0 }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Info règle dates -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
+            📌 Règles des dates :<br>
+            • Date de début &lt; 7 jours → ❌ Refusé<br>
+            • Date de début ≥ 7 jours → ✅ Accepté<br>
+            • Date de début ≥ 14 jours → 🚀 Bouton Booster disponible
+          </div>
+
+          <!-- Lien inscription -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Lien d'inscription (optionnel)
+            </label>
+            {{ form.link }}
+            {% if form.link.errors %}
+            <p class="mt-1 text-xs text-red-500">{{ form.link.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Upload médias -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Images / Vidéos (optionnel)
+            </label>
+            <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-blue-400 transition cursor-pointer"
+                 onclick="document.getElementById('mediaInput').click()">
+              <div class="text-3xl mb-2">📎</div>
+              <p class="text-sm text-gray-500">Cliquez pour ajouter des images ou vidéos</p>
+              <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, MP4, MOV — multiple autorisé</p>
+              <input id="mediaInput" type="file" name="media" multiple accept="image/*,video/*"
+                     class="hidden" onchange="previewMedia(this)">
+            </div>
+
+            <!-- Prévisualisation -->
+            <div id="mediaPreview" class="mt-3 flex gap-2 flex-wrap"></div>
+          </div>
+
+          <!-- Submit -->
+          <div class="flex gap-3 pt-2">
+            <button type="submit"
+              class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
+              ✅ Créer l'événement
+            </button>
+            <a href="{% url 'partners:event_list' %}"
+               class="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition font-medium">
+              Annuler
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// Prévisualisation médias
+function previewMedia(input) {
+    const preview = document.getElementById('mediaPreview');
+    preview.innerHTML = '';
+    Array.from(input.files).forEach(file => {
+        const div = document.createElement('div');
+        div.className = 'relative w-20 h-20 rounded-xl overflow-hidden bg-gray-100 border border-gray-200';
+        if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'w-full h-full object-cover';
+            div.appendChild(img);
+        } else {
+            div.innerHTML = '<div class="w-full h-full flex items-center justify-center text-2xl">🎬</div>';
+        }
+        preview.appendChild(div);
+    });
+}
+
+// Bloque les dates passées + min 7 jours
+const today = new Date();
+const minDate = new Date(today);
+minDate.setDate(today.getDate() + 7);
+const minDateStr = minDate.toISOString().split('T')[0];
+
+document.querySelector('[name="start_date"]').min = minDateStr;
+document.querySelector('[name="end_date"]').min   = minDateStr;
+
+// Met à jour min end_date quand start_date change
+document.querySelector('[name="start_date"]').addEventListener('change', function() {
+    document.querySelector('[name="end_date"]').min = this.value;
+});
+</script>
+{% endblock %}

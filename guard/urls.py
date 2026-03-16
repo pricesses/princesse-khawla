@@ -25,6 +25,8 @@ from .views import (
     AdDeleteView,
     EventTrackingView,
     AdTrackingView,
+    AdClickView,
+    EventClickView,
     PublicTransportListView,
     PublicTransportCreateView,
     PublicTransportUpdateView,
@@ -39,6 +41,8 @@ from .views import (
     SponsorDeleteView,
     get_cities_by_country,
     get_subregions_by_city,
+    get_all_subregions,
+    get_schedules,
     get_locations_by_city,
 )
 
@@ -167,6 +171,10 @@ urlpatterns = [
             ]
         ),
     ),
+    # ── Click tracking temps réel ──────────────────────────────────
+    path("ad/<int:pk>/go/",    AdClickView.as_view(),    name="ad_click"),
+    path("event/<int:pk>/go/", EventClickView.as_view(), name="event_click"),
+
     path("adsList/", AdListView.as_view(), name="adsList"),
     path("ads/create/", AdCreateView.as_view(), name="ad_create"),
     path("ads/update/<int:pk>/", AdUpdateView.as_view(), name="ad_update"),
@@ -177,6 +185,7 @@ urlpatterns = [
         get_cities_by_country,
         name="get_cities_by_country",
     ),
+    path('api/subregions/all/', get_all_subregions, name='all_subregions'),
     path(
         "api/subregions/<int:city_id>/",
         get_subregions_by_city,
@@ -186,5 +195,10 @@ urlpatterns = [
         "api/locations/<int:city_id>/",
         get_locations_by_city,
         name="get_locations_by_city",
+    ),
+    path(
+        'api/schedules/',
+        get_schedules,
+        name='get_schedules'
     ),
 ]

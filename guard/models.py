@@ -16,6 +16,8 @@ from shared.utils import optimize_image
 from shared.models import UserProfile
 from PIL import Image as PilImage
 from PIL import ImageOps
+from django.utils import timezone
+from datetime import timedelta
 
 
 def location_image_path(instance, filename):
@@ -225,7 +227,6 @@ class Hiking(models.Model):
     )
     name = models.CharField(_("Name"), max_length=255)
     description = models.TextField(_("Description"))
-
     locations = models.ManyToManyField(
         "Location", through="HikingLocation", verbose_name=_("Location")
     )
@@ -380,6 +381,8 @@ class Ad(models.Model):
     short_id = models.CharField(max_length=50, blank=True, null=True)
     clicks = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    # ✅ NOUVEAU : date du dernier clic (pour check_ads)
+    last_clicked_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("Ad")
@@ -409,9 +412,6 @@ class Ad(models.Model):
 
 @receiver(post_delete, sender=Ad)
 def cleanup_ad_images(sender, instance, **kwargs):
-    """
-    Delete image files from filesystem when Ad object is deleted.
-    """
     for field_name in ["image_mobile", "image_tablet"]:
         field = getattr(instance, field_name)
         if field and field.name:
@@ -436,7 +436,6 @@ class PublicTransportType(models.Model):
 class PublicTransport(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     publicTransportType = models.ForeignKey(
         PublicTransportType,
         on_delete=models.SET_NULL,
@@ -445,7 +444,6 @@ class PublicTransport(models.Model):
         related_name="public_transports",
         verbose_name=_("Public Transport Type"),
     )
-
     city = models.ForeignKey(
         "cities_light.City",
         on_delete=models.SET_NULL,
@@ -454,7 +452,22 @@ class PublicTransport(models.Model):
         related_name="publicTransports",
         verbose_name=_("City"),
     )
-
+    fromCity = models.ForeignKey(
+        "cities_light.City",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="publicTransportsFromCity",
+        verbose_name=_("From City"),
+    )
+    toCity = models.ForeignKey(
+        "cities_light.City",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="publicTransportsToCity",
+        verbose_name=_("To City"),
+    )
     fromRegion = models.ForeignKey(
         "cities_light.SubRegion",
         on_delete=models.SET_NULL,
@@ -471,14 +484,24 @@ class PublicTransport(models.Model):
         related_name="publicTransportsToRegion",
         verbose_name=_("To region"),
     )
-    busNumber = models.CharField(max_length=255, verbose_name=_("Bus number"))
+    busNumber = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        verbose_name=_("Bus number"),
+    )
+    is_return = models.BooleanField(
+        default=False,
+        verbose_name=_("Is Return Journey"),
+        help_text=_("Check this if this is a return journey"),
+    )
 
     class Meta:
         verbose_name = _("Public Transport")
         verbose_name_plural = _("Public Transports")
 
     def __str__(self):
-        return self.city.name
+        return self.city.name if self.city else self.busNumber
 
 
 class PublicTransportTime(models.Model):
@@ -497,27 +520,20 @@ class PublicTransportTime(models.Model):
         verbose_name_plural = _("Public Transport Times")
 
     def __str__(self):
-        return self.publicTransport.city.name
+        return self.publicTransport.city.name if self.publicTransport.city else str(self.time)
 
 
 def resize_to_fixed(image_field, size=(300, 200)):
-    """
-    Resize and center-crop an uploaded image to a fixed size, returning a JPEG ContentFile.
-    """
     if not image_field:
         return None
-
     try:
         img = PilImage.open(image_field)
         if img.mode != "RGB":
             img = img.convert("RGB")
-        # Fit and center-crop to target size
         img = ImageOps.fit(img, size, PilImage.Resampling.LANCZOS)
-
         buffer = BytesIO()
         img.save(buffer, format="JPEG", quality=80, optimize=True)
         buffer.seek(0)
-
         base, _ = os.path.splitext(os.path.basename(image_field.name))
         new_name = f"{base}.jpg"
         return new_name, ContentFile(buffer.read())
@@ -535,7 +551,6 @@ class Partner(models.Model):
         verbose_name_plural = _("Partners")
 
     def save(self, *args, **kwargs):
-        # Resize image to 300x200 when a new upload is provided
         if self.image and isinstance(self.image.file, UploadedFile):
             processed = resize_to_fixed(self.image, size=(300, 200))
             if processed:
@@ -576,11 +591,125 @@ def cleanup_all_files(sender, instance, **kwargs):
     for field in instance._meta.fields:
         if isinstance(field, FileField):
             file_field = getattr(instance, field.name)
-
             if file_field and file_field.name:
-                # print(f"Attempting to delete file: {file_field.name}") # Debug line
                 try:
                     file_field.storage.delete(file_field.name)
-                    # print("Delete successful!")
                 except Exception as e:
                     print(f"Error deleting file: {e}")
+
+
+class DashboardStatistics(models.Model):
+    total_locations = models.IntegerField(default=0)
+    locations_this_month = models.IntegerField(default=0)
+    total_events = models.IntegerField(default=0)
+    upcoming_events = models.IntegerField(default=0)
+    events_this_month = models.IntegerField(default=0)
+    total_hikings = models.IntegerField(default=0)
+    hikings_this_month = models.IntegerField(default=0)
+    total_ads = models.IntegerField(default=0)
+    active_ads = models.IntegerField(default=0)
+    total_users = models.IntegerField(default=0)
+    active_users_30d = models.IntegerField(default=0)
+    total_fcm_devices = models.IntegerField(default=0)
+    ios_devices = models.IntegerField(default=0)
+    android_devices = models.IntegerField(default=0)
+    notifications_sent_24h = models.IntegerField(default=0)
+    notifications_failed_24h = models.IntegerField(default=0)
+    last_error_message = models.TextField(blank=True, null=True)
+    error_count_24h = models.IntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Dashboard Statistics"
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"Dashboard Stats - {self.updated_at.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    @classmethod
+    def get_or_create_current(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+
+
+class ActivityLog(models.Model):
+    ACTIVITY_TYPES = [
+        ('location_created', 'Location créée'),
+        ('location_updated', 'Location modifiée'),
+        ('event_created', 'Event créée'),
+        ('event_updated', 'Event modifiée'),
+        ('hiking_created', 'Hiking créée'),
+        ('hiking_updated', 'Hiking modifiée'),
+        ('ad_created', 'Publicité créée'),
+        ('notification_sent', 'Notification envoyée'),
+        ('notification_failed', 'Notification échouée'),
+        ('error_occurred', 'Erreur système'),
+    ]
+    activity_type = models.CharField(max_length=50, choices=ACTIVITY_TYPES)
+    entity_type = models.CharField(max_length=50)
+    entity_id = models.IntegerField(null=True, blank=True)
+    entity_name = models.CharField(max_length=255, null=True, blank=True)
+    user = models.CharField(max_length=100, null=True, blank=True)
+    details = models.JSONField(default=dict, blank=True)
+    success = models.BooleanField(default=True)
+    error_message = models.TextField(blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['activity_type', '-timestamp']),
+            models.Index(fields=['entity_type', '-timestamp']),
+        ]
+
+    def __str__(self):
+        return f"{self.get_activity_type_display()} - {self.entity_name} ({self.timestamp})"
+
+
+class NotificationLog(models.Model):
+    STATUS_CHOICES = [
+        ('sent', 'Envoyée'),
+        ('delivered', 'Livrée'),
+        ('failed', 'Échouée'),
+        ('pending', 'En attente'),
+    ]
+    notification_type = models.CharField(max_length=50)
+    entity_type = models.CharField(max_length=50)
+    entity_id = models.IntegerField()
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    device_count_attempted = models.IntegerField(default=0)
+    device_count_succeeded = models.IntegerField(default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    response = models.JSONField(default=dict, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['status', '-timestamp']),
+            models.Index(fields=['notification_type', '-timestamp']),
+        ]
+
+    def __str__(self):
+        return f"{self.notification_type} - {self.entity_id} ({self.status})"
+
+
+class ClickLog(models.Model):
+    """Enregistre chaque clic sur un lien (Ad ou Event)."""
+    CONTENT_TYPES = [('ad', 'Ad'), ('event', 'Event')]
+
+    content_type = models.CharField(max_length=10, choices=CONTENT_TYPES)
+    object_id    = models.PositiveIntegerField()
+    short_id     = models.CharField(max_length=100, blank=True)
+    ip_address   = models.GenericIPAddressField(null=True, blank=True)
+    user_agent   = models.CharField(max_length=300, blank=True)
+    clicked_at   = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-clicked_at']
+        indexes  = [models.Index(fields=['content_type', 'clicked_at'])]
+
+    def __str__(self):
+        return f"{self.content_type} #{self.object_id} — {self.clicked_at:%Y-%m-%d %H:%M}"

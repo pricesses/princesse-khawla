@@ -42,15 +42,11 @@ class NotificationService:
         if not image_field:
             return None
         try:
-            # In Django, request is not available in signals context
-            # We'll build URL using settings
             if not image_field.name:
                 return None
-                
+
             base_url = getattr(settings, 'SITE_URL', 'http://localhost:8000').rstrip('/')
             media_url = settings.MEDIA_URL.lstrip('/')
-            
-            # Build full URL
             return f"{base_url}/{media_url}{image_field.name}"
         except Exception as e:
             logger.error(f"Error building image URL: {e}")
@@ -64,7 +60,6 @@ class NotificationService:
             return None
 
         try:
-            # Get all active device tokens
             tokens = NotificationService.get_user_tokens()
             if not tokens:
                 logger.info("No active FCM devices found, skipping notification")
@@ -76,23 +71,37 @@ class NotificationService:
             if first_image and first_image.image:
                 image_url = NotificationService.build_absolute_image_url(first_image.image)
 
-            # Format event date
-            start_date_str = event.startDate.strftime("%B %d, %Y") if event.startDate else ""
+            # ✅ Short professional notification
+            # Title: "🎉 New Event in Sousse"    (with city if available)
+            # Body:  "15 Mar • Dar Lasram"       (date + location IF filled)
+            # Body:  "15 Mar"                    (date only if location empty)
 
-            # Build notification message
+            city_name     = event.city.name if event.city else None
+            date_str      = event.startDate.strftime("%d %b") if event.startDate else None
+            location_name = event.location.name if event.location else None
+
+            # Title: include city if available
+            notif_title = f"🎉 New Event in {city_name}" if city_name else "🎉 New Event"
+
+            # Body: date + location (location only if filled)
+            body_parts = [p for p in [date_str, location_name] if p]
+            short_body = " • ".join(body_parts) if body_parts else event.name
+
+            # ✅ FIX 2 — data payload includes event_id so Android can open
+            # the correct Event detail screen instead of Home
             message = messaging.MulticastMessage(
                 notification=messaging.Notification(
-                    title='🎉 New Event Coming Up!',
-                    body=f'{event.name} - {start_date_str}',
+                    title=notif_title,
+                    body=short_body,
                     image=image_url,
                 ),
                 data={
                     'type': 'new_event',
-                    'screen': 'event_detail',
-                    'event_id': str(event.id),
+                    'screen': 'event_detail',        # ✅ tells Android which screen to open
+                    'event_id': str(event.id),        # ✅ the ID Android needs to fetch the event
                     'location_id': str(event.location.id) if event.location else '',
                     'city_id': str(event.city.id) if event.city else '',
-                    'click_action': 'OPEN_EVENT',
+                    'click_action': 'OPEN_EVENT',     # ✅ Android reads this to navigate
                 },
                 tokens=tokens,
                 apns=messaging.APNSConfig(
@@ -102,8 +111,8 @@ class NotificationService:
                             badge=1,
                             mutable_content=True,
                             alert=messaging.ApsAlert(
-                                title='🎉 New Event Coming Up!',
-                                body=f'{event.name} - {start_date_str}',
+                                title=notif_title,
+                                body=short_body,
                             ),
                         )
                     )
@@ -117,7 +126,6 @@ class NotificationService:
                 ),
             )
 
-            # Send notification
             response = messaging.send_multicast(message)
             logger.info(
                 f"Event notification sent: {response.success_count} successful, "
@@ -137,19 +145,16 @@ class NotificationService:
             return None
 
         try:
-            # Get all active device tokens
             tokens = NotificationService.get_user_tokens()
             if not tokens:
                 logger.info("No active FCM devices found, skipping notification")
                 return None
 
-            # Get first image URL if available
             image_url = None
             first_image = location.images.first()
             if first_image and first_image.image:
                 image_url = NotificationService.build_absolute_image_url(first_image.image)
 
-            # Build notification message
             message = messaging.MulticastMessage(
                 notification=messaging.Notification(
                     title='📍 New Place to Explore!',
@@ -187,7 +192,6 @@ class NotificationService:
                 ),
             )
 
-            # Send notification
             response = messaging.send_multicast(message)
             logger.info(
                 f"Location notification sent: {response.success_count} successful, "
@@ -207,19 +211,16 @@ class NotificationService:
             return None
 
         try:
-            # Get all active device tokens
             tokens = NotificationService.get_user_tokens()
             if not tokens:
                 logger.info("No active FCM devices found, skipping notification")
                 return None
 
-            # Get first image URL if available
             image_url = None
             first_image = hiking.images.first()
             if first_image and first_image.image:
                 image_url = NotificationService.build_absolute_image_url(first_image.image)
 
-            # Build notification message
             message = messaging.MulticastMessage(
                 notification=messaging.Notification(
                     title='🥾 New Hiking Trail!',
@@ -256,7 +257,6 @@ class NotificationService:
                 ),
             )
 
-            # Send notification
             response = messaging.send_multicast(message)
             logger.info(
                 f"Hiking notification sent: {response.success_count} successful, "

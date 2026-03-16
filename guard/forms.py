@@ -19,6 +19,7 @@ from .models import (
     Partner,
     Sponsor,
 )
+from cities_light.models import City
 
 
 class FlowbiteFormMixin:
@@ -222,12 +223,10 @@ class LocationForm(FlowbiteFormMixin, forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        # Check required multilingual fields and add non-field errors so they appear at top
         errors = []
 
         if not cleaned_data.get("name_en"):
             errors.append(_("Please enter the name in English."))
-            # Remove field-specific error to avoid duplication
             if "name_en" in self.errors:
                 del self.errors["name_en"]
 
@@ -246,11 +245,9 @@ class LocationForm(FlowbiteFormMixin, forms.ModelForm):
             if "story_fr" in self.errors:
                 del self.errors["story_fr"]
 
-        # Add all errors as non-field errors
         for error in errors:
             self.add_error(None, error)
 
-        # Existing validation
         open_from = cleaned_data.get("openFrom")
         open_to = cleaned_data.get("openTo")
 
@@ -409,12 +406,10 @@ class EventForm(FlowbiteFormMixin, forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        # Check required multilingual fields and add non-field errors so they appear at top
         errors = []
 
         if not cleaned_data.get("name_en"):
             errors.append(_("Please enter the name in English."))
-            # Remove field-specific error to avoid duplication
             if "name_en" in self.errors:
                 del self.errors["name_en"]
 
@@ -433,7 +428,6 @@ class EventForm(FlowbiteFormMixin, forms.ModelForm):
             if "description_fr" in self.errors:
                 del self.errors["description_fr"]
 
-        # Add all errors as non-field errors
         for error in errors:
             self.add_error(None, error)
 
@@ -445,7 +439,6 @@ class EventForm(FlowbiteFormMixin, forms.ModelForm):
         if "city" in self.fields:
             self.fields["city"].required = True
 
-        # Only staff can see/edit boost. If not staff, remove it so it's not reset to False.
         if user and not (user.is_staff or user.is_superuser):
             if "boost" in self.fields:
                 del self.fields["boost"]
@@ -738,9 +731,8 @@ class AdForm(FlowbiteFormMixin, forms.ModelForm):
             self.fields["country"].required = True
 
         if "city" in self.fields:
-            self.fields["city"].required = False  # Ads can be just country-level now
+            self.fields["city"].required = False
 
-        # Enforce strict requirement for creation, overruling model's blank=True
         self.fields["image_mobile"].required = True
         self.fields["image_tablet"].required = True
 
@@ -868,36 +860,74 @@ class SponsorForm(FlowbiteFormMixin, forms.ModelForm):
                 self.fields["image"].required = False
 
 
-class PublicTransportForm(FlowbiteFormMixin, forms.ModelForm):
+class PublicTransportForm(forms.ModelForm):
     class Meta:
         model = PublicTransport
-        fields = ("publicTransportType", "city", "fromRegion", "toRegion", "busNumber")
+        fields = (
+            "publicTransportType",
+            "city",
+            "fromCity",
+            "toCity",
+            "fromRegion",
+            "toRegion",
+            "busNumber",
+            "is_return",
+        )
         widgets = {
             "publicTransportType": forms.Select(
                 attrs={
                     "placeholder": _("Select transport type"),
                     "required": True,
+                    "id": "id_transport_type",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 }
             ),
             "city": forms.Select(
                 attrs={
                     "placeholder": _("Select city"),
-                    "required": True,
+                    "id": "id_city",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+                }
+            ),
+            "fromCity": forms.Select(
+                attrs={
+                    "placeholder": _("Select departure city"),
+                    "id": "id_from_city",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+                }
+            ),
+            "toCity": forms.Select(
+                attrs={
+                    "placeholder": _("Select arrival city"),
+                    "id": "id_to_city",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 }
             ),
             "fromRegion": forms.Select(
                 attrs={
                     "placeholder": _("Select departure region"),
+                    "id": "id_from_region",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 }
             ),
             "toRegion": forms.Select(
                 attrs={
                     "placeholder": _("Select arrival region"),
+                    "id": "id_to_region",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 }
             ),
             "busNumber": forms.TextInput(
                 attrs={
-                    "placeholder": _("e.g., Line 32 or Bus 105"),
+                    "placeholder": _("e.g., Line 32, Train 105, or Metro L1"),
+                    "id": "id_busNumber",
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+                }
+            ),
+            "is_return": forms.CheckboxInput(
+                attrs={
+                    "id": "id_is_return",
+                    "class": "w-5 h-5 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600",
                 }
             ),
         }
@@ -905,46 +935,169 @@ class PublicTransportForm(FlowbiteFormMixin, forms.ModelForm):
             "publicTransportType": {
                 "required": _("Please select a transport type."),
             },
-            "city": {
-                "required": _("Please select a city."),
-            },
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        from cities_light.models import SubRegion
+
         if "publicTransportType" in self.fields:
             self.fields["publicTransportType"].required = True
-        if "city" in self.fields:
-            self.fields["city"].required = True
 
-        # Filter subregions based on city if editing
-        if "fromRegion" in self.fields and "toRegion" in self.fields:
-            from cities_light.models import SubRegion
+        # ✅ PERFORMANCE: Restrict cities to Tunisia only instead of all world cities.
+        # cities_light has tens of thousands of cities globally — loading them all
+        # makes the page very slow and generates a huge HTML select.
+        # Change "Tunisia" to your target country name if needed.
+        tunisia_cities_qs = City.objects.filter(
+            country__name="Tunisia"
+        ).select_related("country", "region").order_by("name")
 
-            if self.instance and self.instance.pk and self.instance.city:
-                region = self.instance.city.region
-                self.fields["fromRegion"].queryset = SubRegion.objects.filter(
-                    region=region
-                )
-                self.fields["toRegion"].queryset = SubRegion.objects.filter(
-                    region=region
-                )
+        for field_name in ("city", "fromCity", "toCity"):
+            if field_name in self.fields:
+                self.fields[field_name].required = False
+                self.fields[field_name].queryset = tunisia_cities_qs
+
+        # ✅ PERFORMANCE: Smart region queryset based on context:
+        #   - POST (form submitted): use all() so AJAX-loaded IDs pass validation
+        #   - GET edit mode: pre-populate with the instance's relevant regions
+        #   - GET create mode: empty queryset — AJAX will populate on city change
+        if args and args[0]:
+            # POST: data is being submitted — accept any SubRegion id
+            region_qs = SubRegion.objects.all()
+        elif self.instance and self.instance.pk:
+            # GET edit mode: load regions relevant to this transport
+            if self.instance.city:
+                region_qs = SubRegion.objects.filter(
+                    region=self.instance.city.region
+                ).order_by("name")
+            elif self.instance.fromRegion:
+                region_qs = SubRegion.objects.filter(
+                    region=self.instance.fromRegion.region
+                ).order_by("name")
             else:
-                self.fields["fromRegion"].queryset = SubRegion.objects.none()
-                self.fields["toRegion"].queryset = SubRegion.objects.none()
+                region_qs = SubRegion.objects.none()
+        else:
+            # GET create mode: empty — regions loaded via AJAX
+            region_qs = SubRegion.objects.none()
+
+        if "fromRegion" in self.fields:
+            self.fields["fromRegion"].required = False
+            self.fields["fromRegion"].queryset = region_qs
+
+        if "toRegion" in self.fields:
+            self.fields["toRegion"].required = False
+            self.fields["toRegion"].queryset = region_qs
+
+        # busNumber is never required at field level; clean() enforces it for bus only.
+        if "busNumber" in self.fields:
+            self.fields["busNumber"].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        transport_type = cleaned_data.get("publicTransportType")
+        city         = cleaned_data.get("city")
+        from_city    = cleaned_data.get("fromCity")
+        to_city      = cleaned_data.get("toCity")
+        from_region  = cleaned_data.get("fromRegion")
+        to_region    = cleaned_data.get("toRegion")
+        bus_number   = cleaned_data.get("busNumber", "").strip()
+
+        if not transport_type:
+            return cleaned_data
+
+        type_name = transport_type.name.lower().strip()
+
+        # ══════════════════════════════════════════════
+        #   BUS: city + fromRegion + toRegion + busNumber required
+        # ══════════════════════════════════════════════
+        if "bus" in type_name:
+            if not city:
+                self.add_error("city", _("City is required for bus routes."))
+            if not from_region:
+                self.add_error("fromRegion", _("Departure region is required for bus."))
+            if not to_region:
+                self.add_error("toRegion", _("Arrival region is required for bus."))
+            if not bus_number:
+                self.add_error("busNumber", _("Bus number is required."))
+
+            # Clear unused fields for bus
+            cleaned_data["fromCity"] = None
+            cleaned_data["toCity"] = None
+
+        # ══════════════════════════════════════════════
+        #   TRAIN: fromCity + toCity required
+        #   busNumber is optional (train has no line number requirement)
+        #   NOTE: The JS hides busNumber for train, so we do NOT require it here.
+        # ══════════════════════════════════════════════
+        elif "train" in type_name:
+            if not from_city:
+                self.add_error("fromCity", _("Departure station is required for trains."))
+            if not to_city:
+                self.add_error("toCity", _("Arrival station is required for trains."))
+
+            # Clear unused fields for train
+            cleaned_data["city"]       = None
+            cleaned_data["fromRegion"] = None
+            cleaned_data["toRegion"]   = None
+            # busNumber kept as-is (optional for train)
+
+        # ══════════════════════════════════════════════
+        #   METRO: (fromCity + toCity) XOR (fromRegion + toRegion)
+        #   busNumber is optional (JS hides it for metro)
+        #   NOTE: The JS hides busNumber for metro, so we do NOT require it here.
+        # ══════════════════════════════════════════════
+        elif "metro" in type_name:
+            has_cities  = bool(from_city and to_city)
+            has_regions = bool(from_region and to_region)
+
+            if has_cities and has_regions:
+                self.add_error(
+                    None,
+                    _(
+                        "For metro: select EITHER (departure + arrival cities) OR "
+                        "(departure + arrival regions), but NOT both."
+                    ),
+                )
+                self.add_error("fromCity",   _("Cannot select both cities and regions."))
+                self.add_error("fromRegion", _("Cannot select both cities and regions."))
+
+            elif has_cities:
+                # Cities selected → clear regions
+                cleaned_data["fromRegion"] = None
+                cleaned_data["toRegion"]   = None
+
+            elif has_regions:
+                # Regions selected → clear cities
+                cleaned_data["fromCity"] = None
+                cleaned_data["toCity"]   = None
+
+            else:
+                self.add_error(
+                    None,
+                    _(
+                        "For metro: select either (departure + arrival cities) OR "
+                        "(departure + arrival regions)."
+                    ),
+                )
+
+            # city field is never used for metro
+            cleaned_data["city"] = None
+
+        return cleaned_data
 
 
-class PublicTransportTimeForm(FlowbiteFormMixin, forms.ModelForm):
+class PublicTransportTimeForm(forms.ModelForm):
     class Meta:
         model = PublicTransportTime
-        fields = [
-            "time",
-        ]
+        fields = ["time"]
         widgets = {
             "time": forms.TimeInput(
                 attrs={
                     "type": "time",
                     "placeholder": _("Select time"),
+                    "class": "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
                 }
             ),
         }

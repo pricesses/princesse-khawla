@@ -10,32 +10,29 @@ import uuid
 from django.conf import settings
 from graphql.validation import NoSchemaIntrospectionCustomRule
 from strawberry.extensions import AddValidationRules
-
+import asyncio
+from asgiref.sync import sync_to_async
 
 from guard.models import (
-    Location,
-    LocationCategory,
-    Hiking,
-    HikingLocation,
-    Event,
-    EventCategory,
-    Ad,
-    Tip,
-    PublicTransport,
-    PublicTransportType,
-    PublicTransportTime,
-    ImageLocation,
-    ImageHiking,
-    ImageEvent,
-    ImageAd,
-    Partner,
-    Sponsor,
-    Weekday,
+    Location, LocationCategory, Hiking, HikingLocation,
+    Event, EventCategory, Ad, Tip, PublicTransport,
+    PublicTransportType, PublicTransportTime, ImageLocation,
+    ImageHiking, ImageEvent, ImageAd, Partner, Sponsor, Weekday,
 )
-
 from cities_light.models import City, Country
 from shared.models import Page, UserPreference
 
+from partners.models import (
+    Partner as PartnerAccount,
+    PartnerEvent,
+    PartnerEventMedia,
+    PartnerAd,
+)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TYPES EXISTANTS (inchangés)
+# ═══════════════════════════════════════════════════════════════════════════════
 
 @strawberry.type
 class ImageFieldType:
@@ -204,7 +201,6 @@ class HikingType:
     description_en: str
     description_fr: str
     city: Optional["CityType"]
-
     latitude: Optional[float]
     longitude: Optional[float]
 
@@ -214,7 +210,6 @@ class HikingType:
 
     @strawberry.field
     def locations(self, root) -> List[HikingLocationType]:
-        # Fetch directly from the through model to get the 'order' field
         return root.hikinglocation_set.all().order_by("order")
 
 
@@ -336,7 +331,6 @@ class CityType:
 
     @strawberry.field
     def name_en(self, root) -> Optional[str]:
-        # root.translations is a dict like {'en': ['Name'], ...}
         translations = getattr(root, "translations", {})
         en_names = translations.get("en", [])
         return en_names[0] if en_names else root.name
@@ -499,8 +493,117 @@ class PublicTransportNodeType:
         return root.publicTransportTimes.all()
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# NOUVEAUX TYPES — Partners
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@strawberry.type
+class PartnerEventMediaType:
+    id:         int
+    file_url:   str
+    media_type: str
+    order:      int
+
+
+@strawberry.type
+class PartnerEventAccountType:
+    id:               int
+    title:            str
+    description:      str
+    start_date:       str
+    end_date:         str
+    link:             Optional[str]
+    status:           str
+    is_boosted:       bool
+    is_published:     bool
+    partner_name:     str
+    days_until_start: int
+    media:            List[PartnerEventMediaType]
+
+
+@strawberry.type
+class PartnerAdAccountType:
+    id:           int
+    title:        str
+    image_url:    str
+    redirect_url: str
+    start_date:   str
+    end_date:     str
+    nb_days:      int
+    status:       str
+    partner_name: str
+
+
+@strawberry.type
+class PartnerAccountPublicType:
+    id:           str
+    company_name: str
+    logo_url:     Optional[str]
+    phone:        Optional[str]
+    is_verified:  bool
+
+
+# ── Helpers (synchrones — appelés dans sync_to_async) ─────────────────────────
+
+def _serialize_partner_event(event: PartnerEvent) -> PartnerEventAccountType:
+    media_list = [
+        PartnerEventMediaType(
+            id         = m.id,
+            file_url   = m.file.url if m.file else '',
+            media_type = m.media_type,
+            order      = m.order,
+        )
+        for m in event.media.all()
+    ]
+    return PartnerEventAccountType(
+        id               = event.id,
+        title            = event.title,
+        description      = event.description,
+        start_date       = str(event.start_date),
+        end_date         = str(event.end_date),
+        link             = event.link,
+        status           = event.status,
+        is_boosted       = event.is_boosted,
+        is_published     = event.is_published,
+        partner_name     = event.partner.company_name,
+        days_until_start = event.days_until_start,
+        media            = media_list,
+    )
+
+
+def _serialize_partner_ad(ad: PartnerAd) -> PartnerAdAccountType:
+    return PartnerAdAccountType(
+        id           = ad.id,
+        title        = ad.title,
+        image_url    = ad.image.url if ad.image else '',
+        redirect_url = ad.redirect_url,
+        start_date   = str(ad.start_date),
+        end_date     = str(ad.end_date),
+        nb_days      = ad.nb_days,
+        status       = ad.status,
+        partner_name = ad.partner.company_name,
+    )
+
+
+def _serialize_partner_account(p: PartnerAccount) -> PartnerAccountPublicType:
+    return PartnerAccountPublicType(
+        id           = str(p.id),
+        company_name = p.company_name,
+        logo_url     = p.logo.url if p.logo else None,
+        phone        = p.phone or None,
+        is_verified  = p.is_verified,
+    )
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# QUERY
+# ═══════════════════════════════════════════════════════════════════════════════
+
 @strawberry.type
 class Query:
+
+    # ── Queries existantes ────────────────────────────────────────────────────
+
     @strawberry.field
     def pages(self, is_active: Optional[bool] = None) -> List[PageType]:
         qs = Page.objects.all()
@@ -524,17 +627,13 @@ class Query:
         limit: Optional[int] = None,
         offset: Optional[int] = 0,
     ) -> List[LocationType]:
-        qs = Location.objects.select_related(
-            "city", "country", "category"
-        ).prefetch_related("images")
+        qs = Location.objects.select_related("city", "country", "category").prefetch_related("images")
         if city_id is not None:
             qs = qs.filter(city_id=city_id)
         if category_id is not None:
             qs = qs.filter(category_id=category_id)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
@@ -552,22 +651,16 @@ class Query:
         limit: Optional[int] = None,
         offset: Optional[int] = 0,
     ) -> List[HikingType]:
-        qs = Hiking.objects.select_related("city").prefetch_related(
-            "images", "locations"
-        )
+        qs = Hiking.objects.select_related("city").prefetch_related("images", "locations")
         if city_id is not None:
             qs = qs.filter(city_id=city_id)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
     def hiking(self, id: strawberry.ID) -> Optional[HikingType]:
-        return (
-            Hiking.objects.prefetch_related("images", "locations").filter(pk=id).first()
-        )
+        return Hiking.objects.prefetch_related("images", "locations").filter(pk=id).first()
 
     @strawberry.field
     def events(
@@ -578,32 +671,22 @@ class Query:
         offset: Optional[int] = 0,
         boost: Optional[bool] = None,
     ) -> List[EventType]:
-        qs = Event.objects.select_related(
-            "city", "category", "client", "location"
-        ).prefetch_related("images")
+        qs = Event.objects.select_related("city", "category", "client", "location").prefetch_related("images")
         if city_id is not None:
             qs = qs.filter(city_id=city_id)
         if category_id is not None:
             qs = qs.filter(category_id=category_id)
         if boost is not None:
             qs = qs.filter(boost=boost)
-
-        # Filter out expired events (keep for 1 day after ending)
         yesterday = timezone.now().date() - datetime.timedelta(days=1)
         qs = qs.filter(endDate__gte=yesterday)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
     def event(self, id: strawberry.ID) -> Optional[EventType]:
-        return (
-            Event.objects.prefetch_related("images", "location", "category")
-            .filter(pk=id)
-            .first()
-        )
+        return Event.objects.prefetch_related("images", "location", "category").filter(pk=id).first()
 
     @strawberry.field
     def event_categories(self) -> List[EventCategoryType]:
@@ -625,10 +708,8 @@ class Query:
             qs = qs.filter(country_id=country_id)
         if is_active is not None:
             qs = qs.filter(is_active=is_active)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
@@ -645,10 +726,8 @@ class Query:
         qs = Tip.objects.select_related("city")
         if city_id is not None:
             qs = qs.filter(city_id=city_id)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
@@ -672,10 +751,8 @@ class Query:
             qs = qs.filter(fromRegion_id=from_region_id)
         if to_region_id is not None:
             qs = qs.filter(toRegion_id=to_region_id)
-
         if limit is not None:
-            qs = qs[offset : offset + limit]
-
+            qs = qs[offset: offset + limit]
         return qs
 
     @strawberry.field
@@ -683,10 +760,7 @@ class Query:
         return (
             PublicTransport.objects.select_related(
                 "city", "publicTransportType", "fromRegion", "toRegion"
-            )
-            .prefetch_related("publicTransportTimes")
-            .filter(pk=id)
-            .first()
+            ).prefetch_related("publicTransportTimes").filter(pk=id).first()
         )
 
     @strawberry.field
@@ -698,7 +772,7 @@ class Query:
         self, lat: float, lon: float, max_distance_km: Optional[float] = None
     ) -> Optional[CityType]:
         def haversine(lat1, lon1, lat2, lon2):
-            R = 6371  # Earth radius in km
+            R = 6371
             phi1 = math.radians(lat1)
             phi2 = math.radians(lat2)
             dphi = math.radians(lat2 - lat1)
@@ -715,23 +789,17 @@ class Query:
             .exclude(longitude__isnull=True)
             .values("id", "name", "latitude", "longitude")
         )
-
         nearest = None
         nearest_distance = None
-
         for city in candidates:
-            distance = haversine(
-                lat, lon, float(city["latitude"]), float(city["longitude"])
-            )
+            distance = haversine(lat, lon, float(city["latitude"]), float(city["longitude"]))
             if max_distance_km is not None and distance > max_distance_km:
                 continue
             if nearest_distance is None or distance < nearest_distance:
                 nearest_distance = distance
                 nearest = city["id"]
-
         if nearest is None:
             return None
-
         return City.objects.filter(pk=nearest).first()
 
     @strawberry.field
@@ -746,6 +814,83 @@ class Query:
     def sponsors(self) -> List[SponsorType]:
         return Sponsor.objects.all()
 
+    # ── NOUVELLES Queries Partners — async avec sync_to_async ─────────────────
+
+    @strawberry.field(description="Evenements partenaires publies")
+    async def partner_events(
+        self,
+        boosted_only: bool = False,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> List[PartnerEventAccountType]:
+        def _get():
+            qs = PartnerEvent.objects.filter(
+                is_published=True,
+                status__in=['approved', 'boosted']
+            ).select_related('partner').prefetch_related('media').order_by('-is_boosted', 'start_date')
+            if boosted_only:
+                qs = qs.filter(is_boosted=True)
+            return [_serialize_partner_event(e) for e in qs[offset:offset + limit]]
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Un evenement partenaire par ID")
+    async def partner_event(self, id: int) -> Optional[PartnerEventAccountType]:
+        def _get():
+            try:
+                event = PartnerEvent.objects.select_related('partner').prefetch_related('media').get(
+                    id=id, is_published=True
+                )
+                return _serialize_partner_event(event)
+            except PartnerEvent.DoesNotExist:
+                return None
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Publicites partenaires actives")
+    async def partner_ads(
+        self,
+        limit: int = 10,
+        offset: int = 0,
+    ) -> List[PartnerAdAccountType]:
+        def _get():
+            today = timezone.now().date()
+            qs = PartnerAd.objects.filter(
+                status='active',
+                is_paid=True,
+                start_date__lte=today,
+                end_date__gte=today,
+            ).select_related('partner').order_by('?')
+            return [_serialize_partner_ad(a) for a in qs[offset:offset + limit]]
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Partenaires verifies")
+    async def partner_accounts(
+        self,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> List[PartnerAccountPublicType]:
+        def _get():
+            qs = PartnerAccount.objects.filter(
+                is_verified=True,
+                is_active=True,
+                account_frozen=False,
+            ).order_by('company_name')
+            return [_serialize_partner_account(p) for p in qs[offset:offset + limit]]
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Un partenaire verifie par ID")
+    async def partner_account(self, id: strawberry.ID) -> Optional[PartnerAccountPublicType]:
+        def _get():
+            try:
+                p = PartnerAccount.objects.get(id=id, is_verified=True, is_active=True)
+                return _serialize_partner_account(p)
+            except PartnerAccount.DoesNotExist:
+                return None
+        return await sync_to_async(_get)()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MUTATION (inchangee)
+# ═══════════════════════════════════════════════════════════════════════════════
 
 @strawberry.type
 class SyncUserPreferencePayload:
@@ -778,13 +923,11 @@ class Mutation:
                 "updated_at": updated_at,
             },
         )
-
         if not created and updated_at > obj.updated_at:
             obj.first_visit = first_visit
             obj.traveling_with = traveling_with
             obj.interests = interests
             obj.save()
-
         return SyncUserPreferencePayload(ok=True)
 
     @strawberry.mutation
@@ -796,76 +939,99 @@ class Mutation:
     def register_fcm_device(
         self,
         registration_id: str,
-        type: str,  # 'android' or 'ios'
+        type: str,
         name: Optional[str] = None,
         user_uid: Optional[uuid.UUID] = None,
     ) -> RegisterDevicePayload:
-        """
-        Register an FCM device token for push notifications.
-
-        Args:
-            registration_id: FCM token from the mobile app
-            type: Device type - 'android' or 'ios'
-            name: Optional device name/identifier
-            user_uid: Optional user UUID to associate device with user
-        """
         try:
             from fcm_django.models import FCMDevice
-
-            # Validate device type
             if type not in ["android", "ios", "web"]:
                 return RegisterDevicePayload(
                     ok=False,
                     message=f"Invalid device type: {type}. Must be 'android', 'ios', or 'web'",
                 )
-
-            # Get or create device
             device, created = FCMDevice.objects.get_or_create(
                 registration_id=registration_id,
-                defaults={
-                    "type": type,
-                    "name": name or f"{type} device",
-                    "active": True,
-                },
+                defaults={"type": type, "name": name or f"{type} device", "active": True},
             )
-
-            # Update if device already exists
             if not created:
                 device.type = type
                 device.active = True
                 if name:
                     device.name = name
                 device.save()
-
-            # Optionally associate with user if user_uid provided
-            if user_uid:
-                try:
-                    user_pref = UserPreference.objects.get(user_uid=user_uid)
-                    # Note: FCMDevice.user is a ForeignKey to User model
-                    # If you want to associate with UserPreference, you'd need to adjust this
-                    # For now, we just store the registration_id
-                    pass
-                except UserPreference.DoesNotExist:
-                    pass
-
             return RegisterDevicePayload(
                 ok=True,
-                message="Device registered successfully"
-                if created
-                else "Device updated successfully",
+                message="Device registered successfully" if created else "Device updated successfully",
             )
-
         except Exception as e:
             import logging
-
             logger = logging.getLogger(__name__)
             logger.error(f"Error registering FCM device: {e}", exc_info=True)
-            return RegisterDevicePayload(
-                ok=False, message=f"Error registering device: {str(e)}"
-            )
+            return RegisterDevicePayload(ok=False, message=f"Error registering device: {str(e)}")
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SUBSCRIPTION — temps reel Partners
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@strawberry.type
+class Subscription:
+
+    @strawberry.subscription(description="Nouvel evenement partenaire publie")
+    async def new_partner_event(self) -> PartnerEventAccountType:
+        seen_ids = set(
+            await sync_to_async(list)(
+                PartnerEvent.objects.filter(is_published=True).values_list('id', flat=True)
+            )
+        )
+        while True:
+            await asyncio.sleep(5)
+            current_ids = set(
+                await sync_to_async(list)(
+                    PartnerEvent.objects.filter(is_published=True).values_list('id', flat=True)
+                )
+            )
+            for event_id in current_ids - seen_ids:
+                event = await sync_to_async(
+                    PartnerEvent.objects.select_related('partner').prefetch_related('media').get
+                )(id=event_id)
+                yield _serialize_partner_event(event)
+            seen_ids = current_ids
+
+    @strawberry.subscription(description="Nouvelle publicite partenaire active")
+    async def new_partner_ad(self) -> PartnerAdAccountType:
+        seen_ids = set(
+            await sync_to_async(list)(
+                PartnerAd.objects.filter(status='active', is_paid=True).values_list('id', flat=True)
+            )
+        )
+        while True:
+            await asyncio.sleep(10)
+            current_ids = set(
+                await sync_to_async(list)(
+                    PartnerAd.objects.filter(status='active', is_paid=True).values_list('id', flat=True)
+                )
+            )
+            for ad_id in current_ids - seen_ids:
+                ad = await sync_to_async(
+                    PartnerAd.objects.select_related('partner').get
+                )(id=ad_id)
+                yield _serialize_partner_ad(ad)
+            seen_ids = current_ids
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCHEMA FINAL
+# ═══════════════════════════════════════════════════════════════════════════════
 
 extensions = []
 if not settings.DEBUG:
     extensions.append(AddValidationRules([NoSchemaIntrospectionCustomRule]))
-schema = strawberry.Schema(query=Query, mutation=Mutation, extensions=extensions)
+
+schema = strawberry.Schema(
+    query        = Query,
+    mutation     = Mutation,
+    subscription = Subscription,
+    extensions   = extensions,
+)

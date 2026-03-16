@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmer la suppression</title>
+</head>
+<body>
+    <h2>Confirmer la suppression</h2>
+    <p>Voulez-vous vraiment supprimer ce transport public ?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Oui, supprimer</button>
+        <a href="{% url 'staff-publictransports' %}">Annuler</a>
+    </form>
+</body>
+</html>

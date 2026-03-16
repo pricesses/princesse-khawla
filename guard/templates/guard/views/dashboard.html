@@ -4,117 +4,246 @@
 {% block title %}{% trans "Dashboard" %}{% endblock title %}
 
 {% block body %}
+
+    <!-- 4 STAT CARDS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <div class="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/30">
+                    <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-green-500">+{{ db_stats.locations_this_month }} {% trans "this month" %}</span>
+            </div>
+            <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ db_stats.total_locations }}</h5>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{% trans "Locations" %}</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <div class="p-2 rounded-lg bg-green-50 dark:bg-green-900/30">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-blue-500">{{ db_stats.upcoming_events }} {% trans "upcoming" %}</span>
+            </div>
+            <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ db_stats.total_events }}</h5>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{% trans "Events" %}</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <div class="p-2 rounded-lg bg-purple-50 dark:bg-purple-900/30">
+                    <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-gray-400">{% trans "trails" %}</span>
+            </div>
+            <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ db_stats.total_hikings }}</h5>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{% trans "Hikings" %}</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+                <div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                    </svg>
+                </div>
+                <span class="text-xs font-semibold text-green-500">{{ db_stats.active_ads }} {% trans "active" %}</span>
+            </div>
+            <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ db_stats.total_ads }}</h5>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{% trans "Ads" %}</p>
+        </div>
+    </div>
+
+    <!-- CLICK ANALYTICS — temps réel via WebSocket -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-       <!-- Ads Summary Card -->
-       <div class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-5 transition-all hover:shadow-md">
-          <div class="flex justify-between items-start mb-4">
-             <div>
-                <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.ads.totalClicks|default:0 }}</h5>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{% trans "Total Ads Clicks" %}</p>
-             </div>
-             <div class="flex items-center p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30">
-                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z"></path>
-                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-                </svg>
-             </div>
-          </div>
-          <div id="ads-sparkline" class="py-2"></div>
-          <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-4">
-             <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{% trans "Last 7 days trend" %}</span>
-             <a href="{% url 'guard:adsList' %}" class="inline-flex items-center text-sm font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-                {% trans "Full report" %}
-                <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-             </a>
-          </div>
-       </div>
 
-       <!-- Events Summary Card -->
-       <div class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-5 transition-all hover:shadow-md">
-          <div class="flex justify-between items-start mb-4">
-             <div>
-                <h5 class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.events.totalClicks|default:0 }}</h5>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{% trans "Total Events Clicks" %}</p>
-             </div>
-             <div class="flex items-center p-2 rounded-lg bg-green-50 dark:bg-green-900/30">
-                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-             </div>
-          </div>
-          <div id="events-sparkline" class="py-2"></div>
-          <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-4">
-             <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{% trans "Last 7 days trend" %}</span>
-             <a href="{% url 'guard:eventsList' %}" class="inline-flex items-center text-sm font-bold text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300">
-                {% trans "Full report" %}
-                <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
-             </a>
-          </div>
-       </div>
+        <!-- Ads Clicks -->
+        <div class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h5 id="total-ads-clicks" class="text-3xl font-bold text-gray-900 dark:text-white">0</h5>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{% trans "Total Ads Clicks" %}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="ws-status-ads" class="w-2 h-2 rounded-full bg-gray-300" title="Connecting..."></span>
+                    <div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.003 9.003 0 1020.945 13H11V3.055z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div id="ads-sparkline" style="height:80px; width:100%;"></div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-4">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{% trans "Last 7 days trend" %}</span>
+                <a href="{% url 'guard:adsList' %}" class="inline-flex items-center text-sm font-bold text-blue-600 hover:text-blue-700">
+                    {% trans "Full report" %} →
+                </a>
+            </div>
+        </div>
+
+        <!-- Events Clicks -->
+        <div class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h5 id="total-events-clicks" class="text-3xl font-bold text-gray-900 dark:text-white">0</h5>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{% trans "Total Events Clicks" %}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="ws-status-events" class="w-2 h-2 rounded-full bg-gray-300" title="Connecting..."></span>
+                    <div class="p-2 rounded-lg bg-green-50 dark:bg-green-900/30">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div id="events-sparkline" style="height:80px; width:100%;"></div>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-4">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{% trans "Last 7 days trend" %}</span>
+                <a href="{% url 'guard:eventsList' %}" class="inline-flex items-center text-sm font-bold text-green-600 hover:text-green-700">
+                    {% trans "Full report" %} →
+                </a>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Additional Placeholder stats or content if needed -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-       {% for i in "1234"|make_list %}
-       <div class="flex items-center justify-center rounded-xl bg-gray-50 border border-gray-100 h-24 dark:bg-gray-800 dark:border-gray-700">
-          <p class="text-2xl text-gray-300 dark:text-gray-600">
-             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"></path></svg>
-          </p>
-       </div>
-       {% endfor %}
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    {{ stats|json_script:"stats-data" }}
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const statsData = JSON.parse(document.getElementById('stats-data').textContent);
-        
-        const commonOptions = {
-            chart: {
-                type: 'area',
-                height: 120,
-                sparkline: { enabled: true },
-                animations: { enabled: true, easing: 'easeinout', speed: 800 }
-            },
-            stroke: { curve: 'smooth', width: 2 },
-            fill: {
-                type: 'gradient',
-                gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] }
-            },
-            tooltip: {
-                fixed: { enabled: false },
-                x: { show: false },
-                y: { title: { formatter: (s) => 'Clicks' } },
-                marker: { show: false }
+    (function () {
+
+        // ═══════════════════════════════════════════════════════
+        // 1. Sparkline SVG pur
+        // ═══════════════════════════════════════════════════════
+        function drawSparkline(containerId, data, strokeColor) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+            var W = container.offsetWidth || 400;
+            var H = 80;
+            var pad = 6;
+            var max = Math.max.apply(null, data);
+            if (max === 0) max = 1;
+            var step = (W - pad * 2) / Math.max(data.length - 1, 1);
+
+            var points = data.map(function (v, i) {
+                return { x: pad + i * step, y: H - pad - (v / max) * (H - pad * 2) };
+            });
+
+            var pathD = 'M ' + points[0].x + ' ' + points[0].y;
+            for (var i = 1; i < points.length; i++) {
+                var cpx = (points[i - 1].x + points[i].x) / 2;
+                pathD += ' C ' + cpx + ' ' + points[i-1].y + ',' + cpx + ' ' + points[i].y + ',' + points[i].x + ' ' + points[i].y;
             }
+            var areaD = pathD + ' L ' + points[points.length-1].x + ' ' + H + ' L ' + pad + ' ' + H + ' Z';
+
+            var ns = 'http://www.w3.org/2000/svg';
+            var svg = document.createElementNS(ns, 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', H);
+            svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+            svg.setAttribute('preserveAspectRatio', 'none');
+
+            // Dégradé
+            var gid = containerId + '-g';
+            var defs = document.createElementNS(ns, 'defs');
+            var grad = document.createElementNS(ns, 'linearGradient');
+            grad.setAttribute('id', gid);
+            grad.setAttribute('x1','0'); grad.setAttribute('y1','0');
+            grad.setAttribute('x2','0'); grad.setAttribute('y2','1');
+            [[0,'0.35'],[100,'0.02']].forEach(function(s){
+                var stop = document.createElementNS(ns,'stop');
+                stop.setAttribute('offset', s[0]+'%');
+                stop.setAttribute('stop-color', strokeColor);
+                stop.setAttribute('stop-opacity', s[1]);
+                grad.appendChild(stop);
+            });
+            defs.appendChild(grad); svg.appendChild(defs);
+
+            var area = document.createElementNS(ns,'path');
+            area.setAttribute('d', areaD);
+            area.setAttribute('fill', 'url(#'+gid+')');
+            svg.appendChild(area);
+
+            var line = document.createElementNS(ns,'path');
+            line.setAttribute('d', pathD);
+            line.setAttribute('fill','none');
+            line.setAttribute('stroke', strokeColor);
+            line.setAttribute('stroke-width','2.5');
+            line.setAttribute('stroke-linecap','round');
+            svg.appendChild(line);
+
+            // Dernier point en surbrillance
+            var last = points[points.length-1];
+            var pulse = document.createElementNS(ns,'circle');
+            pulse.setAttribute('cx', last.x); pulse.setAttribute('cy', last.y);
+            pulse.setAttribute('r','4'); pulse.setAttribute('fill', strokeColor);
+            svg.appendChild(pulse);
+
+            container.innerHTML = '';
+            container.appendChild(svg);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 2. Données par défaut (avant WS)
+        // ═══════════════════════════════════════════════════════
+        var adsSeries    = [0,0,0,0,0,0,0];
+        var eventsSeries = [0,0,0,0,0,0,0];
+
+        function renderAll(adData, evData, totalAds, totalEvents) {
+            drawSparkline('ads-sparkline',    adData, '#2563eb');
+            drawSparkline('events-sparkline', evData, '#059669');
+            document.getElementById('total-ads-clicks').textContent    = totalAds;
+            document.getElementById('total-events-clicks').textContent = totalEvents;
+        }
+
+        renderAll(adsSeries, eventsSeries, 0, 0);
+
+        // ═══════════════════════════════════════════════════════
+        // 3. WebSocket temps réel
+        // ═══════════════════════════════════════════════════════
+        var wsProto = location.protocol === 'https:' ? 'wss' : 'ws';
+        var ws = new WebSocket(wsProto + '://' + location.host + '/ws/dashboard/');
+
+        function setStatus(color) {
+            ['ws-status-ads','ws-status-events'].forEach(function(id){
+                var el = document.getElementById(id);
+                if (el) {
+                    el.className = 'w-2 h-2 rounded-full ' + color;
+                }
+            });
+        }
+
+        ws.onopen = function () {
+            setStatus('bg-green-400');
         };
 
-        // Ads Sparkline
-        const adsTimeline = (statsData.ads && statsData.ads.clickStatistics && statsData.ads.clickStatistics.timeline) || [];
-        new ApexCharts(document.querySelector("#ads-sparkline"), {
-            ...commonOptions,
-            series: [{
-                name: 'Ads Clicks',
-                data: adsTimeline.length ? adsTimeline.map(p => p.clicks) : [0, 0, 0, 0, 0, 0, 0]
-            }],
-            colors: ['#2563eb'],
-        }).render();
+        ws.onmessage = function (e) {
+            var data = JSON.parse(e.data);
 
-        // Events Sparkline
-        const eventsTimeline = (statsData.events && statsData.events.clickStatistics && statsData.events.clickStatistics.timeline) || [];
-        new ApexCharts(document.querySelector("#events-sparkline"), {
-            ...commonOptions,
-            series: [{
-                name: 'Events Clicks',
-                data: eventsTimeline.length ? eventsTimeline.map(p => p.clicks) : [0, 0, 0, 0, 0, 0, 0]
-            }],
-            colors: ['#059669'],
-        }).render();
-    });
+            // init ou click_update — même traitement
+            if (data.ads_series)    adsSeries    = data.ads_series;
+            if (data.events_series) eventsSeries = data.events_series;
+
+            var totalAds    = data.total_ads    !== undefined ? data.total_ads    : parseInt(document.getElementById('total-ads-clicks').textContent)    || 0;
+            var totalEvents = data.total_events !== undefined ? data.total_events : parseInt(document.getElementById('total-events-clicks').textContent) || 0;
+
+            renderAll(adsSeries, eventsSeries, totalAds, totalEvents);
+        };
+
+        ws.onclose = function () {
+            setStatus('bg-red-400');
+        };
+
+        ws.onerror = function () {
+            setStatus('bg-yellow-400');
+        };
+
+    })();
     </script>
+
 {% endblock body %}

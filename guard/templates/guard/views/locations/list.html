@@ -1,4 +1,4 @@
-{% extends 'guard/base/index.html' %}
+﻿{% extends 'guard/base/index.html' %}
 {% load static i18n %}
 
 {% block title %}{% trans "Locations List" %}{% endblock title %}
@@ -97,7 +97,7 @@
    <script>
 
    if (document.getElementById("location-list") && typeof simpleDatatables.DataTable !== 'undefined') {
-      const dataTable = new simpleDatatables.DataTable("#location-list", {
+      window.dataTable = new simpleDatatables.DataTable("#location-list", {
          searchable: true,
          perPageSelect: false
       });

@@ -1,0 +1,150 @@
+{% extends 'partners/base.html' %}
+{% block title %}Nouvelle Publicité{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex">
+  {% include 'partners/sidebar.html' %}
+
+  <main class="ml-64 flex-1 p-8">
+    <div class="max-w-2xl mx-auto">
+
+      <div class="mb-8">
+        <a href="{% url 'partners:ad_list' %}" class="text-sm text-gray-400 hover:text-gray-600 flex items-center gap-1 mb-4">
+          ← Retour aux publicités
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">Nouvelle Publicité</h1>
+        <p class="text-gray-500 mt-1">Tarif : <strong>5.000 TND / jour</strong> — Le prix est calculé automatiquement</p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+          <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+            {{ form.non_field_errors.0 }}
+          </div>
+          {% endif %}
+
+          <!-- Titre -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Titre de la publicité *</label>
+            {{ form.title }}
+            {% if form.title.errors %}<p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Image -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Image (GIF, PNG, JPG — max 5MB) *</label>
+            <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-purple-400 transition cursor-pointer"
+                 onclick="document.getElementById('imageInput').click()">
+              <div id="image-preview-container">
+                <div class="text-3xl mb-2">🖼</div>
+                <p class="text-sm text-gray-500">Cliquez pour sélectionner une image</p>
+                <p class="text-xs text-gray-400 mt-1">GIF animé recommandé pour plus d'impact</p>
+              </div>
+              <img id="image-preview" class="hidden mx-auto max-h-40 rounded-xl mt-3 object-cover" />
+              <input id="imageInput" type="file" name="image" accept=".jpg,.jpeg,.png,.gif"
+                     class="hidden" onchange="previewImage(this)">
+            </div>
+            {% if form.image.errors %}<p class="mt-1 text-xs text-red-500">{{ form.image.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- URL de redirection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">URL de redirection *</label>
+            {{ form.redirect_url }}
+            {% if form.redirect_url.errors %}<p class="mt-1 text-xs text-red-500">{{ form.redirect_url.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Dates -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Date de début *</label>
+              {{ form.start_date }}
+              {% if form.start_date.errors %}<p class="mt-1 text-xs text-red-500">{{ form.start_date.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Date de fin *</label>
+              {{ form.end_date }}
+              {% if form.end_date.errors %}<p class="mt-1 text-xs text-red-500">{{ form.end_date.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+
+          <!-- Prix calculé dynamiquement -->
+          <div id="price-box" class="hidden bg-purple-50 border border-purple-200 rounded-xl p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-purple-700 font-medium">Prix calculé</p>
+                <p class="text-xs text-purple-500 mt-0.5"><span id="price-days">0</span> jour(s) × 5.000 TND</p>
+              </div>
+              <p class="text-2xl font-bold text-purple-700"><span id="price-total">0.000</span> TND</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button type="submit"
+              class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
+              Continuer vers confirmation →
+            </button>
+            <a href="{% url 'partners:ad_list' %}"
+               class="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition font-medium">
+              Annuler
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  function previewImage(input) {
+    const preview = document.getElementById('image-preview');
+    const container = document.getElementById('image-preview-container');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+        container.classList.add('hidden');
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function calcPrice() {
+    const start = document.querySelector('[name="start_date"]').value;
+    const end   = document.querySelector('[name="end_date"]').value;
+    const box   = document.getElementById('price-box');
+
+    if (start && end) {
+      const s    = new Date(start);
+      const e    = new Date(end);
+      const days = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
+      if (days >= 1) {
+        const total = (days * 5).toFixed(3);
+        document.getElementById('price-days').textContent  = days;
+        document.getElementById('price-total').textContent = total;
+        box.classList.remove('hidden');
+        return;
+      }
+    }
+    box.classList.add('hidden');
+  }
+
+  // Dates min = demain
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tStr = tomorrow.toISOString().split('T')[0];
+  document.querySelector('[name="start_date"]').min = tStr;
+  document.querySelector('[name="end_date"]').min   = tStr;
+
+  document.querySelector('[name="start_date"]').addEventListener('change', function() {
+    document.querySelector('[name="end_date"]').min = this.value;
+    calcPrice();
+  });
+  document.querySelector('[name="end_date"]').addEventListener('change', calcPrice);
+  calcPrice();
+</script>
+{% endblock %}

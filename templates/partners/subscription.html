@@ -1,0 +1,205 @@
+{% extends 'partners/base.html' %}
+{% block title %}Mon Abonnement{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex">
+  {% include 'partners/sidebar.html' %}
+
+  <main class="ml-64 flex-1 p-8">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Mon Abonnement</h1>
+        <p class="text-gray-500 mt-1">Choisissez votre formule et procédez au paiement</p>
+      </div>
+
+      <!-- Statut actuel -->
+      {% if partner.contract_end %}
+      <div class="mb-6 rounded-2xl border p-5
+        {% if contract_active %}bg-green-50 border-green-200{% else %}bg-red-50 border-red-200{% endif %}">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-semibold {% if contract_active %}text-green-800{% else %}text-red-800{% endif %}">
+              {% if contract_active %}✅ Abonnement actif{% else %}❌ Abonnement expiré{% endif %}
+            </p>
+            <p class="text-sm mt-1 {% if contract_active %}text-green-600{% else %}text-red-600{% endif %}">
+              Expire le {{ partner.contract_end|date:"d M Y" }}
+              {% if days_until_expiry is not None %}
+                — {% if days_until_expiry > 0 %}dans {{ days_until_expiry }} jour(s){% else %}expiré{% endif %}
+              {% endif %}
+            </p>
+          </div>
+          <span class="text-3xl">
+            {% if contract_active %}🟢{% else %}🔴{% endif %}
+          </span>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Alerte expiration proche -->
+      {% if days_until_expiry is not None and days_until_expiry <= 7 and days_until_expiry > 0 %}
+      <div class="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-3">
+        <span class="text-2xl">⏰</span>
+        <p class="text-amber-700 text-sm font-medium">
+          Votre abonnement expire dans <strong>{{ days_until_expiry }} jour(s)</strong> — Renouvelez maintenant pour ne pas perdre l'accès.
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Formulaire choix abonnement -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <h2 class="text-lg font-semibold text-gray-800 mb-6">Choisir une formule</h2>
+
+        <form method="post" id="subscription-form" class="space-y-6">
+          {% csrf_token %}
+
+          <!-- Grille des périodes -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Durée de l'abonnement</label>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="period-grid">
+
+              {% for period, info in periods.items %}
+              <label class="period-card cursor-pointer">
+                <input type="radio" name="period" value="{{ period }}"
+                  class="hidden" {% if forloop.first %}checked{% endif %}
+                  onchange="updatePrice()">
+                <div class="border-2 rounded-xl p-4 text-center transition hover:border-blue-400
+                            peer-checked:border-blue-500 period-box
+                            {% if forloop.first %}border-blue-500 bg-blue-50{% else %}border-gray-200{% endif %}">
+                  <p class="font-bold text-gray-900 text-lg">{{ info.label }}</p>
+                  <p class="text-blue-600 font-semibold text-sm mt-1">{{ info.total }} TND</p>
+                  {% if info.monthly != info.total %}
+                  <p class="text-gray-400 text-xs mt-0.5">{{ info.monthly }} TND/mois</p>
+                  {% endif %}
+                </div>
+              </label>
+              {% endfor %}
+
+            </div>
+          </div>
+
+          <!-- Type de paiement -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-3">Type de paiement</label>
+            <div class="grid grid-cols-2 gap-3">
+
+              <label class="cursor-pointer">
+                <input type="radio" name="payment_type" value="total"
+                  class="hidden" checked onchange="updatePrice()">
+                <div class="border-2 border-blue-500 bg-blue-50 rounded-xl p-4 text-center transition payment-box" data-value="total">
+                  <p class="font-semibold text-gray-900">💰 Paiement total</p>
+                  <p class="text-xs text-gray-500 mt-1">Payez tout en une seule fois</p>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="payment_type" value="monthly"
+                  class="hidden" onchange="updatePrice()">
+                <div class="border-2 border-gray-200 rounded-xl p-4 text-center transition payment-box" data-value="monthly">
+                  <p class="font-semibold text-gray-900">📅 Paiement mensuel</p>
+                  <p class="text-xs text-gray-500 mt-1">Payez mois par mois</p>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- Récapitulatif prix -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-5" id="price-summary">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-blue-700" id="summary-label">Montant à payer maintenant</p>
+                <p class="text-xs text-blue-500 mt-0.5" id="summary-detail"></p>
+              </div>
+              <p class="text-2xl font-bold text-blue-700" id="summary-price">50.000 TND</p>
+            </div>
+          </div>
+
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition shadow-md text-lg">
+            Payer avec Konnect 🔐
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Tableau comparatif -->
+      <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <h3 class="font-semibold text-gray-800 mb-4">Tableau des tarifs</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="text-left py-2 text-gray-500 font-medium">Durée</th>
+                <th class="text-right py-2 text-gray-500 font-medium">Prix total</th>
+                <th class="text-right py-2 text-gray-500 font-medium">Par mois</th>
+                <th class="text-right py-2 text-gray-500 font-medium">Économie</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for period, info in periods.items %}
+              <tr class="border-b border-gray-50 hover:bg-gray-50">
+                <td class="py-3 font-medium text-gray-900">{{ info.label }}</td>
+                <td class="py-3 text-right text-gray-700">{{ info.total }} TND</td>
+                <td class="py-3 text-right text-blue-600 font-medium">{{ info.monthly }} TND</td>
+                <td class="py-3 text-right text-green-600 font-medium">
+                  {% if info.saving > 0 %}-{{ info.saving }} TND{% else %}—{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const PRICES = {
+  '1_month':   { total: 50.000,  monthly: 50.000,  label: '1 Mois' },
+  '3_months':  { total: 130.000, monthly: 43.333,  label: '3 Mois' },
+  '6_months':  { total: 240.000, monthly: 40.000,  label: '6 Mois' },
+  '9_months':  { total: 330.000, monthly: 36.667,  label: '9 Mois' },
+  '12_months': { total: 400.000, monthly: 33.333,  label: '12 Mois' },
+};
+
+function updatePrice() {
+  const period      = document.querySelector('input[name="period"]:checked')?.value || '1_month';
+  const paymentType = document.querySelector('input[name="payment_type"]:checked')?.value || 'total';
+  const info        = PRICES[period];
+
+  const amount  = paymentType === 'total' ? info.total : info.monthly;
+  const label   = paymentType === 'total' ? 'Paiement total — ' + info.label : 'Premier mois — ' + info.label;
+  const detail  = paymentType === 'monthly' ? `puis ${info.monthly.toFixed(3)} TND/mois` : 'paiement unique';
+
+  document.getElementById('summary-price').textContent  = amount.toFixed(3) + ' TND';
+  document.getElementById('summary-label').textContent  = label;
+  document.getElementById('summary-detail').textContent = detail;
+
+  // Mise à jour visuelle des cartes période
+  document.querySelectorAll('.period-box').forEach(box => {
+    box.classList.remove('border-blue-500', 'bg-blue-50');
+    box.classList.add('border-gray-200');
+  });
+  const selected = document.querySelector(`input[name="period"][value="${period}"]`);
+  if (selected) {
+    selected.nextElementSibling.classList.add('border-blue-500', 'bg-blue-50');
+    selected.nextElementSibling.classList.remove('border-gray-200');
+  }
+
+  // Mise à jour visuelle paiement type
+  document.querySelectorAll('.payment-box').forEach(box => {
+    box.classList.remove('border-blue-500', 'bg-blue-50');
+    box.classList.add('border-gray-200');
+  });
+  document.querySelector(`.payment-box[data-value="${paymentType}"]`)
+    ?.classList.replace('border-gray-200', 'border-blue-500');
+  document.querySelector(`.payment-box[data-value="${paymentType}"]`)
+    ?.classList.add('bg-blue-50');
+}
+
+updatePrice();
+</script>
+{% endblock %}

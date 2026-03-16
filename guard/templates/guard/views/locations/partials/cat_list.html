@@ -1,4 +1,4 @@
-{% load i18n %}
+﻿{% load i18n %}
 
 <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
     <table class="w-full text-sm text-left rtl:text-right text-body">
@@ -10,8 +10,15 @@
             </tr>
         </thead>
         <tbody>
+            <tr class="bg-neutral-primary border-b border-default cursor-pointer hover:bg-neutral-secondary"
+                onclick="selectCategory('')">
+                <th scope="row" class="px-6 py-4 font-medium text-brand whitespace-nowrap">
+                    Tous
+                </th>
+            </tr>
             {% for data in location_categories %}
-            <tr class="bg-neutral-primary border-b border-default">
+            <tr class="bg-neutral-primary border-b border-default cursor-pointer hover:bg-neutral-secondary"
+                onclick="selectCategory('{{ data.name }}')">
                 <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
                     {{ data.name }}
                 </th>
@@ -20,3 +27,31 @@
         </tbody>
     </table>
 </div>
+
+<script>
+function selectCategory(category) {
+    // ✅ Fermer proprement avec Flowbite (supprime le backdrop)
+    const modalEl = document.getElementById('static-modal');
+    if (modalEl) {
+        const modal = FlowbiteInstances.getInstance('Modal', 'static-modal');
+        if (modal) {
+            modal.hide();
+        } else {
+            modalEl.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            // Supprimer le backdrop
+            const backdrops = document.querySelectorAll('[modal-backdrop]');
+            backdrops.forEach(b => b.remove());
+        }
+    }
+
+    // Filtrer la table
+    if (window.dataTable) {
+        if (category === '') {
+            window.dataTable.search('');
+        } else {
+            window.dataTable.search(category, [1]);
+        }
+    }
+}
+</script>

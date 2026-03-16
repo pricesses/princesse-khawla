@@ -14,19 +14,19 @@
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
             <a href="{% url 'guard:dashboard' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                 {% trans "Dashboard" %}
             </a>
         </li>
         <li>
             <div class="flex items-center">
-                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                 <a href="{% url 'guard:publicTransportsList' %}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans "Public Transports" %}</a>
             </div>
         </li>
         <li aria-current="page">
             <div class="flex items-center">
-                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                 <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
                     {% if object %}{% trans "Edit" %}{% else %}{% trans "Add" %}{% endif %}
                 </span>
@@ -37,18 +37,10 @@
 
 <div class="mb-6">
     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-        {% if object %}
-            {% trans "Edit Public Transport" %}
-        {% else %}
-            {% trans "Add Public Transport" %}
-        {% endif %}
+        {% if object %}{% trans "Edit Public Transport" %}{% else %}{% trans "Add Public Transport" %}{% endif %}
     </h1>
     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        {% if object %}
-            {% trans "Update the transport route details below" %}
-        {% else %}
-            {% trans "Fill in the details to create a new transport route" %}
-        {% endif %}
+        {% if object %}{% trans "Update the transport route details below" %}{% else %}{% trans "Fill in the details to create a new transport route" %}{% endif %}
     </p>
 </div>
 
@@ -56,12 +48,11 @@
     {% csrf_token %}
     {% if form.non_field_errors %}
         <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            {% for error in form.non_field_errors %}
-                <div>{{ error }}</div>
-            {% endfor %}
+            {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
         </div>
-    {% endif %} 
-    
+    {% endif %}
+
+    <!-- ══════════════ TRANSPORT DETAILS ══════════════ -->
     <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
         <div class="px-4 py-5 sm:p-6">
             <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-6">
@@ -71,11 +62,15 @@
                     </svg>
                     {% trans "Transport Details" %}
                 </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Select the transport type and city" %}</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {% trans "Select the transport type" %}
+                </p>
             </div>
-            
+
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
+
+                <!-- Transport Type -->
+                <div class="sm:col-span-2">
                     <label for="{{ form.publicTransportType.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {{ form.publicTransportType.label }}
                         {% if form.publicTransportType.field.required %}<span class="text-red-600">*</span>{% endif %}
@@ -85,32 +80,76 @@
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.publicTransportType.errors.0 }}</p>
                     {% endif %}
                 </div>
-                
-                <div>
+
+                <!-- BUS ONLY: City -->
+                <div id="city-wrapper">
                     <label for="{{ form.city.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {{ form.city.label }}
-                        {% if form.city.field.required %}<span class="text-red-600">*</span>{% endif %}
+                        <span class="text-red-600">*</span>
                     </label>
                     {{ form.city }}
                     {% if form.city.errors %}
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.city.errors.0 }}</p>
                     {% endif %}
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{% trans "Required for Bus only" %}</p>
                 </div>
 
-                <div class="sm:col-span-2">
+                <!-- TRAIN/METRO: From City -->
+                <div id="from-city-wrapper" style="display: none;">
+                    <label for="{{ form.fromCity.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ form.fromCity.label }}
+                    </label>
+                    {{ form.fromCity }}
+                    {% if form.fromCity.errors %}
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.fromCity.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- TRAIN/METRO: To City -->
+                <div id="to-city-wrapper" style="display: none;">
+                    <label for="{{ form.toCity.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ form.toCity.label }}
+                    </label>
+                    {{ form.toCity }}
+                    {% if form.toCity.errors %}
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.toCity.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Bus Number (BUS ONLY) -->
+                <!-- ✅ FIX: hidden for train & metro via JS; not required server-side for those types -->
+                <div id="bus-number-wrapper" class="sm:col-span-2" style="display: none;">
                     <label for="{{ form.busNumber.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {{ form.busNumber.label }}
-                        {% if form.busNumber.field.required %}<span class="text-red-600">*</span>{% endif %}
+                        <span class="text-red-600">*</span>
                     </label>
                     {{ form.busNumber }}
                     {% if form.busNumber.errors %}
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.busNumber.errors.0 }}</p>
                     {% endif %}
                 </div>
+
+                <!-- Is Return Journey -->
+                <div class="sm:col-span-2">
+                    <label for="{{ form.is_return.id_for_label }}" class="flex items-center cursor-pointer">
+                        {{ form.is_return }}
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-white">
+                            {{ form.is_return.label }}
+                        </span>
+                    </label>
+                    {% if form.is_return.errors %}
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.is_return.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {% trans "Check this box if this is a return journey" %}
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>
 
+    <!-- ══════════════ ROUTE ══════════════ -->
     <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
         <div class="px-4 py-5 sm:p-6">
             <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-6">
@@ -118,25 +157,54 @@
                     <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
-                    {% trans "Route" %}
+                    <span id="route-title">{% trans "Route" %}</span>
                 </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Select the departure and arrival regions" %}</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400" id="route-subtitle">
+                    {% trans "Select departure and arrival regions" %}
+                </p>
             </div>
-            
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
+
+            <!-- Loading / Error -->
+            <div id="loading-banner" class="hidden mb-4 flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
+                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                <span id="loading-text">{% trans "Loading..." %}</span>
+            </div>
+            <div id="error-banner" class="hidden mb-4 p-3 text-sm text-red-800 bg-red-100 rounded-lg dark:bg-red-900 dark:text-red-300"></div>
+
+            <!-- Metro: city selector to load regions -->
+            <div id="metro-region-city-wrapper" style="display:none;" class="mb-4">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    🏙️ {% trans "Filter regions by city" %}
+                </label>
+                <select id="id_metro_region_city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <option value="">---------</option>
+                    {% for city in form.city.field.queryset %}
+                        <option value="{{ city.pk }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{% trans "Select a city to load its regions" %}</p>
+            </div>
+
+            <!-- Region Fields (BUS & METRO) -->
+            <div id="regions-fields" class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div id="from-region-wrapper">
                     <label for="{{ form.fromRegion.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {{ form.fromRegion.label }}
+                        <span class="text-red-600">*</span>
                     </label>
                     {{ form.fromRegion }}
                     {% if form.fromRegion.errors %}
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.fromRegion.errors.0 }}</p>
                     {% endif %}
                 </div>
-                
-                <div>
+
+                <div id="to-region-wrapper">
                     <label for="{{ form.toRegion.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {{ form.toRegion.label }}
+                        <span class="text-red-600">*</span>
                     </label>
                     {{ form.toRegion }}
                     {% if form.toRegion.errors %}
@@ -144,10 +212,15 @@
                     {% endif %}
                 </div>
             </div>
+
+            <!-- Metro info note -->
+            <div id="metro-note" class="hidden mt-4 p-3 text-sm text-blue-800 bg-blue-50 rounded-lg dark:bg-blue-900 dark:text-blue-300">
+                ℹ️ {% trans "For Metro: Fill either (Cities) OR (Regions), not both" %}
+            </div>
         </div>
     </div>
 
-    <!-- Time Schedule Section -->
+    <!-- ══════════════ DEPARTURE TIMES ══════════════ -->
     <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
         <div class="px-4 py-5 sm:p-6">
             <div class="border-b border-gray-200 dark:border-gray-700 pb-4 mb-6">
@@ -157,9 +230,9 @@
                     </svg>
                     {% trans "Departure Times" %}
                 </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Add the departure times for this route" %}</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Add the departure times for this route (at least one required)" %}</p>
             </div>
-            
+
             {{ time_formset.management_form }}
             <div id="time-formset" class="space-y-3">
                 {% for form_item in time_formset %}
@@ -185,7 +258,7 @@
                 </div>
                 {% endfor %}
             </div>
-            
+
             <button type="button" id="add-time-button" class="mt-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                 <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -195,96 +268,331 @@
         </div>
     </div>
 
+    <!-- ══════════════ FORM ACTIONS ══════════════ -->
     <div class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 pt-6">
         <a href="{% url 'guard:publicTransportsList' %}" class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none">
             {% trans "Cancel" %}
         </a>
-        <div class="flex gap-x-3">
-            <button type="submit" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                </svg>
-                {% if object %}{% trans "Update Transport" %}{% else %}{% trans "Save Transport" %}{% endif %}
-            </button>
-        </div>
+        <button type="submit" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            {% if object %}{% trans "Update Transport" %}{% else %}{% trans "Save Transport" %}{% endif %}
+        </button>
     </div>
 </form>
-
 {% endblock body %}
 
 {% block extrascript %}
 <script>
-    const citySelect = document.getElementById('{{ form.city.id_for_label }}');
-    const fromRegionSelect = document.getElementById('{{ form.fromRegion.id_for_label }}');
-    const toRegionSelect = document.getElementById('{{ form.toRegion.id_for_label }}');
-    
-    if (citySelect && fromRegionSelect && toRegionSelect) {
-        citySelect.addEventListener('change', async function() {
-            const cityId = this.value;
-            
-            // Clear current region options
-            fromRegionSelect.innerHTML = '<option value="">---------</option>';
-            toRegionSelect.innerHTML = '<option value="">---------</option>';
-            
-            if (cityId) {
-                try {
-                    const response = await fetch(`/api/subregions/${cityId}/`);
-                    const data = await response.json();
-                    
-                    if (data.success && data.subregions) {
-                        // Populate region dropdowns
-                        data.subregions.forEach(region => {
-                            const option1 = document.createElement('option');
-                            option1.value = region.id;
-                            option1.textContent = region.name;
-                            fromRegionSelect.appendChild(option1);
-                            
-                            const option2 = document.createElement('option');
-                            option2.value = region.id;
-                            option2.textContent = region.name;
-                            toRegionSelect.appendChild(option2);
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error fetching subregions:', error);
-                }
-            }
-        });
-    }
+document.addEventListener('DOMContentLoaded', function () {
 
-    // Handle dynamic time formset
-    document.getElementById('add-time-button')?.addEventListener('click', function() {
-        const formset = document.getElementById('time-formset');
-        const totalForms = document.querySelector('#id_publicTransportTimes-TOTAL_FORMS');
-        const formCount = parseInt(totalForms.value);
-        const maxForms = parseInt(document.querySelector('#id_publicTransportTimes-MAX_NUM_FORMS').value);
-        
-        if (formCount >= maxForms) {
-            alert('Maximum number of times reached (20)');
+    // ══ Elements ══
+    const typeSelect        = document.getElementById('id_transport_type');
+    const cityWrapper       = document.getElementById('city-wrapper');
+    const citySelect        = document.getElementById('id_city');
+    const fromCityWrapper   = document.getElementById('from-city-wrapper');
+    const fromCitySelect    = document.getElementById('id_from_city');
+    const toCityWrapper     = document.getElementById('to-city-wrapper');
+    const toCitySelect      = document.getElementById('id_to_city');
+    const regionsFields     = document.getElementById('regions-fields');
+    const fromRegionWrapper = document.getElementById('from-region-wrapper');
+    const fromRegionSelect  = document.getElementById('id_from_region');
+    const toRegionWrapper   = document.getElementById('to-region-wrapper');
+    const toRegionSelect    = document.getElementById('id_to_region');
+    const routeSubtitle     = document.getElementById('route-subtitle');
+    const metroNote         = document.getElementById('metro-note');
+    const loadingEl         = document.getElementById('loading-banner');
+    const loadingText       = document.getElementById('loading-text');
+    const errorEl           = document.getElementById('error-banner');
+    const busNumberWrapper  = document.getElementById('bus-number-wrapper');
+
+    // ✅ FIX: Django generates id from field name "busNumber" → "id_busNumber"
+    const busNumberInput    = document.getElementById('id_busNumber');
+
+    // ══ Helpers ══
+    const getTypeName = () => {
+        const opt = typeSelect.options[typeSelect.selectedIndex];
+        return opt ? opt.text.trim().toLowerCase() : '';
+    };
+
+    const showLoading = (msg) => {
+        loadingText.textContent = msg;
+        loadingEl.classList.remove('hidden');
+        errorEl.classList.add('hidden');
+    };
+
+    const hideLoading = () => loadingEl.classList.add('hidden');
+
+    const showError = (msg) => {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+        hideLoading();
+    };
+
+    const clearDropdown = (sel) => {
+        sel.innerHTML = '<option value="">---------</option>';
+    };
+
+    const populateDropdowns = (regions, fromSel, toSel) => {
+        clearDropdown(fromSel);
+        clearDropdown(toSel);
+        regions.forEach(r => {
+            fromSel.appendChild(new Option(r.name, r.id));
+            toSel.appendChild(new Option(r.name, r.id));
+        });
+    };
+
+    // ══ Lock / unlock a field wrapper ══
+    const lockWrapper = (wrapper, select) => {
+        select.disabled = true;
+        select.value = '';
+        wrapper.style.opacity = '0.4';
+        wrapper.style.pointerEvents = 'none';
+    };
+
+    const unlockWrapper = (wrapper, select) => {
+        select.disabled = false;
+        wrapper.style.opacity = '1';
+        wrapper.style.pointerEvents = '';
+    };
+
+    // ══ Reset all metro locks ══
+    const resetMetroLocks = () => {
+        unlockWrapper(fromCityWrapper,   fromCitySelect);
+        unlockWrapper(toCityWrapper,     toCitySelect);
+        unlockWrapper(fromRegionWrapper, fromRegionSelect);
+        unlockWrapper(toRegionWrapper,   toRegionSelect);
+    };
+
+    // ══ Metro mutual exclusion: Cities XOR Regions ══
+    const metroRegionCityWrapper = document.getElementById('metro-region-city-wrapper');
+    const metroRegionCitySelect  = document.getElementById('id_metro_region_city');
+
+    const lockMetroRegionCity = () => {
+        if (metroRegionCityWrapper) {
+            metroRegionCityWrapper.style.opacity       = '0.4';
+            metroRegionCityWrapper.style.pointerEvents = 'none';
+        }
+        if (metroRegionCitySelect) metroRegionCitySelect.disabled = true;
+    };
+
+    const unlockMetroRegionCity = () => {
+        if (metroRegionCityWrapper) {
+            metroRegionCityWrapper.style.opacity       = '1';
+            metroRegionCityWrapper.style.pointerEvents = '';
+        }
+        if (metroRegionCitySelect) metroRegionCitySelect.disabled = false;
+    };
+
+    const handleMetroMutualExclusion = () => {
+        const hasCities  = fromCitySelect.value || toCitySelect.value;
+        const hasRegions = fromRegionSelect.value || toRegionSelect.value;
+
+        if (hasCities) {
+            // Cities selected → lock regions AND the region-city filter
+            lockWrapper(fromRegionWrapper, fromRegionSelect);
+            lockWrapper(toRegionWrapper,   toRegionSelect);
+            lockMetroRegionCity();
+            unlockWrapper(fromCityWrapper, fromCitySelect);
+            unlockWrapper(toCityWrapper,   toCitySelect);
+        } else if (hasRegions) {
+            // Regions selected → lock cities, unlock region filter
+            lockWrapper(fromCityWrapper,   fromCitySelect);
+            lockWrapper(toCityWrapper,     toCitySelect);
+            unlockWrapper(fromRegionWrapper, fromRegionSelect);
+            unlockWrapper(toRegionWrapper,   toRegionSelect);
+            unlockMetroRegionCity();
+        } else {
+            resetMetroLocks();
+            unlockMetroRegionCity();
+        }
+    };
+
+    // ══ Main handler ══
+    function handleTypeChange() {
+        const typeName = getTypeName();
+
+        // Always reset locks & hide loading
+        resetMetroLocks();
+        hideLoading();
+        errorEl.classList.add('hidden');
+
+        if (!typeName) {
+            cityWrapper.style.display     = '';
+            fromCityWrapper.style.display = 'none';
+            toCityWrapper.style.display   = 'none';
+            regionsFields.style.display   = 'grid';
+            metroNote.classList.add('hidden');
+            busNumberWrapper.style.display = 'none';
+            routeSubtitle.textContent = '{% trans "Select departure and arrival regions" %}';
             return;
         }
-        
-        // Clone the first empty form
-        const emptyForm = formset.querySelector('.time-form-row');
-        const newForm = emptyForm.cloneNode(true);
-        
-        // Update form index
-        const formRegex = RegExp(`publicTransportTimes-(\\d+)-`, 'g');
-        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `publicTransportTimes-${formCount}-`);
-        
-        // Clear the time input
-        const timeInput = newForm.querySelector('input[type="time"]');
-        if (timeInput) timeInput.value = '';
-        
-        // Remove delete checkbox if present (new forms don't need it)
-        const deleteSection = newForm.querySelector('.flex-shrink-0');
-        if (deleteSection) deleteSection.remove();
-        
-        // Append to formset
+
+        // ╔══════════════════════════════════════════╗
+        // ║  BUS: city + regions + bus number        ║
+        // ╚══════════════════════════════════════════╝
+        if (typeName === 'bus') {
+            document.getElementById('metro-region-city-wrapper').style.display = 'none';
+            cityWrapper.style.display      = 'block';
+            fromCityWrapper.style.display  = 'none';
+            toCityWrapper.style.display    = 'none';
+            regionsFields.style.display    = 'grid';
+            metroNote.classList.add('hidden');
+            busNumberWrapper.style.display = 'block';   // ✅ visible for bus
+            routeSubtitle.textContent = '{% trans "Select departure and arrival regions" %}';
+
+            const cityId = citySelect.value;
+            if (cityId) {
+                showLoading('{% trans "Loading regions..." %}');
+                fetch('/api/subregions/' + cityId + '/')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.subregions) {
+                            populateDropdowns(data.subregions, fromRegionSelect, toRegionSelect);
+                        }
+                        hideLoading();
+                    })
+                    .catch(e => showError(e.message));
+            } else {
+                clearDropdown(fromRegionSelect);
+                clearDropdown(toRegionSelect);
+            }
+        }
+
+        // ╔══════════════════════════════════════════╗
+        // ║  TRAIN: fromCity + toCity only           ║
+        // ║  busNumber hidden (not required)         ║
+        // ╚══════════════════════════════════════════╝
+        else if (typeName === 'train') {
+            document.getElementById('metro-region-city-wrapper').style.display = 'none';
+            cityWrapper.style.display      = 'none';
+            fromCityWrapper.style.display  = 'block';
+            toCityWrapper.style.display    = 'block';
+            regionsFields.style.display    = 'none';
+            metroNote.classList.add('hidden');
+            busNumberWrapper.style.display = 'none';    // ✅ hidden for train
+            routeSubtitle.textContent = '{% trans "Select departure and arrival stations (cities)" %}';
+
+            // ✅ Clear irrelevant fields so they submit empty
+            citySelect.value = '';
+            clearDropdown(fromRegionSelect);
+            clearDropdown(toRegionSelect);
+            fromRegionSelect.value = '';
+            toRegionSelect.value   = '';
+            if (busNumberInput) busNumberInput.value = '';
+        }
+
+        // ╔══════════════════════════════════════════╗
+        // ║  METRO: cities XOR regions               ║
+        // ║  busNumber hidden (not required)         ║
+        // ╚══════════════════════════════════════════╝
+        else if (typeName === 'metro') {
+            cityWrapper.style.display      = 'none';
+            fromCityWrapper.style.display  = 'block';
+            toCityWrapper.style.display    = 'block';
+            regionsFields.style.display    = 'grid';
+            metroNote.classList.remove('hidden');
+            busNumberWrapper.style.display = 'none';    // ✅ hidden for metro
+            document.getElementById('metro-region-city-wrapper').style.display = 'block';
+            routeSubtitle.textContent = '{% trans "Select departure and arrival (cities OR regions)" %}';
+
+            // ✅ Clear city field (not used for metro)
+            citySelect.value = '';
+            if (busNumberInput) busNumberInput.value = '';
+
+            // Apply mutual exclusion (edit mode: fields may already have values)
+            handleMetroMutualExclusion();
+        }
+    }
+
+    // ══ Event listeners ══
+    typeSelect?.addEventListener('change', handleTypeChange);
+
+    // Bus: reload regions when city changes
+    citySelect?.addEventListener('change', function () {
+        if (getTypeName() === 'bus') {
+            const cityId = this.value;
+            if (cityId) {
+                showLoading('{% trans "Loading regions..." %}');
+                fetch('/api/subregions/' + cityId + '/')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.subregions) {
+                            populateDropdowns(data.subregions, fromRegionSelect, toRegionSelect);
+                        }
+                        hideLoading();
+                    })
+                    .catch(e => showError(e.message));
+            } else {
+                clearDropdown(fromRegionSelect);
+                clearDropdown(toRegionSelect);
+            }
+        }
+    });
+
+    // Metro: mutual exclusion on city changes
+    [fromCitySelect, toCitySelect].forEach(sel => {
+        sel?.addEventListener('change', () => {
+            if (getTypeName() === 'metro') handleMetroMutualExclusion();
+        });
+    });
+
+    // Metro: mutual exclusion on region changes
+    [fromRegionSelect, toRegionSelect].forEach(sel => {
+        sel?.addEventListener('change', () => {
+            if (getTypeName() === 'metro') handleMetroMutualExclusion();
+        });
+    });
+
+    // ══ Dynamic time formset ══
+    document.getElementById('add-time-button')?.addEventListener('click', function () {
+        const formset    = document.getElementById('time-formset');
+        const totalForms = document.querySelector('#id_publicTransportTimes-TOTAL_FORMS');
+        const formCount  = parseInt(totalForms.value);
+        const maxForms   = parseInt(document.querySelector('#id_publicTransportTimes-MAX_NUM_FORMS').value);
+
+        if (formCount >= maxForms) {
+            alert('{% trans "Maximum number of times reached (20)" %}');
+            return;
+        }
+
+        const newForm = formset.querySelector('.time-form-row').cloneNode(true);
+        newForm.innerHTML = newForm.innerHTML.replace(
+            /publicTransportTimes-(\d+)-/g,
+            'publicTransportTimes-' + formCount + '-'
+        );
+        const ti = newForm.querySelector('input[type="time"]');
+        if (ti) ti.value = '';
+        newForm.querySelector('.flex-shrink-0')?.remove();
+
         formset.appendChild(newForm);
-        
-        // Update total forms count
         totalForms.value = formCount + 1;
     });
+
+    // ══ Metro: load regions when city filter changes ══
+    document.getElementById('id_metro_region_city')?.addEventListener('change', function() {
+        const cityId = this.value;
+        if (cityId && getTypeName() === 'metro') {
+            showLoading('{% trans "Loading regions..." %}');
+            fetch('/api/subregions/' + cityId + '/')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success && data.subregions) {
+                        populateDropdowns(data.subregions, fromRegionSelect, toRegionSelect);
+                        resetMetroLocks();
+                    }
+                    hideLoading();
+                })
+                .catch(e => showError(e.message));
+        } else {
+            clearDropdown(fromRegionSelect);
+            clearDropdown(toRegionSelect);
+        }
+    });
+
+    // ══ Initial run (handles edit mode) ══
+    handleTypeChange();
+});
 </script>
 {% endblock extrascript %}

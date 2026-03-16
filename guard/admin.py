@@ -19,6 +19,7 @@ from .models import (
     Sponsor,
 )
 from modeltranslation.admin import TranslationAdmin
+from guard.models import DashboardStatistics, ActivityLog, NotificationLog
 
 
 class ImageInline(admin.TabularInline):
@@ -268,3 +269,122 @@ class SponsorAdmin(admin.ModelAdmin):
             {"fields": ("name", "image", "link")},
         ),
     )
+
+@admin.register(DashboardStatistics)
+class DashboardStatisticsAdmin(admin.ModelAdmin):
+    """
+    Admin panel pour visualiser les statistiques du dashboard.
+    Tous les champs sont en lecture seule (mis à jour par les signaux).
+    """
+    readonly_fields = [
+        'total_locations', 'locations_this_month',
+        'total_events', 'upcoming_events', 'events_this_month',
+        'total_hikings', 'hikings_this_month',
+        'total_ads', 'active_ads',
+        'total_fcm_devices', 'ios_devices', 'android_devices',
+        'active_users_30d',
+        'notifications_sent_24h', 'notifications_failed_24h',
+        'error_count_24h',
+        'updated_at', 'created_at'
+    ]
+    
+    list_display = ['updated_at', 'total_locations', 'total_events', 'total_hikings']
+    ordering = ['-updated_at']
+    
+    fieldsets = (
+        (_('Locations'), {
+            'fields': ('total_locations', 'locations_this_month'),
+        }),
+        (_('Events'), {
+            'fields': ('total_events', 'upcoming_events', 'events_this_month'),
+        }),
+        (_('Hikings'), {
+            'fields': ('total_hikings', 'hikings_this_month'),
+        }),
+        (_('Advertisements'), {
+            'fields': ('total_ads', 'active_ads'),
+        }),
+        (_('Devices & Users'), {
+            'fields': ('total_fcm_devices', 'ios_devices', 'android_devices', 'active_users_30d'),
+        }),
+        (_('Notifications (24h)'), {
+            'fields': ('notifications_sent_24h', 'notifications_failed_24h'),
+        }),
+        (_('System'), {
+            'fields': ('error_count_24h', 'last_error_message'),
+        }),
+        (_('Timestamps'), {
+            'fields': ('updated_at', 'created_at'),
+        }),
+    )
+    
+    def has_add_permission(self, request):
+        """Empêche la création manuelle de statistiques"""
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        """Empêche la suppression des statistiques"""
+        return False
+
+
+@admin.register(ActivityLog)
+class ActivityLogAdmin(admin.ModelAdmin):
+    """
+    Admin panel pour visualiser le journal d'activité du système.
+    Chaque action créée/modifiée est loggée automatiquement via les signaux.
+    """
+    list_display = ['timestamp', 'activity_type', 'entity_name', 'entity_type', 'success']
+    list_filter = ['activity_type', 'success', 'entity_type', 'timestamp']
+    search_fields = ['entity_name', 'entity_id', 'user']
+    readonly_fields = ['timestamp', 'activity_type', 'entity_type', 'entity_id']
+    ordering = ['-timestamp']
+    
+    fieldsets = (
+        (_('Activity'), {
+            'fields': ('activity_type', 'timestamp'),
+        }),
+        (_('Entity'), {
+            'fields': ('entity_type', 'entity_id', 'entity_name'),
+        }),
+        (_('Details'), {
+            'fields': ('user', 'success', 'error_message', 'details'),
+        }),
+    )
+    
+    def has_add_permission(self, request):
+        """Logs sont créés automatiquement, pas d'ajout manuel"""
+        return False
+
+
+@admin.register(NotificationLog)
+class NotificationLogAdmin(admin.ModelAdmin):
+    """
+    Admin panel pour visualiser l'historique des notifications push envoyées.
+    Utile pour auditer les notifications et détecter les problèmes.
+    """
+    list_display = ['timestamp', 'notification_type', 'status', 'device_count_succeeded', 'device_count_attempted']
+    list_filter = ['status', 'notification_type', 'timestamp']
+    search_fields = ['title', 'entity_id']
+    readonly_fields = ['timestamp', 'response']
+    ordering = ['-timestamp']
+    
+    fieldsets = (
+        (_('Notification Info'), {
+            'fields': ('notification_type', 'entity_type', 'entity_id', 'timestamp'),
+        }),
+        (_('Content'), {
+            'fields': ('title', 'body'),
+        }),
+        (_('Delivery'), {
+            'fields': ('status', 'device_count_attempted', 'device_count_succeeded'),
+        }),
+        (_('Response'), {
+            'fields': ('response',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def has_add_permission(self, request):
+        """Logs sont créés automatiquement"""
+        return False
+
