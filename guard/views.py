@@ -48,10 +48,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         from django.utils import timezone
+        from partners.models import (
+            PartnerEvent, PartnerAd,
+            Partner as PartnerAccount,
+        )
+
         now = timezone.now()
         month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
         context["db_stats"] = {
+            # Stats existantes
             "total_locations":      Location.objects.count(),
             "locations_this_month": Location.objects.filter(created_at__gte=month_start).count(),
             "total_events":         Event.objects.count(),
@@ -59,6 +65,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             "total_hikings":        Hiking.objects.count(),
             "total_ads":            Ad.objects.count(),
             "active_ads":           Ad.objects.filter(is_active=True).count(),
+            # Nouvelles stats partenaires
+            "pending_partner_events": PartnerEvent.objects.filter(status='pending').count(),
+            "pending_partner_ads":    PartnerAd.objects.filter(is_confirmed=True, is_paid=False).count(),
+            "new_partners":           PartnerAccount.objects.filter(is_verified=False, is_active=True).count(),
+            "total_partners":         PartnerAccount.objects.filter(is_verified=True).count(),
         }
 
         cache_key = f"dashboard_analytics_stats_{self.request.user.id}"
@@ -946,16 +957,11 @@ def get_schedules(request):
 # ══════════════════════════════════════════════════════════════════
 
 class AdClickView(View):
-    """
-    URL: /ad/<int:pk>/go/
-    Enregistre le clic, met l'Ad Active, redirige vers le vrai lien.
-    """
     def get(self, request, pk):
         ad = get_object_or_404(Ad, pk=pk)
         if not ad.link:
             raise Http404
 
-        # 1. Enregistrer le clic
         from .models import ClickLog
         ClickLog.objects.create(
             content_type='ad',
@@ -965,15 +971,11 @@ class AdClickView(View):
             user_agent=request.META.get('HTTP_USER_AGENT', '')[:300],
         )
 
-        # 2. ✅ Marquer Active + mettre à jour last_clicked_at
         from django.utils import timezone
         ad.is_active = True
         ad.last_clicked_at = timezone.now()
         ad.save(update_fields=['is_active', 'last_clicked_at'])
-
-        # 3. Broadcaster via WebSocket
         self._broadcast('ad')
-
         return HttpResponseRedirect(ad.link)
 
     @staticmethod
@@ -1022,9 +1024,6 @@ class AdClickView(View):
 
 
 class EventClickView(AdClickView):
-    """
-    URL: /event/<int:pk>/go/
-    """
     def get(self, request, pk):
         from .models import Event as EventModel
         event = get_object_or_404(EventModel, pk=pk)
@@ -1039,6 +1038,5 @@ class EventClickView(AdClickView):
             ip_address=self._get_ip(request),
             user_agent=request.META.get('HTTP_USER_AGENT', '')[:300],
         )
-
         self._broadcast('event')
         return HttpResponseRedirect(event.link)

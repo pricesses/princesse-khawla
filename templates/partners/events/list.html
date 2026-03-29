@@ -41,29 +41,23 @@
             <div class="flex items-center gap-3 mb-2 flex-wrap">
               <h3 class="font-semibold text-gray-900 text-lg">{{ event.title }}</h3>
 
-              <!-- Badge statut : affiché SEULEMENT si < 14 jours ou boosté/approuvé/rejeté -->
               {% if event.is_boosted %}
               <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
                 🚀 Boosté
               </span>
-
               {% elif event.status == 'approved' %}
               <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                 Approuvé
               </span>
-
               {% elif event.status == 'rejected' %}
               <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
                 Rejeté
               </span>
-
               {% elif not event.can_be_boosted %}
-              <!-- Seulement si < 14 jours : affiche "En attente de validation" -->
               <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
                 En attente de validation
               </span>
               {% endif %}
-
             </div>
 
             <p class="text-gray-500 text-sm mb-3">{{ event.description|truncatechars:120 }}</p>
@@ -88,32 +82,20 @@
           <div class="flex items-center gap-2 flex-shrink-0">
 
             {% if event.is_boosted %}
-            <!-- Déjà boosté -->
+            <!-- Déjà boosté — badge seulement -->
             <span class="inline-flex items-center gap-1.5 bg-orange-100 text-orange-700 text-sm font-semibold px-4 py-2 rounded-xl">
               🚀 Boosté
             </span>
 
-            {% elif event.can_be_boosted %}
-            <!-- ✅ >= 14 jours : bouton ACTIF -->
+            {% elif can_add and event.can_be_boosted %}
+            <!-- ✅ Compte payé + >= 14 jours → bouton orange actif -->
             <a href="{% url 'partners:event_boost' event.id %}"
               class="inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-xl transition shadow-sm">
               🚀 Booster
             </a>
 
-            {% else %}
-            <!-- ⏳ < 14 jours : bouton GRISÉ + tooltip validation admin -->
-            <div class="relative group">
-              <button disabled
-                class="inline-flex items-center gap-1.5 bg-gray-100 text-gray-400 text-sm font-semibold px-4 py-2 rounded-xl cursor-not-allowed select-none">
-                🚀 Booster
-              </button>
-              <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block
-                          bg-gray-800 text-white text-xs rounded-lg px-3 py-2 w-60 text-center z-10 shadow-lg">
-                ⏳ En attente de validation admin<br>
-                <span class="text-gray-300">Début dans {{ event.days_until_start }} jour(s) — nécessite ≥ 14 jours</span>
-              </div>
-            </div>
             {% endif %}
+            <!-- Sinon : rien du tout — bouton caché -->
 
             <!-- Supprimer -->
             <form method="post" action="{% url 'partners:event_delete' event.id %}"

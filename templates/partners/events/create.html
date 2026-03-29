@@ -21,94 +21,300 @@
         </p>
       </div>
 
-      <!-- Formulaire -->
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-        <form method="post" enctype="multipart/form-data" class="space-y-6">
+      <div class="space-y-6">
+        <form method="post" enctype="multipart/form-data" class="space-y-6" id="eventForm">
           {% csrf_token %}
 
-          <!-- Erreurs globales -->
           {% if form.non_field_errors %}
           <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
             {{ form.non_field_errors.0 }}
           </div>
           {% endif %}
 
-          <!-- Titre -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Titre *</label>
-            {{ form.title }}
-            {% if form.title.errors %}
-            <p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>
-            {% endif %}
-          </div>
+          <!-- ── Section : Basic Information ──────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div class="flex items-start justify-between mb-1">
+              <div>
+                <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <span class="text-blue-500">ℹ</span> Basic Information
+                </h2>
+                <p class="text-sm text-gray-400 mt-0.5">Enter the event name in different languages</p>
+              </div>
+            </div>
 
-          <!-- Description -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Description *</label>
-            {{ form.description }}
-            {% if form.description.errors %}
-            <p class="mt-1 text-xs text-red-500">{{ form.description.errors.0 }}</p>
-            {% endif %}
-          </div>
+            <hr class="border-gray-100 my-4">
 
-          <!-- Dates -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Date de début *</label>
-              {{ form.start_date }}
-              {% if form.start_date.errors %}
-              <p class="mt-1 text-xs text-red-500">{{ form.start_date.errors.0 }}</p>
+            <!-- Tabs Titre -->
+            <div class="flex gap-6 border-b border-gray-200 mb-5">
+              <button type="button" onclick="switchTitleTab('en')" id="title-tab-en"
+                class="pb-2 text-sm font-medium flex items-center gap-1.5 border-b-2 border-blue-500 text-blue-600 -mb-px">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> English
+              </button>
+              <button type="button" onclick="switchTitleTab('fr')" id="title-tab-fr"
+                class="pb-2 text-sm font-medium flex items-center gap-1.5 border-b-2 border-transparent text-gray-500 -mb-px hover:text-gray-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-900 inline-block"></span> French
+              </button>
+            </div>
+
+            <!-- Titre EN -->
+            <div id="title-panel-en">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Name (English) <span class="text-red-500">*</span>
+              </label>
+              <input type="text" name="title_en" id="title_en"
+                placeholder="Enter event name in English"
+                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value="{{ form.title.value|default:'' }}">
+              <button type="button" onclick="translateTitle()"
+                class="mt-3 inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:opacity-90 transition">
+                ⇄ Translate to French
+              </button>
+              {% if form.title.errors %}
+              <p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>
               {% endif %}
             </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Date de fin *</label>
-              {{ form.end_date }}
-              {% if form.end_date.errors %}
-              <p class="mt-1 text-xs text-red-500">{{ form.end_date.errors.0 }}</p>
+
+            <!-- Titre FR -->
+            <div id="title-panel-fr" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Name (French) <span class="text-red-500">*</span>
+              </label>
+              <input type="text" name="title_fr" id="title_fr"
+                placeholder="Entrez le nom de l'événement en français"
+                class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <input type="hidden" name="title" id="title_hidden">
+          </div>
+
+          <!-- ── Section : Description ────────────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div class="mb-1">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <span class="text-blue-500">📄</span> Description
+              </h2>
+              <p class="text-sm text-gray-400 mt-0.5">Event description and details</p>
+            </div>
+
+            <hr class="border-gray-100 my-4">
+
+            <!-- Tabs Description -->
+            <div class="flex gap-6 border-b border-gray-200 mb-5">
+              <button type="button" onclick="switchDescTab('en')" id="desc-tab-en"
+                class="pb-2 text-sm font-medium flex items-center gap-1.5 border-b-2 border-blue-500 text-blue-600 -mb-px">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> English
+              </button>
+              <button type="button" onclick="switchDescTab('fr')" id="desc-tab-fr"
+                class="pb-2 text-sm font-medium flex items-center gap-1.5 border-b-2 border-transparent text-gray-500 -mb-px hover:text-gray-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-900 inline-block"></span> French
+              </button>
+            </div>
+
+            <!-- Description EN -->
+            <div id="desc-panel-en">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Description (English) <span class="text-red-500">*</span>
+              </label>
+              <div class="border border-gray-200 rounded-xl overflow-hidden">
+                <div class="flex items-center gap-1 px-3 py-2 border-b border-gray-100 bg-gray-50 flex-wrap">
+                  <button type="button" onclick="fmt('bold')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 font-bold text-sm w-8 h-8 flex items-center justify-center">B</button>
+                  <button type="button" onclick="fmt('italic')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 italic text-sm w-8 h-8 flex items-center justify-center">I</button>
+                  <div class="w-px h-5 bg-gray-200 mx-1"></div>
+                  <button type="button" onclick="fmt('insertUnorderedList')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">≡</button>
+                  <button type="button" onclick="fmt('insertOrderedList')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">1≡</button>
+                  <div class="w-px h-5 bg-gray-200 mx-1"></div>
+                  <button type="button" onclick="insertLink('en')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">🔗</button>
+                </div>
+                <div id="editor-en" contenteditable="true"
+                  class="min-h-48 px-4 py-3 text-sm text-gray-800 focus:outline-none"
+                  style="line-height:1.7"
+                  data-placeholder="Enter event description in English..."></div>
+              </div>
+              <textarea name="description_en" id="desc_en_hidden" class="hidden"></textarea>
+              {% if form.description.errors %}
+              <p class="mt-1 text-xs text-red-500">{{ form.description.errors.0 }}</p>
               {% endif %}
             </div>
-          </div>
 
-          <!-- Info règle dates -->
-          <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
-            📌 Règles des dates :<br>
-            • Date de début &lt; 7 jours → ❌ Refusé<br>
-            • Date de début ≥ 7 jours → ✅ Accepté<br>
-            • Date de début ≥ 14 jours → 🚀 Bouton Booster disponible
-          </div>
-
-          <!-- Lien inscription -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              Lien d'inscription (optionnel)
-            </label>
-            {{ form.link }}
-            {% if form.link.errors %}
-            <p class="mt-1 text-xs text-red-500">{{ form.link.errors.0 }}</p>
-            {% endif %}
-          </div>
-
-          <!-- Upload médias -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              Images / Vidéos (optionnel)
-            </label>
-            <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-blue-400 transition cursor-pointer"
-                 onclick="document.getElementById('mediaInput').click()">
-              <div class="text-3xl mb-2">📎</div>
-              <p class="text-sm text-gray-500">Cliquez pour ajouter des images ou vidéos</p>
-              <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP, MP4, MOV — multiple autorisé</p>
-              <input id="mediaInput" type="file" name="media" multiple accept="image/*,video/*"
-                     class="hidden" onchange="previewMedia(this)">
+            <!-- Description FR -->
+            <div id="desc-panel-fr" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Description (French) <span class="text-red-500">*</span>
+              </label>
+              <div class="border border-gray-200 rounded-xl overflow-hidden">
+                <div class="flex items-center gap-1 px-3 py-2 border-b border-gray-100 bg-gray-50 flex-wrap">
+                  <button type="button" onclick="fmtFr('bold')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 font-bold text-sm w-8 h-8 flex items-center justify-center">B</button>
+                  <button type="button" onclick="fmtFr('italic')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 italic text-sm w-8 h-8 flex items-center justify-center">I</button>
+                  <div class="w-px h-5 bg-gray-200 mx-1"></div>
+                  <button type="button" onclick="fmtFr('insertUnorderedList')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">≡</button>
+                  <button type="button" onclick="fmtFr('insertOrderedList')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">1≡</button>
+                  <div class="w-px h-5 bg-gray-200 mx-1"></div>
+                  <button type="button" onclick="insertLink('fr')"
+                    class="p-1.5 rounded hover:bg-gray-200 text-gray-600 text-sm w-8 h-8 flex items-center justify-center">🔗</button>
+                </div>
+                <div id="editor-fr" contenteditable="true"
+                  class="min-h-48 px-4 py-3 text-sm text-gray-800 focus:outline-none"
+                  style="line-height:1.7"
+                  data-placeholder="Entrez la description de l'événement en français..."></div>
+              </div>
+              <textarea name="description_fr" id="desc_fr_hidden" class="hidden"></textarea>
             </div>
 
-            <!-- Prévisualisation -->
-            <div id="mediaPreview" class="mt-3 flex gap-2 flex-wrap"></div>
+            <textarea name="description" id="description_hidden" class="hidden"></textarea>
           </div>
 
-          <!-- Submit -->
+          <!-- ── Section : Event Details ──────────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div class="mb-1">
+              <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <span class="text-blue-500">📅</span> Event Details
+              </h2>
+              <p class="text-sm text-gray-400 mt-0.5">Location, dates, time and pricing</p>
+            </div>
+
+            <hr class="border-gray-100 my-4">
+
+            <!-- ✅ Location / City / Category — directement {{ form.X }} sans wrapper <select> -->
+            <div class="grid grid-cols-3 gap-4 mb-5">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                {{ form.location }}
+                {% if form.location.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.location.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  City <span class="text-red-500">*</span>
+                </label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.city.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Category <span class="text-red-500">*</span>
+                </label>
+                {{ form.category }}
+                {% if form.category.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.category.errors.0 }}</p>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Start Date / End Date / Time (conditions INCHANGÉES) -->
+            <div class="grid grid-cols-3 gap-4 mb-5">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Start Date <span class="text-red-500">*</span>
+                </label>
+                {{ form.start_date }}
+                {% if form.start_date.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.start_date.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  End Date <span class="text-red-500">*</span>
+                </label>
+                {{ form.end_date }}
+                {% if form.end_date.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.end_date.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Time <span class="text-red-500">*</span>
+                </label>
+                {{ form.event_time }}
+                {% if form.event_time.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.event_time.errors.0 }}</p>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Info règle dates (INCHANGÉ) -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700 mb-5">
+              📌 Règles des dates :<br>
+              • Date de début &lt; 7 jours → ❌ Refusé<br>
+              • Date de début ≥ 7 jours → ✅ Accepté<br>
+              • Date de début ≥ 14 jours → 🚀 Bouton Booster disponible
+            </div>
+
+            <!-- Price / Destination Link -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Price <span class="text-red-500">*</span>
+                </label>
+                {{ form.price }}
+                {% if form.price.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.price.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Destination Link <span class="text-red-500">*</span>
+                </label>
+                {{ form.link }}
+                <p class="mt-1 text-xs text-gray-400">The destination URL for this event.</p>
+                {% if form.link.errors %}
+                <p class="mt-1 text-xs text-red-500">{{ form.link.errors.0 }}</p>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── Section : Images ─────────────────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div class="mb-1">
+              <h2 class="text-lg font-bold text-gray-900">Images</h2>
+              <p class="text-sm text-gray-400 mt-0.5">Upload images for this event (max 10). Images will be automatically optimized.</p>
+            </div>
+
+            <hr class="border-gray-100 my-4">
+
+            <div id="image-inputs-container" class="space-y-3">
+              <div class="image-input-row border border-gray-200 rounded-xl p-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+                <div class="flex items-center gap-3">
+                  <label class="cursor-pointer flex items-center gap-2">
+                    <span class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg transition">
+                      Choisir un fichier
+                    </span>
+                    <span class="text-sm text-gray-400 file-name-display">Aucun fichier choisi</span>
+                    <input type="file" name="media" accept="image/*,video/*"
+                      class="hidden" onchange="updateFileName(this); previewSingleMedia(this)">
+                  </label>
+                </div>
+                <div class="mt-2 preview-thumb hidden">
+                  <img class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                </div>
+              </div>
+            </div>
+
+            <button type="button" onclick="addImageInput()"
+              id="add-image-btn"
+              class="mt-4 inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition">
+              + Add Another Image
+            </button>
+            <p id="image-limit-msg" class="hidden mt-2 text-xs text-red-500">Maximum 10 images atteint.</p>
+          </div>
+
+          <!-- ── Boutons Submit ────────────────────────────────────────────── -->
           <div class="flex gap-3 pt-2">
-            <button type="submit"
+            <button type="submit" onclick="syncFields()"
               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
               ✅ Créer l'événement
             </button>
@@ -117,44 +323,164 @@
               Annuler
             </a>
           </div>
+
         </form>
       </div>
     </div>
   </main>
 </div>
 
+<style>
+  [contenteditable]:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    pointer-events: none;
+  }
+</style>
+
 <script>
-// Prévisualisation médias
-function previewMedia(input) {
-    const preview = document.getElementById('mediaPreview');
-    preview.innerHTML = '';
-    Array.from(input.files).forEach(file => {
-        const div = document.createElement('div');
-        div.className = 'relative w-20 h-20 rounded-xl overflow-hidden bg-gray-100 border border-gray-200';
-        if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = 'w-full h-full object-cover';
-            div.appendChild(img);
-        } else {
-            div.innerHTML = '<div class="w-full h-full flex items-center justify-center text-2xl">🎬</div>';
-        }
-        preview.appendChild(div);
+  // ── Tabs Titre ─────────────────────────────────────────────────────────────
+  function switchTitleTab(lang) {
+    ['en','fr'].forEach(l => {
+      document.getElementById('title-panel-' + l).classList.toggle('hidden', l !== lang);
+      const tab = document.getElementById('title-tab-' + l);
+      if (l === lang) {
+        tab.classList.add('border-blue-500','text-blue-600');
+        tab.classList.remove('border-transparent','text-gray-500');
+      } else {
+        tab.classList.remove('border-blue-500','text-blue-600');
+        tab.classList.add('border-transparent','text-gray-500');
+      }
     });
-}
+  }
 
-// Bloque les dates passées + min 7 jours
-const today = new Date();
-const minDate = new Date(today);
-minDate.setDate(today.getDate() + 7);
-const minDateStr = minDate.toISOString().split('T')[0];
+  // ── Tabs Description ───────────────────────────────────────────────────────
+  function switchDescTab(lang) {
+    ['en','fr'].forEach(l => {
+      document.getElementById('desc-panel-' + l).classList.toggle('hidden', l !== lang);
+      const tab = document.getElementById('desc-tab-' + l);
+      if (l === lang) {
+        tab.classList.add('border-blue-500','text-blue-600');
+        tab.classList.remove('border-transparent','text-gray-500');
+      } else {
+        tab.classList.remove('border-blue-500','text-blue-600');
+        tab.classList.add('border-transparent','text-gray-500');
+      }
+    });
+  }
 
-document.querySelector('[name="start_date"]').min = minDateStr;
-document.querySelector('[name="end_date"]').min   = minDateStr;
+  // ── Rich text ──────────────────────────────────────────────────────────────
+  function fmt(cmd) {
+    document.getElementById('editor-en').focus();
+    document.execCommand(cmd, false, null);
+  }
+  function fmtFr(cmd) {
+    document.getElementById('editor-fr').focus();
+    document.execCommand(cmd, false, null);
+  }
+  function insertLink(lang) {
+    const url = prompt('URL du lien :');
+    if (url) {
+      document.getElementById('editor-' + lang).focus();
+      document.execCommand('createLink', false, url);
+    }
+  }
 
-// Met à jour min end_date quand start_date change
-document.querySelector('[name="start_date"]').addEventListener('change', function() {
+  // ── Traduction titre ───────────────────────────────────────────────────────
+  async function translateTitle() {
+    const text = document.getElementById('title_en').value.trim();
+    if (!text) { alert("Entrez d'abord le titre en anglais."); return; }
+    switchTitleTab('fr');
+    document.getElementById('title_fr').value = '[FR] ' + text;
+    document.getElementById('title_fr').focus();
+  }
+
+  // ── Sync champs hidden avant submit ───────────────────────────────────────
+  function syncFields() {
+    const titleEn = document.getElementById('title_en').value.trim();
+    const titleFr = document.getElementById('title_fr').value.trim();
+    document.getElementById('title_hidden').value = titleEn || titleFr;
+
+    const descEn = document.getElementById('editor-en').innerHTML.trim();
+    const descFr = document.getElementById('editor-fr').innerHTML.trim();
+    document.getElementById('description_hidden').value = descEn || descFr;
+  }
+  document.getElementById('eventForm').addEventListener('submit', syncFields);
+
+  // ── Images : Add Another Image (max 10) ───────────────────────────────────
+  let imageCount = 1;
+  const MAX_IMAGES = 10;
+
+  function addImageInput() {
+    if (imageCount >= MAX_IMAGES) {
+      document.getElementById('image-limit-msg').classList.remove('hidden');
+      document.getElementById('add-image-btn').classList.add('opacity-50','cursor-not-allowed');
+      return;
+    }
+    imageCount++;
+    const container = document.getElementById('image-inputs-container');
+    const row = document.createElement('div');
+    row.className = 'image-input-row border border-gray-200 rounded-xl p-4 relative';
+    row.innerHTML = `
+      <label class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+      <div class="flex items-center gap-3">
+        <label class="cursor-pointer flex items-center gap-2">
+          <span class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg transition">
+            Choisir un fichier
+          </span>
+          <span class="text-sm text-gray-400 file-name-display">Aucun fichier choisi</span>
+          <input type="file" name="media" accept="image/*,video/*"
+            class="hidden" onchange="updateFileName(this); previewSingleMedia(this)">
+        </label>
+        <button type="button" onclick="removeImageInput(this)"
+          class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-lg font-bold transition">✕</button>
+      </div>
+      <div class="mt-2 preview-thumb hidden">
+        <img class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+      </div>
+    `;
+    container.appendChild(row);
+    if (imageCount >= MAX_IMAGES) {
+      document.getElementById('image-limit-msg').classList.remove('hidden');
+      document.getElementById('add-image-btn').classList.add('opacity-50','cursor-not-allowed');
+    }
+  }
+
+  function removeImageInput(btn) {
+    btn.closest('.image-input-row').remove();
+    imageCount--;
+    document.getElementById('image-limit-msg').classList.add('hidden');
+    document.getElementById('add-image-btn').classList.remove('opacity-50','cursor-not-allowed');
+  }
+
+  function updateFileName(input) {
+    const label = input.closest('label').querySelector('.file-name-display');
+    label.textContent = input.files[0] ? input.files[0].name : 'Aucun fichier choisi';
+  }
+
+  function previewSingleMedia(input) {
+    const row   = input.closest('.image-input-row');
+    const thumb = row.querySelector('.preview-thumb');
+    const img   = thumb.querySelector('img');
+    if (input.files && input.files[0] && input.files[0].type.startsWith('image/')) {
+      img.src = URL.createObjectURL(input.files[0]);
+      thumb.classList.remove('hidden');
+    } else {
+      thumb.classList.add('hidden');
+    }
+  }
+
+  // ── Dates min = +7 jours (INCHANGÉ) ───────────────────────────────────────
+  const today = new Date();
+  const minDate = new Date(today);
+  minDate.setDate(today.getDate() + 7);
+  const minDateStr = minDate.toISOString().split('T')[0];
+
+  document.querySelector('[name="start_date"]').min = minDateStr;
+  document.querySelector('[name="end_date"]').min   = minDateStr;
+
+  document.querySelector('[name="start_date"]').addEventListener('change', function() {
     document.querySelector('[name="end_date"]').min = this.value;
-});
+  });
 </script>
 {% endblock %}

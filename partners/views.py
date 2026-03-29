@@ -609,3 +609,71 @@ def cancel_email_change(request):
         partner.save(update_fields=['pending_email'])
         messages.success(request, "Demande de changement d'email annulée.")
     return redirect('partners:account')
+
+# Ajoute ces vues dans partners/views.py
+
+from django.http import JsonResponse
+from partners.models import Coupon
+
+
+# ── Vérification coupon (AJAX) ────────────────────────────────────────────────
+
+def coupon_verify(request):
+    """
+    GET /partners/coupon/verify/?code=ABC123&category=subscription
+    Retourne JSON : { valid, discount, error }
+    """
+    code     = request.GET.get('code', '').strip().upper()
+    category = request.GET.get('category', 'both')  # subscription / content / both
+
+    if not code:
+        return JsonResponse({'valid': False, 'error': 'Code manquant'})
+
+    try:
+        coupon = Coupon.objects.get(code=code)
+    except Coupon.DoesNotExist:
+        return JsonResponse({'valid': False, 'error': 'Code coupon invalide'})
+
+    if not coupon.is_valid:
+        return JsonResponse({'valid': False, 'error': 'Ce coupon est expiré ou désactivé'})
+
+    # Vérifie que le coupon s'applique à la bonne catégorie
+    if coupon.category != 'both' and coupon.category != category:
+        return JsonResponse({
+            'valid': False,
+            'error': f"Ce coupon est réservé aux {coupon.get_category_display()}"
+        })
+
+    return JsonResponse({
+        'valid':    True,
+        'discount': coupon.discount_percentage,
+        'code':     coupon.code,
+        'category': coupon.get_category_display(),
+    })
+
+
+# ── Désactivation temporaire partenaire ──────────────────────────────────────
+
+@partner_required
+def toggle_account(request):
+    """Active ou désactive temporairement le compte partenaire lui-même."""
+    partner = request.partner
+
+    if request.method == 'POST':
+        if partner.is_temporarily_disabled:
+            # Réactiver
+            partner.is_temporarily_disabled = False
+            partner.reactivated_at          = timezone.now()
+            partner.disabled_reason         = None
+            partner.save(update_fields=['is_temporarily_disabled', 'reactivated_at', 'disabled_reason'])
+            messages.success(request, "Votre compte a été réactivé.")
+        else:
+            # Désactiver
+            reason = request.POST.get('reason', 'Désactivation volontaire')
+            partner.is_temporarily_disabled = True
+            partner.disabled_at             = timezone.now()
+            partner.disabled_reason         = reason
+            partner.save(update_fields=['is_temporarily_disabled', 'disabled_at', 'disabled_reason'])
+            messages.success(request, "Votre compte a été désactivé temporairement.")
+
+    return redirect('partners:account')

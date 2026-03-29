@@ -17,7 +17,7 @@
       </div>
 
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-        <form method="post" enctype="multipart/form-data" class="space-y-6">
+        <form method="post" enctype="multipart/form-data" class="space-y-6" id="adForm">
           {% csrf_token %}
 
           {% if form.non_field_errors %}
@@ -26,35 +26,66 @@
           </div>
           {% endif %}
 
-          <!-- Titre -->
+          <!-- Ad Name -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Titre de la publicité *</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Ad Name</label>
             {{ form.title }}
+            <p class="mt-1 text-xs text-gray-400">If empty, a name like 'ADS-XXXXXX' will be auto-generated.</p>
             {% if form.title.errors %}<p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>{% endif %}
           </div>
 
-          <!-- Image -->
+          <!-- Mobile Image (320x50) -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Image (GIF, PNG, JPG — max 5MB) *</label>
-            <div class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-purple-400 transition cursor-pointer"
-                 onclick="document.getElementById('imageInput').click()">
-              <div id="image-preview-container">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Mobile Image (320x50) <span class="text-red-500">*</span>
+            </label>
+            <p class="text-xs text-gray-400 mb-2">Required size: 320x50 pixels — GIF, PNG, JPG — max 5MB</p>
+            <div id="mobile-drop-zone"
+                 class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-purple-400 transition cursor-pointer"
+                 onclick="document.getElementById('mobileImageInput').click()">
+              <div id="mobile-preview-container">
                 <div class="text-3xl mb-2">🖼</div>
-                <p class="text-sm text-gray-500">Cliquez pour sélectionner une image</p>
-                <p class="text-xs text-gray-400 mt-1">GIF animé recommandé pour plus d'impact</p>
+                <p class="text-sm text-gray-500">Cliquez pour sélectionner une image mobile</p>
               </div>
-              <img id="image-preview" class="hidden mx-auto max-h-40 rounded-xl mt-3 object-cover" />
-              <input id="imageInput" type="file" name="image" accept=".jpg,.jpeg,.png,.gif"
-                     class="hidden" onchange="previewImage(this)">
+              <img id="mobile-preview" class="hidden mx-auto max-h-40 rounded-xl mt-3 object-contain" />
+              <input id="mobileImageInput" type="file" name="mobile_image" accept=".jpg,.jpeg,.png,.gif"
+                     class="hidden"
+                     onchange="handleImage(this, 'mobile-preview', 'mobile-preview-container', 'mobile-drop-zone', 'mobile-error', 320, 50)">
             </div>
-            {% if form.image.errors %}<p class="mt-1 text-xs text-red-500">{{ form.image.errors.0 }}</p>{% endif %}
+            <p id="mobile-error" class="hidden mt-1 text-xs text-red-500"></p>
+            {% if form.mobile_image.errors %}<p class="mt-1 text-xs text-red-500">{{ form.mobile_image.errors.0 }}</p>{% endif %}
           </div>
 
-          <!-- URL de redirection -->
+          <!-- Tablet Image (728x90) -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">URL de redirection *</label>
-            {{ form.redirect_url }}
-            {% if form.redirect_url.errors %}<p class="mt-1 text-xs text-red-500">{{ form.redirect_url.errors.0 }}</p>{% endif %}
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Tablet Image (728x90) <span class="text-red-500">*</span>
+            </label>
+            <p class="text-xs text-gray-400 mb-2">Required size: 728x90 pixels — GIF, PNG, JPG — max 5MB</p>
+            <div id="tablet-drop-zone"
+                 class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-purple-400 transition cursor-pointer"
+                 onclick="document.getElementById('tabletImageInput').click()">
+              <div id="tablet-preview-container">
+                <div class="text-3xl mb-2">🖼</div>
+                <p class="text-sm text-gray-500">Cliquez pour sélectionner une image tablet</p>
+              </div>
+              <img id="tablet-preview" class="hidden mx-auto max-h-40 rounded-xl mt-3 object-contain" />
+              <input id="tabletImageInput" type="file" name="tablet_image" accept=".jpg,.jpeg,.png,.gif"
+                     class="hidden"
+                     onchange="handleImage(this, 'tablet-preview', 'tablet-preview-container', 'tablet-drop-zone', 'tablet-error', 728, 90)">
+            </div>
+            <p id="tablet-error" class="hidden mt-1 text-xs text-red-500"></p>
+            {% if form.tablet_image.errors %}<p class="mt-1 text-xs text-red-500">{{ form.tablet_image.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Destination Link -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Destination Link <span class="text-red-500">*</span>
+            </label>
+            {{ form.destination_link }}
+            <p class="mt-1 text-xs text-gray-400">The destination URL for this ad. This will be tracked via Short.io.</p>
+            {% if form.destination_link.errors %}<p class="mt-1 text-xs text-red-500">{{ form.destination_link.errors.0 }}</p>{% endif %}
           </div>
 
           <!-- Dates -->
@@ -76,7 +107,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm text-purple-700 font-medium">Prix calculé</p>
-                <p class="text-xs text-purple-500 mt-0.5"><span id="price-days">0</span> jour(s) × 5.000 TND</p>
+                <p class="text-xs text-purple-500 mt-0.5"><span id="price-days">0</span> jour(s) x 5.000 TND</p>
               </div>
               <p class="text-2xl font-bold text-purple-700"><span id="price-total">0.000</span> TND</p>
             </div>
@@ -85,7 +116,7 @@
           <div class="flex gap-3">
             <button type="submit"
               class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
-              Continuer vers confirmation →
+              Continuer vers confirmation ->
             </button>
             <a href="{% url 'partners:ad_list' %}"
                class="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition font-medium">
@@ -99,20 +130,60 @@
 </div>
 
 <script>
-  function previewImage(input) {
-    const preview = document.getElementById('image-preview');
-    const container = document.getElementById('image-preview-container');
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = e => {
+  // ── Validation dimensions + apercu ─────────────────────────────────────────
+  function handleImage(input, previewId, containerId, dropZoneId, errorId, reqW, reqH) {
+    const file      = input.files && input.files[0];
+    const errorEl   = document.getElementById(errorId);
+    const preview   = document.getElementById(previewId);
+    const container = document.getElementById(containerId);
+    const dropZone  = document.getElementById(dropZoneId);
+
+    // Reset etat visuel
+    errorEl.classList.add('hidden');
+    errorEl.textContent = '';
+    dropZone.classList.remove('border-red-400', 'border-green-400');
+    dropZone.classList.add('border-gray-200');
+
+    if (!file) return;
+
+    // Verification taille fichier (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      showImgError(input, errorEl, dropZone, 'Fichier trop lourd. Maximum 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        // Verification dimensions exactes
+        if (img.width !== reqW || img.height !== reqH) {
+          showImgError(input, errorEl, dropZone,
+            'Dimensions incorrectes : ' + img.width + 'x' + img.height + 'px detectes. '
+            + 'Requis : ' + reqW + 'x' + reqH + 'px.');
+          return;
+        }
+        // Image valide : afficher apercu + bordure verte
         preview.src = e.target.result;
         preview.classList.remove('hidden');
         container.classList.add('hidden');
+        dropZone.classList.remove('border-gray-200', 'border-red-400');
+        dropZone.classList.add('border-green-400');
       };
-      reader.readAsDataURL(input.files[0]);
-    }
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
+  function showImgError(input, errorEl, dropZone, msg) {
+    input.value = '';  // vide l'input pour bloquer le submit avec une mauvaise image
+    errorEl.textContent = msg;
+    errorEl.classList.remove('hidden');
+    dropZone.classList.remove('border-gray-200', 'border-green-400');
+    dropZone.classList.add('border-red-400');
+  }
+
+  // ── Calcul prix ────────────────────────────────────────────────────────────
   function calcPrice() {
     const start = document.querySelector('[name="start_date"]').value;
     const end   = document.querySelector('[name="end_date"]').value;
@@ -133,7 +204,7 @@
     box.classList.add('hidden');
   }
 
-  // Dates min = demain
+  // ── Dates min = demain ─────────────────────────────────────────────────────
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tStr = tomorrow.toISOString().split('T')[0];

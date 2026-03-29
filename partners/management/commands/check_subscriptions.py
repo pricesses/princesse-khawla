@@ -1,19 +1,14 @@
 """
-Commande Django pour vérifier les abonnements expirés et envoyer des alertes.
-À exécuter quotidiennement via cron ou Celery.
-
-Usage:
-    python manage.py check_subscriptions
+python manage.py check_subscriptions
+Lance quotidiennement pour gérer alertes + suspensions + notifications admin impayé 10j
 """
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from django.core.mail import send_mail
-from django.conf import settings
-from partners.models import Partner
+from partners.models import Partner, AdminNotification
 
 
 class Command(BaseCommand):
-    help = 'Vérifie les abonnements et gère les alertes + suspensions'
+    help = 'Vérifie les abonnements — alertes, suspensions, notifications admin'
 
     def handle(self, *args, **kwargs):
         today    = timezone.now().date()
@@ -21,53 +16,67 @@ class Command(BaseCommand):
 
         frozen_count  = 0
         alerted_count = 0
+        notif_count   = 0
 
         for partner in partners:
             days = (partner.contract_end - today).days
 
-            # ── Suspension après 7 jours d'expiration ──────────────────
-            if days <= -7 and not partner.account_frozen:
+            # ── Notification admin si impayé depuis > 10 jours ────────────────
+            if days <= -10 and not partner.account_frozen:
+                # Vérifie qu'une notification n'existe pas déjà ce jour
+                already_notified = AdminNotification.objects.filter(
+                    partner    = partner,
+                    type       = 'unpaid_subscription',
+                    created_at__date = today,
+                ).exists()
+
+                if not already_notified:
+                    AdminNotification.objects.create(
+                        partner = partner,
+                        type    = 'unpaid_subscription',
+                        message = (
+                            f"⚠️ {partner.company_name} n'a pas renouvelé son abonnement "
+                            f"depuis {abs(days)} jours (expiré le {partner.contract_end}). "
+                            f"Action requise : suspendre ou contacter le partenaire."
+                        ),
+                    )
+                    notif_count += 1
+                    self.stdout.write(
+                        self.style.ERROR(
+                            f"[NOTIF ADMIN] {partner.company_name} — impayé {abs(days)}j"
+                        )
+                    )
+
+            # ── Suspension après 10 jours d'expiration ────────────────────────
+            if days <= -10 and not partner.account_frozen:
                 partner.account_frozen = True
                 partner.save(update_fields=['account_frozen'])
                 frozen_count += 1
                 self.stdout.write(
-                    self.style.WARNING(f"[FROZEN] {partner.company_name} ({partner.email})")
-                )
-                self._send_email(
-                    partner.email,
-                    "Votre compte FielMedina a été suspendu",
-                    f"""Bonjour {partner.company_name},
-
-Votre abonnement FielMedina a expiré depuis plus de 7 jours.
-Votre compte a été suspendu.
-
-Renouvelez votre abonnement sur : http://127.0.0.1:8000/partners/subscription/
-
-Cordialement,
-L'équipe FielMedina"""
+                    self.style.WARNING(f"[FROZEN] {partner.company_name}")
                 )
 
-            # ── Alertes expiration prochaine ────────────────────────────
+            # ── Alertes expiration prochaine (7j, 3j, 1j) ────────────────────
             elif days in [7, 3, 1] and not partner.account_frozen:
                 alerted_count += 1
                 self.stdout.write(
-                    self.style.NOTICE(f"[ALERT {days}j] {partner.company_name} ({partner.email})")
+                    self.style.NOTICE(
+                        f"[ALERT {days}j] {partner.company_name} ({partner.email})"
+                    )
                 )
-                self._send_email(
-                    partner.email,
-                    f"Votre abonnement FielMedina expire dans {days} jour(s)",
-                    f"""Bonjour {partner.company_name},
-
-Votre abonnement FielMedina expire dans {days} jour(s) (le {partner.contract_end}).
-
-Renouvelez maintenant pour continuer à profiter de nos services :
-http://127.0.0.1:8000/partners/subscription/
-
-Cordialement,
-L'équipe FielMedina"""
+                # Crée une notification admin aussi
+                AdminNotification.objects.get_or_create(
+                    partner = partner,
+                    type    = 'unpaid_subscription',
+                    defaults={
+                        'message': (
+                            f"⏰ Abonnement de {partner.company_name} expire dans "
+                            f"{days} jour(s) (le {partner.contract_end})."
+                        )
+                    }
                 )
 
-            # ── Réactivation si abonnement renouvelé ───────────────────
+            # ── Réactivation si contrat renouvelé ─────────────────────────────
             elif days > 0 and partner.account_frozen:
                 partner.account_frozen = False
                 partner.save(update_fields=['account_frozen'])
@@ -76,18 +85,7 @@ L'équipe FielMedina"""
                 )
 
         self.stdout.write(self.style.SUCCESS(
-            f"Done — {frozen_count} compte(s) suspendu(s), {alerted_count} alerte(s) envoyée(s)"
+            f"\nDone — {frozen_count} suspendu(s), "
+            f"{alerted_count} alerte(s), "
+            f"{notif_count} notification(s) admin créée(s)"
         ))
-
-    def _send_email(self, to_email: str, subject: str, body: str):
-        """Envoie un email — nécessite EMAIL_* dans settings.py"""
-        try:
-            send_mail(
-                subject      = subject,
-                message      = body,
-                from_email   = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@fielmedina.com'),
-                recipient_list = [to_email],
-                fail_silently  = True,
-            )
-        except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Email error: {e}"))

@@ -5,8 +5,8 @@ app_name = 'partners'
 
 urlpatterns = [
     # Auth
-    path('login/',   views.partner_login,   name='login'),
-    path('logout/',  views.partner_logout,  name='logout'),
+    path('login/',   views.partner_login,  name='login'),
+    path('logout/',  views.partner_logout, name='logout'),
 
     # Dashboard
     path('dashboard/', views.partner_dashboard, name='dashboard'),
@@ -35,8 +35,12 @@ urlpatterns = [
     path('subscription/success/', views.subscription_success, name='subscription_success'),
 
     # Compte
-    path('account/',              views.account,              name='account'),
-    path('account/password/',     views.change_password,      name='change_password'),
-    path('account/email/',        views.change_email,         name='change_email'),
-    path('account/email/cancel/', views.cancel_email_change,  name='cancel_email_change'),
+    path('account/',              views.account,             name='account'),
+    path('account/password/',     views.change_password,     name='change_password'),
+    path('account/email/',        views.change_email,        name='change_email'),
+    path('account/email/cancel/', views.cancel_email_change, name='cancel_email_change'),
+    path('account/toggle/',       views.toggle_account,      name='toggle_account'),
+
+    # Coupon (AJAX)
+    path('coupon/verify/', views.coupon_verify, name='coupon_verify'),
 ]

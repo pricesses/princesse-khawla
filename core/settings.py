@@ -11,11 +11,8 @@ DEBUG = env.bool("DEBUG", default=True)
 
 ASGI_APPLICATION = 'core.asgi.application'
 
-# ============================================
-# INSTALLED APPS - Avec Channels
-# ============================================
 INSTALLED_APPS = [
-    "daphne",  # 🔴 DOIT être PREMIER pour WebSocket support
+    # "daphne" supprimé — on utilise python manage.py runserver
     "modeltranslation",
     "cities_light",
     "django.contrib.admin",
@@ -29,11 +26,11 @@ INSTALLED_APPS = [
     "strawberry_django",
     "tinymce",
     "fcm_django",
-    "channels",  # ✨ WebSocket support
+    "channels",
     "api",
     "guard",
     "shared",
-    "partners",  # ✨ Système Partenaires
+    "partners",
 ]
 
 MIDDLEWARE = [
@@ -65,37 +62,21 @@ TEMPLATES = [
     },
 ]
 
-# ============================================
-# ASGI & CHANNELS Configuration
-# ============================================
 ASGI_APPLICATION = 'core.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
-        # Pour production, utiliser Redis:
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        # 'CONFIG': {
-        #     'hosts': [('127.0.0.1', 6379)],
-        # },
     }
 }
 
 WSGI_APPLICATION = "core.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 LANGUAGE_CODE = "en"
@@ -148,26 +129,13 @@ CITIES_LIGHT_TRANSLATION_LANGUAGES = ["en", "fr", "ar"]
 CITIES_LIGHT_INCLUDE_COUNTRIES = ["TN", "MA", "DZ", "LY", "EG", "LB", "YE", "SY"]
 CITIES_LIGHT_INCLUDE_CITY_TYPES = ["PPL", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPLC"]
 
-# ============================================
-# AUTH — Guard/Admin (Django standard)
-# ============================================
 LOGIN_URL = "shared:login"
 LOGIN_REDIRECT_URL = "guard:dashboard"
 LOGOUT_REDIRECT_URL = "shared:login"
 
-# ============================================
-# AUTH — Partenaires (session indépendante)
-# ⚠️  On ne change PAS AUTH_USER_MODEL pour
-#     ne pas casser le Django admin et guard.
-#     Les partenaires utilisent leur propre
-#     session via la clé "partner_id".
-# ============================================
 PARTNER_LOGIN_URL = "/partners/login/"
 PARTNER_DASHBOARD_URL = "/partners/dashboard/"
 
-# ============================================
-# DASHBOARD Configuration
-# ============================================
 SITE_URL_BASE = env("SITE_URL", default="http://localhost:8000")
 
 if DEBUG:
@@ -258,6 +226,6 @@ KONNECT_API_KEY = env("KONNECT_API_KEY", default="")
 KONNECT_WALLET_ID = env("KONNECT_WALLET_ID", default="")
 KONNECT_BASE_URL = env(
     "KONNECT_BASE_URL",
-    default="https://api.preprod.konnect.network/api/v2",  # preprod par défaut
+    default="https://api.sandbox.konnect.network/api/v2",
 )
 KONNECT_RECEIVER_WALLET_ID = env("KONNECT_RECEIVER_WALLET_ID", default="")
