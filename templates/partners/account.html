@@ -2,7 +2,7 @@
 {% block title %}Mon Compte{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto space-y-6">
+<div class="w-full space-y-6 px-2">
 
   <!-- Header -->
   <div class="mb-2">
@@ -47,75 +47,80 @@
     </div>
   </div>
 
-  <!-- Changer mot de passe -->
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
-    <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">🔒 Changer le mot de passe</h2>
-    <form method="post" action="{% url 'partners:change_password' %}" class="space-y-4">
-      {% csrf_token %}
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mot de passe actuel</label>
-        <input type="password" name="current_password"
-          class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
-          placeholder="••••••••" required>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nouveau mot de passe</label>
-        <input type="password" name="new_password" id="new_password"
-          class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
-          placeholder="••••••••" minlength="8" required>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirmer le nouveau mot de passe</label>
-        <input type="password" name="confirm_password" id="confirm_password"
-          class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
-          placeholder="••••••••" minlength="8" required>
-      </div>
-      <div id="pwd-match-msg" class="hidden text-xs text-red-500">Les mots de passe ne correspondent pas</div>
-      <button type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">
-        Mettre à jour le mot de passe
-      </button>
-    </form>
-  </div>
+  <!-- Grille 2 colonnes pour les formulaires -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <!-- Changer email -->
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
-    <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-1">📧 Changer l'adresse email</h2>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-      La demande sera soumise à validation par l'administrateur FielMedina.
-    </p>
-
-    {% if partner.pending_email %}
-    <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-4 text-sm text-amber-700 dark:text-amber-400">
-      ⏳ Demande en cours : <strong>{{ partner.pending_email }}</strong><br>
-      En attente de validation admin.
-      <form method="post" action="{% url 'partners:cancel_email_change' %}" class="mt-2">
+    <!-- Changer mot de passe -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">🔒 Changer le mot de passe</h2>
+      <form method="post" action="{% url 'partners:change_password' %}" class="space-y-4">
         {% csrf_token %}
-        <button type="submit" class="text-red-500 hover:underline text-xs">Annuler la demande</button>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mot de passe actuel</label>
+          <input type="password" name="current_password"
+            class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+            placeholder="••••••••" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nouveau mot de passe</label>
+          <input type="password" name="new_password" id="new_password"
+            class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+            placeholder="••••••••" minlength="8" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirmer le nouveau mot de passe</label>
+          <input type="password" name="confirm_password" id="confirm_password"
+            class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+            placeholder="••••••••" minlength="8" required>
+        </div>
+        <div id="pwd-match-msg" class="hidden text-xs text-red-500">Les mots de passe ne correspondent pas</div>
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition">
+          Mettre à jour le mot de passe
+        </button>
       </form>
     </div>
-    {% else %}
-    <form method="post" action="{% url 'partners:change_email' %}" class="space-y-4">
-      {% csrf_token %}
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nouvel email</label>
-        <input type="email" name="new_email"
-          class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
-          placeholder="nouvel@email.com" required>
+
+    <!-- Changer email -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-1">📧 Changer l'adresse email</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        La demande sera soumise à validation par l'administrateur FielMedina.
+      </p>
+
+      {% if partner.pending_email %}
+      <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-4 text-sm text-amber-700 dark:text-amber-400">
+        ⏳ Demande en cours : <strong>{{ partner.pending_email }}</strong><br>
+        En attente de validation admin.
+        <form method="post" action="{% url 'partners:cancel_email_change' %}" class="mt-2">
+          {% csrf_token %}
+          <button type="submit" class="text-red-500 hover:underline text-xs">Annuler la demande</button>
+        </form>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirmer l'email</label>
-        <input type="email" name="confirm_email"
-          class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
-          placeholder="nouvel@email.com" required>
-      </div>
-      <button type="submit"
-        class="w-full bg-gray-800 dark:bg-gray-600 hover:bg-gray-900 dark:hover:bg-gray-500 text-white font-semibold py-3 rounded-xl transition">
-        Soumettre la demande
-      </button>
-    </form>
-    {% endif %}
-  </div>
+      {% else %}
+      <form method="post" action="{% url 'partners:change_email' %}" class="space-y-4">
+        {% csrf_token %}
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nouvel email</label>
+          <input type="email" name="new_email"
+            class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+            placeholder="nouvel@email.com" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirmer l'email</label>
+          <input type="email" name="confirm_email"
+            class="w-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500"
+            placeholder="nouvel@email.com" required>
+        </div>
+        <button type="submit"
+          class="w-full bg-gray-800 dark:bg-gray-600 hover:bg-gray-900 dark:hover:bg-gray-500 text-white font-semibold py-3 rounded-xl transition">
+          Soumettre la demande
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
+  </div><!-- fin grille -->
 
 </div>
 

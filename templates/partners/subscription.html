@@ -2,7 +2,7 @@
 {% block title %}Mon Abonnement{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto">
+<div class="w-full space-y-6 px-2">
 
   <!-- Header -->
   <div class="mb-8">
@@ -73,127 +73,132 @@
 
   </div>
 
-  <!-- Formulaire abonnement -->
-  <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 sm:p-8">
-    <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-6">Souscrire un abonnement</h2>
+  <!-- Grille : formulaire + tableau côte à côte -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-    <form method="post" id="subscription-form" class="space-y-6">
-      {% csrf_token %}
+    <!-- Formulaire abonnement -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-6">Souscrire un abonnement</h2>
 
-      <!-- Période -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Durée</label>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {% for period, info in periods.items %}
-          <label class="cursor-pointer">
-            <input type="radio" name="period" value="{{ period }}"
-              class="hidden period-radio" {% if forloop.first %}checked{% endif %}
-              onchange="updatePrice()">
-            <div class="period-box border-2 rounded-xl p-4 text-center transition
-              {% if forloop.first %}box-selected{% else %}box-unselected{% endif %}">
-              <p class="font-bold text-gray-900 dark:text-white text-sm">{{ info.label }}</p>
-              <p class="text-blue-600 dark:text-blue-400 font-semibold text-sm mt-1">{{ info.total|floatformat:"-3" }} TND</p>
-              {% if info.saving > 0 %}
-              <p class="text-green-500 dark:text-green-400 text-xs mt-0.5">-{{ info.saving|floatformat:"-3" }} TND</p>
-              {% endif %}
-            </div>
-          </label>
-          {% endfor %}
-        </div>
-      </div>
+      <form method="post" id="subscription-form" class="space-y-6">
+        {% csrf_token %}
 
-      <!-- Type paiement -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Type de paiement</label>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label class="cursor-pointer">
-            <input type="radio" name="payment_type" value="total" class="hidden" checked onchange="updatePrice()">
-            <div class="payment-box border-2 rounded-xl p-4 text-center box-selected" data-value="total">
-              <p class="font-semibold text-gray-900 dark:text-white">💰 Paiement total</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tout en une fois</p>
-            </div>
-          </label>
-          <label class="cursor-pointer">
-            <input type="radio" name="payment_type" value="monthly" class="hidden" onchange="updatePrice()">
-            <div class="payment-box border-2 rounded-xl p-4 text-center box-unselected" data-value="monthly">
-              <p class="font-semibold text-gray-900 dark:text-white">📅 Paiement mensuel</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Mois par mois</p>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <!-- Coupon -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">🎟 Code coupon (optionnel)</label>
-        <div class="flex gap-2">
-          <input type="text" name="coupon_code" id="coupon_code"
-            value="{{ coupon_code|default:'' }}"
-            placeholder="Ex: ABC12345"
-            class="flex-1 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500">
-          <button type="button" onclick="verifyCoupon()"
-            class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium px-4 py-3 rounded-xl transition text-sm whitespace-nowrap">
-            Vérifier
-          </button>
-        </div>
-        <div id="coupon-result" class="mt-2 text-sm hidden"></div>
-        {% if coupon_error %}
-        <p class="mt-1 text-xs text-red-500">{{ coupon_error }}</p>
-        {% endif %}
-        {% if applied_coupon %}
-        <div class="mt-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-3 text-sm text-green-700 dark:text-green-400">
-          ✅ Coupon appliqué : <strong>{{ applied_coupon.discount_percentage }}%</strong> de réduction
-        </div>
-        {% endif %}
-      </div>
-
-      <!-- Récapitulatif -->
-      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-5">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <p class="text-sm font-medium text-blue-700 dark:text-blue-300" id="summary-label">Montant à payer</p>
-            <p class="text-xs text-blue-500 dark:text-blue-400 mt-0.5" id="summary-detail"></p>
+        <!-- Période -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Durée</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {% for period, info in periods.items %}
+            <label class="cursor-pointer">
+              <input type="radio" name="period" value="{{ period }}"
+                class="hidden period-radio" {% if forloop.first %}checked{% endif %}
+                onchange="updatePrice()">
+              <div class="period-box border-2 rounded-xl p-4 text-center transition
+                {% if forloop.first %}box-selected{% else %}box-unselected{% endif %}">
+                <p class="font-bold text-gray-900 dark:text-white text-sm">{{ info.label }}</p>
+                <p class="text-blue-600 dark:text-blue-400 font-semibold text-sm mt-1">{{ info.total|floatformat:"-3" }} TND</p>
+                {% if info.saving > 0 %}
+                <p class="text-green-500 dark:text-green-400 text-xs mt-0.5">-{{ info.saving|floatformat:"-3" }} TND</p>
+                {% endif %}
+              </div>
+            </label>
+            {% endfor %}
           </div>
-          <p class="text-2xl font-bold text-blue-700 dark:text-blue-300" id="summary-price">10 TND</p>
         </div>
-      </div>
 
-      <button type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition shadow-md text-lg">
-        Payer avec Konnect 🔐
-      </button>
+        <!-- Type paiement -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Type de paiement</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="payment_type" value="total" class="hidden" checked onchange="updatePrice()">
+              <div class="payment-box border-2 rounded-xl p-4 text-center box-selected" data-value="total">
+                <p class="font-semibold text-gray-900 dark:text-white">💰 Paiement total</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tout en une fois</p>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="payment_type" value="monthly" class="hidden" onchange="updatePrice()">
+              <div class="payment-box border-2 rounded-xl p-4 text-center box-unselected" data-value="monthly">
+                <p class="font-semibold text-gray-900 dark:text-white">📅 Paiement mensuel</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Mois par mois</p>
+              </div>
+            </label>
+          </div>
+        </div>
 
-    </form>
-  </div>
+        <!-- Coupon -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">🎟 Code coupon (optionnel)</label>
+          <div class="flex gap-2">
+            <input type="text" name="coupon_code" id="coupon_code"
+              value="{{ coupon_code|default:'' }}"
+              placeholder="Ex: ABC12345"
+              class="flex-1 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-500">
+            <button type="button" onclick="verifyCoupon()"
+              class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium px-4 py-3 rounded-xl transition text-sm whitespace-nowrap">
+              Vérifier
+            </button>
+          </div>
+          <div id="coupon-result" class="mt-2 text-sm hidden"></div>
+          {% if coupon_error %}
+          <p class="mt-1 text-xs text-red-500">{{ coupon_error }}</p>
+          {% endif %}
+          {% if applied_coupon %}
+          <div class="mt-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-3 text-sm text-green-700 dark:text-green-400">
+            ✅ Coupon appliqué : <strong>{{ applied_coupon.discount_percentage }}%</strong> de réduction
+          </div>
+          {% endif %}
+        </div>
 
-  <!-- Tableau comparatif -->
-  <div class="mt-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
-    <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Tableau des tarifs</h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm min-w-[360px]">
-        <thead>
-          <tr class="border-b border-gray-100 dark:border-gray-700">
-            <th class="text-left py-2 text-gray-500 dark:text-gray-400">Durée</th>
-            <th class="text-right py-2 text-gray-500 dark:text-gray-400">Prix total</th>
-            <th class="text-right py-2 text-gray-500 dark:text-gray-400">Par mois</th>
-            <th class="text-right py-2 text-gray-500 dark:text-gray-400">Économie</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for period, info in periods.items %}
-          <tr class="border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-            <td class="py-3 font-medium text-gray-900 dark:text-white">{{ info.label }}</td>
-            <td class="py-3 text-right text-gray-700 dark:text-gray-300">{{ info.total|floatformat:"-3" }} TND</td>
-            <td class="py-3 text-right text-blue-600 dark:text-blue-400 font-medium">{{ info.monthly|floatformat:"-3" }} TND</td>
-            <td class="py-3 text-right text-green-600 dark:text-green-400 font-medium">
-              {% if info.saving > 0 %}-{{ info.saving|floatformat:"-3" }} TND{% else %}—{% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <!-- Récapitulatif -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-5">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <p class="text-sm font-medium text-blue-700 dark:text-blue-300" id="summary-label">Montant à payer</p>
+              <p class="text-xs text-blue-500 dark:text-blue-400 mt-0.5" id="summary-detail"></p>
+            </div>
+            <p class="text-2xl font-bold text-blue-700 dark:text-blue-300" id="summary-price">10 TND</p>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition shadow-md text-lg">
+          Payer avec Konnect 🔐
+        </button>
+
+      </form>
     </div>
-  </div>
+
+    <!-- Tableau comparatif -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 h-fit">
+      <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Tableau des tarifs</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm min-w-[360px]">
+          <thead>
+            <tr class="border-b border-gray-100 dark:border-gray-700">
+              <th class="text-left py-2 text-gray-500 dark:text-gray-400">Durée</th>
+              <th class="text-right py-2 text-gray-500 dark:text-gray-400">Prix total</th>
+              <th class="text-right py-2 text-gray-500 dark:text-gray-400">Par mois</th>
+              <th class="text-right py-2 text-gray-500 dark:text-gray-400">Économie</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for period, info in periods.items %}
+            <tr class="border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <td class="py-3 font-medium text-gray-900 dark:text-white">{{ info.label }}</td>
+              <td class="py-3 text-right text-gray-700 dark:text-gray-300">{{ info.total|floatformat:"-3" }} TND</td>
+              <td class="py-3 text-right text-blue-600 dark:text-blue-400 font-medium">{{ info.monthly|floatformat:"-3" }} TND</td>
+              <td class="py-3 text-right text-green-600 dark:text-green-400 font-medium">
+                {% if info.saving > 0 %}-{{ info.saving|floatformat:"-3" }} TND{% else %}—{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- fin grille -->
 
 </div>
 

@@ -253,6 +253,7 @@
     altFormat: 'd/m/Y',
     minDate: tomorrow,
     disableMobile: false,
+    onReady: function(_, __, instance) { instance.altInput.placeholder = 'JJ/MM/AAAA'; },
     onChange: function(selectedDates) {
       if (selectedDates[0]) fpEnd.set('minDate', selectedDates[0]);
       calcPrice();
@@ -266,6 +267,7 @@
     altFormat: 'd/m/Y',
     minDate: tomorrow,
     disableMobile: false,
+    onReady: function(_, __, instance) { instance.altInput.placeholder = 'JJ/MM/AAAA'; },
     onChange: calcPrice
   });
 

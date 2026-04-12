@@ -2,551 +2,266 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  {% load static %}
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-
-    @page {
-      size: A4;
-      margin: 0;
-    }
-
+    @page { size: A4; margin: 0; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --ink:       #0d1117;
-      --ink-soft:  #4a5568;
-      --ink-muted: #94a3b8;
-      --gold:      #c9a84c;
-      --gold-light:#f5e9c8;
-      --cream:     #fdfaf4;
-      --white:     #ffffff;
-      --line:      #e8e2d5;
-      --green:     #166534;
-    }
-
-    body {
-      font-family: 'DM Sans', Helvetica, sans-serif;
-      color: var(--ink);
-      background: var(--white);
-      width: 210mm;
-      min-height: 297mm;
-    }
-
-    /* ══ HEADER BAND ══ */
-    .header-band {
-      background: var(--ink);
-      padding: 32px 48px 28px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .header-band::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 220px; height: 100%;
-      background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.15) 100%);
-    }
-
-    .header-band::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold) 0%, #e8c96a 50%, var(--gold) 100%);
-    }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand-block .brand-name {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
-      font-size: 18px;
-      color: var(--white);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .brand-block .brand-sub {
-      font-size: 10px;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 1.5px;
-      margin-top: 4px;
-      text-transform: uppercase;
-    }
-
-    .doc-block { text-align: right; }
-
-    .doc-block .doc-type {
-      font-size: 9px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    .doc-block .doc-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 34px;
-      font-weight: 900;
-      color: var(--white);
-      line-height: 1;
-      margin-top: 2px;
-      letter-spacing: -1px;
-    }
-
-    .doc-block .doc-ref {
-      font-family: 'DM Mono', monospace;
+    html, body {
+      font-family: Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
       font-size: 11px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 6px;
-      letter-spacing: 1px;
+      width: 210mm;
     }
+    .top-bar { background: #1e40af; height: 5px; font-size: 0; line-height: 0; }
 
-    .paid-badge {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--ink);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 2px;
-      margin-top: 8px;
-    }
+    /* ══ HEADER ══ */
+    .header-main { background: #ffffff; padding: 14px 40px 12px 40px; border-bottom: 2px solid #e5e7eb; }
+    .header-inner { width: 100%; border-collapse: collapse; }
+    .company-block { vertical-align: top; width: 52%; padding-right: 10px; }
+    .logo-img { height: 44px; width: auto; }
+    .company-name-big { font-size: 11px; font-weight: bold; color: #111827; margin: 5px 0 2px 0; }
+    .company-info { font-size: 9px; color: #4b5563; line-height: 1.75; }
+    .company-mf { font-size: 8.5px; color: #9ca3af; }
+    .doc-block { vertical-align: top; width: 48%; text-align: right; }
+    .doc-type-label { font-size: 20px; font-weight: bold; color: #1e40af; letter-spacing: 0.5px; text-transform: uppercase; }
+    .doc-meta-right { font-size: 9px; color: #374151; margin-top: 6px; line-height: 1.9; }
+    .doc-meta-right strong { color: #111827; }
+    .paid-badge { display: inline-block; background: #16a34a; color: #fff; font-size: 7.5px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; margin-top: 4px; }
 
-    /* ══ STATUS STRIP ══ */
-    .status-strip {
-      background: var(--cream);
-      border-bottom: 1px solid var(--line);
-      padding: 0 48px;
-    }
-
-    .status-strip table { width: 100%; border-collapse: collapse; }
-
-    .status-strip td {
-      padding: 18px 24px;
-      border-right: 1px solid var(--line);
-    }
-
-    .status-strip td:first-child { padding-left: 0; }
-    .status-strip td:last-child { border-right: none; padding-right: 0; }
-
-    .s-label {
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      margin-bottom: 5px;
-    }
-
-    .s-value { font-size: 14px; font-weight: 700; color: var(--ink); }
-    .s-value.gold { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 16px; }
-    .s-value.green { color: var(--green); }
+    /* ══ DIVIDER + META ══ */
+    .divider-blue { background: #1e40af; height: 3px; font-size: 0; line-height: 0; }
+    .meta-band { background: #eff6ff; border-bottom: 1px solid #bfdbfe; padding: 0 40px; }
+    .meta-inner { width: 100%; border-collapse: collapse; }
+    .meta-inner td { padding: 10px 12px; border-right: 1px solid #bfdbfe; text-align: center; }
+    .meta-inner td:first-child { text-align: left; padding-left: 0; }
+    .meta-inner td:last-child { border-right: none; text-align: right; padding-right: 0; }
+    .m-lbl { font-size: 6.5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #1d4ed8; margin-bottom: 3px; }
+    .m-val { font-size: 13px; font-weight: bold; color: #111827; }
+    .m-val-money { font-family: Courier, monospace; font-size: 15px; font-weight: bold; color: #1e40af; }
+    .m-val-green { font-size: 13px; font-weight: bold; color: #16a34a; }
 
     /* ══ BODY ══ */
-    .body-wrap { padding: 36px 48px 110px; }
+    .body-pad { padding: 22px 40px; }
 
-    /* ══ INFO GRID ══ */
-    .info-grid { display: flex; gap: 16px; margin-bottom: 36px; }
+    /* ══ CARDS ══ */
+    .cards { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .card-cell { width: 48%; border: 1px solid #e5e7eb; vertical-align: top; padding: 0; }
+    .card-gap { width: 4%; }
+    .card-bar-blue { background: #1e40af; height: 3px; font-size: 0; line-height: 0; }
+    .card-bar-gray { background: #374151; height: 3px; font-size: 0; line-height: 0; }
+    .card-inner { padding: 11px 14px 13px 14px; }
+    .c-lbl { font-size: 6.5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #9ca3af; margin-bottom: 4px; }
+    .c-name { font-size: 12px; font-weight: bold; color: #111827; margin-bottom: 6px; }
+    .c-info { font-size: 9.5px; color: #4b5563; line-height: 1.8; }
 
-    .info-card {
-      flex: 1;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 20px 22px;
-      position: relative;
-    }
-
-    .info-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--gold);
-    }
-
-    .info-card.right::before { background: var(--ink); }
-
-    .card-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      margin-bottom: 10px;
-    }
-
-    .card-name { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
-
-    .card-detail {
-      font-size: 11px;
-      color: var(--ink-soft);
-      line-height: 2;
-    }
-
-    /* ══ SECTION HEADING ══ */
-    .section-heading {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .section-heading span {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      white-space: nowrap;
-    }
-
-    .section-heading::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--line);
-    }
-
-    /* ══ ITEMS TABLE ══ */
-    .items-table { width: 100%; border-collapse: collapse; margin-bottom: 36px; }
-
-    .items-table thead tr { border-bottom: 2px solid var(--gold); }
-
-    .items-table thead th {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      padding: 0 0 12px;
-      text-align: left;
-    }
-
-    .items-table thead th.r { text-align: right; }
-
-    .items-table tbody tr { border-bottom: 1px solid var(--line); }
-    .items-table tbody tr:last-child { border-bottom: none; }
-
-    .items-table tbody td {
-      padding: 18px 0;
-      font-size: 12px;
-      color: var(--ink);
-      vertical-align: middle;
-    }
-
-    .items-table tbody td.r {
-      text-align: right;
-      font-family: 'DM Mono', monospace;
-    }
-
-    .item-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-    .item-sub { font-size: 10px; color: var(--ink-muted); }
-
-    .tva-tag {
-      background: var(--gold-light);
-      color: #92681a;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 2px;
-    }
+    /* ══ ITEMS ══ */
+    .sec-hr { border: none; border-top: 1px solid #e5e7eb; margin-bottom: 4px; }
+    .sec-lbl { font-size: 6.5px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; color: #9ca3af; padding: 6px 0 10px 0; }
+    .items { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .items thead tr { background: #1e40af; }
+    .items thead th { font-size: 7.5px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; padding: 9px 12px; text-align: left; }
+    .items thead th.r { text-align: right; }
+    .items thead th.c { text-align: center; }
+    .items tbody tr { border-bottom: 1px solid #e5e7eb; }
+    .items tbody td { padding: 13px 12px; vertical-align: middle; }
+    .items tbody td.r { text-align: right; font-family: Courier, monospace; }
+    .items tbody td.c { text-align: center; }
+    .i-name { font-size: 11.5px; font-weight: bold; color: #111827; }
+    .i-sub { font-size: 8.5px; color: #9ca3af; margin-top: 2px; }
+    .dur-pill { display: inline-block; background: #1e3a8a; color: #ffffff; font-size: 8.5px; font-weight: bold; padding: 2px 8px; }
+    .tva-pill { display: inline-block; background: #dbeafe; color: #1e40af; font-size: 8.5px; font-weight: bold; padding: 2px 8px; }
+    .ttc-val { font-size: 12px; font-weight: bold; color: #1e40af; font-family: Courier, monospace; }
 
     /* ══ BOTTOM ══ */
-    .bottom-wrap { display: flex; gap: 24px; align-items: flex-start; }
-
-    .ref-block { flex: 1; }
-
-    .ref-box {
-      border: 1px dashed var(--gold);
-      background: #fffbf0;
-      border-radius: 4px;
-      padding: 14px 18px;
-      margin-bottom: 16px;
-    }
-
-    .ref-label {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      margin-bottom: 5px;
-    }
-
-    .ref-val {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      font-weight: 600;
-      color: #92681a;
-      letter-spacing: 1px;
-    }
-
-    .legal-note { font-size: 10px; color: var(--ink-muted); line-height: 1.9; }
-
-    /* ══ TOTALS ══ */
-    .totals-block { width: 260px; flex-shrink: 0; }
-
-    .totals-inner {
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .totals-head {
-      background: var(--cream);
-      padding: 12px 20px;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .total-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 11px 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .total-line:last-child { border-bottom: none; }
-
-    .tl-label { font-size: 12px; color: var(--ink-soft); }
-
-    .tl-val {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .grand-total {
-      background: var(--ink);
-      border-radius: 4px;
-      padding: 20px;
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .grand-total::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), #e8c96a, var(--gold));
-    }
-
-    .gt-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-    }
-
-    .gt-amount {
-      font-family: 'DM Mono', monospace;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .gt-currency { font-size: 11px; color: rgba(255,255,255,0.5); margin-left: 4px; }
+    .bottom { width: 100%; border-collapse: collapse; }
+    .ref-cell { vertical-align: top; padding-right: 18px; }
+    .ref-box { border: 2px dashed #1e40af; background: #eff6ff; padding: 11px 13px; margin-bottom: 10px; }
+    .ref-lbl { font-size: 6.5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #1d4ed8; margin-bottom: 4px; }
+    .ref-val { font-family: Courier, monospace; font-size: 12px; font-weight: bold; color: #1e3a8a; letter-spacing: 1px; }
+    .note-txt { font-size: 8.5px; color: #9ca3af; line-height: 1.9; }
+    .totals-cell { width: 248px; vertical-align: top; }
+    .totals-box { border: 1px solid #e5e7eb; }
+    .totals-head { background: #f3f4f6; padding: 7px 14px; font-size: 6.5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #6b7280; border-bottom: 1px solid #e5e7eb; }
+    .totals-rows { width: 100%; border-collapse: collapse; }
+    .totals-rows td { padding: 9px 14px; border-bottom: 1px solid #e5e7eb; font-size: 10.5px; }
+    .totals-rows tr:last-child td { border-bottom: none; }
+    .totals-rows td:first-child { color: #4b5563; }
+    .totals-rows td:last-child { text-align: right; font-family: Courier, monospace; font-weight: bold; color: #111827; }
+    .grand-box { background: #1e3a8a; padding: 13px 14px; margin-top: 6px; }
+    .grand-row { width: 100%; border-collapse: collapse; }
+    .grand-lbl { font-size: 7.5px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; color: #93c5fd; vertical-align: middle; }
+    .grand-amount { text-align: right; font-family: Courier, monospace; font-size: 18px; font-weight: bold; color: #ffffff; vertical-align: middle; }
+    .grand-cur { font-size: 10px; color: #93c5fd; }
 
     /* ══ FOOTER ══ */
-    .footer { position: fixed; bottom: 0; left: 0; right: 0; }
-
-    .footer-gold-line {
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold) 0%, #e8c96a 50%, var(--gold) 100%);
-    }
-
-    .footer-band {
-      background: var(--ink);
-      padding: 16px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-left {
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 1px;
-    }
-
-    .footer-right {
-      text-align: right;
-      font-size: 9px;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.8;
-    }
+    .footer-spacer { height: 22px; }
+    .footer-bar { background: #1e40af; height: 3px; font-size: 0; line-height: 0; }
+    .footer-main { background: #1e3a8a; padding: 10px 40px; }
+    .footer-inner { width: 100%; border-collapse: collapse; }
+    .footer-brand { font-size: 10px; font-weight: bold; color: #93c5fd; vertical-align: middle; }
+    .footer-brand strong { color: #ffffff; }
+    .footer-info { text-align: right; font-size: 7.5px; color: #60a5fa; line-height: 1.9; vertical-align: middle; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER BAND -->
-  <div class="header-band">
-    <div class="header-inner">
-      <div class="brand-block">
-        <div class="brand-name">Dacnis</div>
-        <div class="brand-sub">Web &amp; App Development</div>
-      </div>
-      <div class="doc-block">
-        <div class="doc-type">Document Officiel</div>
-        <div class="doc-title">Reçu de Paiement</div>
-        <div class="doc-ref">REC-{{ receipt_number }}</div>
-        <div class="paid-badge">✓ Payé</div>
-      </div>
-    </div>
-  </div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td class="top-bar">&nbsp;</td></tr></table>
 
-  <!-- STATUS STRIP -->
-  <div class="status-strip">
-    <table>
+<!-- HEADER -->
+<div class="header-main">
+  <table class="header-inner">
+    <tr>
+      <td class="company-block">
+        <img src="{% static 'img/logo_dacnis.png' %}" class="logo-img" alt="Dacnis">
+        <div class="company-name-big">Dacnis Web &amp; App Development</div>
+        <div class="company-info">
+          Avenue Ibn El Jazzar, 4000 Sousse<br>
+          Tél : +216 24 203 141 &nbsp;|&nbsp; Email : contact@dacnis.tn<br>
+          <span class="company-mf">Matricule Fiscal : 193856/X/A/M/000</span>
+        </div>
+      </td>
+      <td class="doc-block">
+        <div class="doc-type-label">Recu de Paiement</div>
+        <div class="doc-meta-right">
+          N° <strong>REC-{{ receipt_number }}</strong><br>
+          Date : <strong>{{ date|date:"d/m/Y" }}</strong><br>
+          Échéance : <strong>{{ date|date:"d/m/Y" }}</strong>
+        </div>
+        <div><span class="paid-badge">Paye — Regle</span></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td class="divider-blue">&nbsp;</td></tr></table>
+
+<!-- META BAND -->
+<div class="meta-band">
+  <table class="meta-inner">
+    <tr>
+      <td><div class="m-lbl">Montant Total TTC</div><div class="m-val-money">{{ amount_ttc }} TND</div></td>
+      <td><div class="m-lbl">Date d'emission</div><div class="m-val">{{ date|date:"d/m/Y" }}</div></td>
+      <td><div class="m-lbl">Echeance</div><div class="m-val">{{ date|date:"d/m/Y" }}</div></td>
+      <td><div class="m-lbl">Statut</div><div class="m-val-green">Regle</div></td>
+    </tr>
+  </table>
+</div>
+
+<!-- BODY -->
+<div class="body-pad">
+
+  <table class="cards">
+    <tr>
+      <td class="card-cell">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr><td class="card-bar-blue">&nbsp;</td></tr>
+          <tr><td class="card-inner">
+            <div class="c-lbl">Emis par</div>
+            <div class="c-name">Dacnis Web &amp; App Development</div>
+            <div class="c-info">
+              Avenue Ibn El Jazzar, 4000 Sousse<br>
+              Tél : +216 24 203 141<br>
+              Email : contact@dacnis.tn<br>
+              MF : 193856/X/A/M/000
+            </div>
+          </td></tr>
+        </table>
+      </td>
+      <td class="card-gap">&nbsp;</td>
+      <td class="card-cell">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr><td class="card-bar-gray">&nbsp;</td></tr>
+          <tr><td class="card-inner">
+            <div class="c-lbl">Client / Facture a</div>
+            <div class="c-name">{{ partner.company_name|default:partner.user.get_full_name }}</div>
+            <div class="c-info">
+              Code client : {{ client_code }}<br>
+              Email : {{ partner.email }}<br>
+              MF : {{ partner.mf|default:"—" }}
+            </div>
+          </td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <hr class="sec-hr">
+  <div class="sec-lbl">Detail de la prestation</div>
+
+  <table class="items">
+    <thead>
+      <tr>
+        <th style="width:42%;">Designation</th>
+        <th class="c" style="width:13%;">Duree</th>
+        <th class="r" style="width:15%;">Prix HT</th>
+        <th class="c" style="width:11%;">TVA</th>
+        <th class="r" style="width:19%;">Total TTC</th>
+      </tr>
+    </thead>
+    <tbody>
       <tr>
         <td>
-          <div class="s-label">Montant Total TTC</div>
-          <div class="s-value gold">{{ amount_ttc }} TND</div>
+          <div class="i-name">{{ details.label }}</div>
+          <div class="i-sub">Abonnement FielMedina - {{ details.Periode|default:"1 Mois" }}</div>
         </td>
-        <td>
-          <div class="s-label">Date d'émission</div>
-          <div class="s-value">{{ date|date:"d/m/Y" }}</div>
-        </td>
-        <td>
-          <div class="s-label">Échéance</div>
-          <div class="s-value">{{ date|date:"d/m/Y" }}</div>
-        </td>
-        <td>
-          <div class="s-label">Statut</div>
-          <div class="s-value green">✓ Réglé</div>
-        </td>
+        <td class="c"><span class="dur-pill">{{ details.Duree|default:"1" }} mois</span></td>
+        <td class="r">{{ amount_ht }}&nbsp;TND</td>
+        <td class="c"><span class="tva-pill">19%</span></td>
+        <td class="r"><span class="ttc-val">{{ amount_ttc }}&nbsp;TND</span></td>
       </tr>
-    </table>
-  </div>
+    </tbody>
+  </table>
 
-  <!-- BODY -->
-  <div class="body-wrap">
-
-    <!-- INFO GRID -->
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="card-label">Émis par</div>
-        <div class="card-name">Dacnis Web &amp; App Development</div>
-        <div class="card-detail">
-          Avenue Ibn El Jazzar, 4000 Sousse<br>
-          Tél : +216 24 203 141<br>
-          Email : contact@dacnis.tn<br>
-          MF : 193856/X/A/M/000
-        </div>
-      </div>
-      <div class="info-card right">
-        <div class="card-label">Facturé à</div>
-        <div class="card-name">{{ partner.company_name|default:partner.user.get_full_name }}</div>
-        <div class="card-detail">
-          Code client : {{ client_code }}<br>
-          Email : {{ partner.email }}<br>
-          MF : {{ partner.mf|default:"—" }}
-        </div>
-      </div>
-    </div>
-
-    <!-- ITEMS TABLE -->
-    <div class="section-heading"><span>Détail de la prestation</span></div>
-    <table class="items-table">
-      <thead>
-        <tr>
-          <th style="width:44%">Désignation</th>
-          <th style="width:10%; text-align:center;">Durée</th>
-          <th class="r" style="width:16%">Prix HT</th>
-          <th class="r" style="width:14%">TVA</th>
-          <th class="r" style="width:16%">Total TTC</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <div class="item-name">{{ details.label }}</div>
-            <div class="item-sub">Abonnement FielMedina — {{ details.Periode|default:"1 Mois" }}</div>
-          </td>
-          <td style="text-align:center; font-family:'DM Mono',monospace; font-size:12px;">{{ details.Duree|default:"1" }} mois</td>
-          <td class="r">{{ amount_ht }} TND</td>
-          <td class="r"><span class="tva-tag">19%</span></td>
-          <td class="r" style="font-weight:700; font-size:13px;">{{ amount_ttc }} TND</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- BOTTOM -->
-    <div class="bottom-wrap">
-      <div class="ref-block">
+  <table class="bottom">
+    <tr>
+      <td class="ref-cell">
         <div class="ref-box">
-          <div class="ref-label">Référence de paiement</div>
+          <div class="ref-lbl">Reference de paiement</div>
           <div class="ref-val">{{ payment_ref }}</div>
         </div>
-        <div class="legal-note">
-          Ce reçu est généré automatiquement et constitue<br>
+        <div class="note-txt">
+          Ce recu est genere automatiquement et constitue<br>
           une preuve de paiement officielle.<br>
           Pour toute question : contact@dacnis.tn
         </div>
-      </div>
-
-      <div class="totals-block">
-        <div class="totals-inner">
-          <div class="totals-head">Récapitulatif</div>
-          <div class="total-line">
-            <span class="tl-label">Total HT</span>
-            <span class="tl-val">{{ amount_ht }} TND</span>
-          </div>
-          <div class="total-line">
-            <span class="tl-label">TVA (19%)</span>
-            <span class="tl-val">{{ tva_amount }} TND</span>
-          </div>
-          <div class="total-line">
-            <span class="tl-label">Timbre Fiscal</span>
-            <span class="tl-val">1.000 TND</span>
-          </div>
+      </td>
+      <td class="totals-cell">
+        <div class="totals-box">
+          <div class="totals-head">Recapitulatif</div>
+          <table class="totals-rows">
+            <tr><td>Total HT</td><td>{{ amount_ht }}&nbsp;TND</td></tr>
+            <tr><td>TVA (19%)</td><td>{{ tva_amount }}&nbsp;TND</td></tr>
+            <tr><td>Timbre Fiscal</td><td>1.000&nbsp;TND</td></tr>
+          </table>
         </div>
-        <div class="grand-total">
-          <span class="gt-label">Total TTC</span>
-          <span>
-            <span class="gt-amount">{{ amount_ttc }}</span>
-            <span class="gt-currency">TND</span>
-          </span>
+        <div class="grand-box">
+          <table class="grand-row">
+            <tr>
+              <td class="grand-lbl">Total TTC</td>
+              <td class="grand-amount">{{ amount_ttc }}&nbsp;<span class="grand-cur">TND</span></td>
+            </tr>
+          </table>
         </div>
-      </div>
-    </div>
+      </td>
+    </tr>
+  </table>
 
-  </div>
+  <div class="footer-spacer"></div>
+</div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-gold-line"></div>
-    <div class="footer-band">
-      <div class="footer-left">Dacnis — Développement Web &amp; Mobile</div>
-      <div class="footer-right">
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td class="footer-bar">&nbsp;</td></tr></table>
+<div class="footer-main">
+  <table class="footer-inner">
+    <tr>
+      <td class="footer-brand"><strong>Dacnis</strong> — Developpement Web &amp; Mobile</td>
+      <td class="footer-info">
         Sousse, Tunisie &nbsp;|&nbsp; www.dacnis.tn<br>
-        Document officiel généré automatiquement · REC-{{ receipt_number }}
-      </div>
-    </div>
-  </div>
+        Document officiel — REC-{{ receipt_number }}
+      </td>
+    </tr>
+  </table>
+</div>
 
 </body>
 </html>
