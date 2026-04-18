@@ -29,32 +29,99 @@
           {% if ad.image %}
           <img src="{{ ad.image.url }}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 dark:border-gray-700 flex-shrink-0" />
           {% else %}
-          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">🖼</div>
+          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center flex-shrink-0">
+            <!-- Image placeholder icon -->
+            <svg class="w-7 h-7 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
           {% endif %}
 
           <div class="flex-1 min-w-0">
             <div class="flex items-start justify-between gap-2 flex-wrap mb-1">
               <h3 class="font-semibold text-gray-900 dark:text-white truncate">{{ ad.title }}</h3>
               <div class="flex gap-1.5 flex-wrap">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium
                   {% if ad.status == 'active' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
                   {% elif ad.status == 'expired' %}bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400
                   {% elif ad.status == 'rejected' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
                   {% elif ad.is_confirmed and not ad.is_paid %}bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400
                   {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
-                  {% if ad.is_confirmed and not ad.is_paid %}⏳ Paiement{% else %}{{ ad.get_status_display }}{% endif %}
+
+                  {% if ad.status == 'active' %}
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="6"/>
+                  </svg>
+                  {% elif ad.status == 'expired' %}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  {% elif ad.status == 'rejected' %}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  {% elif ad.is_confirmed and not ad.is_paid %}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                  </svg>
+                  {% else %}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  {% endif %}
+
+                  {% if ad.is_confirmed and not ad.is_paid %}Paiement{% else %}{{ ad.get_status_display }}{% endif %}
                 </span>
+
                 {% if ad.is_paid %}
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">✅ Payée</span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  Payée
+                </span>
                 {% endif %}
               </div>
             </div>
 
             <div class="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500 flex-wrap">
-              <span>📅 {{ ad.start_date|date:"d M Y" }} → {{ ad.end_date|date:"d M Y" }}</span>
-              <span>{{ ad.nb_days }}j</span>
-              <span class="font-semibold text-purple-600 dark:text-purple-400">{{ ad.total_price }} TND</span>
-              <a href="{{ ad.redirect_url }}" target="_blank" class="text-blue-500 hover:underline">🔗</a>
+              <!-- Date -->
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                {{ ad.start_date|date:"d M Y" }}
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                {{ ad.end_date|date:"d M Y" }}
+              </span>
+              <!-- Nb jours -->
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ ad.nb_days }}j
+              </span>
+              <!-- Prix -->
+              <span class="font-semibold text-purple-600 dark:text-purple-400 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ ad.total_price }} TND
+              </span>
+              <!-- Lien -->
+              <a href="{{ ad.redirect_url }}" target="_blank"
+                class="text-blue-500 hover:text-blue-600 flex items-center gap-1 hover:underline">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                Voir
+              </a>
             </div>
           </div>
         </div>
@@ -63,21 +130,32 @@
         <div class="flex items-center gap-2 flex-wrap">
           {% if not ad.is_paid and ad.is_confirmed %}
           <a href="{% url 'partners:ad_payment' ad.id %}"
-            class="inline-flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-            💳 Payer
+            class="inline-flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+            </svg>
+            Payer
           </a>
           {% endif %}
           {% if not ad.is_confirmed %}
           <a href="{% url 'partners:ad_confirm' ad.id %}"
-            class="inline-flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-            ✅ Confirmer
+            class="inline-flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Confirmer
           </a>
           <form method="post" action="{% url 'partners:ad_delete' ad.id %}"
             onsubmit="return confirm('Supprimer cette publicité ?')">
             {% csrf_token %}
             <button type="submit"
-              class="inline-flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/30 dark:text-red-400 text-xs font-medium px-3 py-1.5 rounded-xl transition">
-              🗑 Supprimer
+              class="inline-flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/30 dark:text-red-400 text-xs font-medium px-3 py-1.5 rounded-xl transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Supprimer
             </button>
           </form>
           {% endif %}
@@ -89,13 +167,21 @@
 
     {% else %}
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
-      <div class="text-5xl mb-4">🖼</div>
+      <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </div>
       <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Aucune publicité</h3>
       <p class="text-gray-400 dark:text-gray-500 mb-6 text-sm">Créez votre première publicité pour promouvoir votre activité.</p>
       {% if can_add %}
       <a href="{% url 'partners:ad_create' %}"
         class="inline-flex items-center gap-2 bg-purple-600 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-purple-700 transition text-sm">
-        + Créer une publicité
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Créer une publicité
       </a>
       {% endif %}
     </div>

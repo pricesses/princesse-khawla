@@ -6,7 +6,11 @@
 
       <div class="mb-8">
         <a href="{% url 'partners:ad_list' %}" class="text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center gap-1 mb-4">
-          ← Retour aux publicités
+          <!-- Arrow Left -->
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4M5 12l4 4"/>
+          </svg>
+          Retour aux publicités
         </a>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Confirmer votre publicité</h1>
         <p class="text-gray-500 dark:text-gray-400 mt-1">Vérifiez les détails avant de procéder au paiement</p>
@@ -43,20 +47,35 @@
           </div>
         </div>
 
-        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 text-sm text-amber-700 dark:text-amber-400">
-          ⚠️ Après confirmation, la publicité ne pourra plus être modifiée ni supprimée.
+        <!-- Warning notice -->
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex items-start gap-3">
+          <!-- Exclamation Triangle -->
+          <svg class="w-5 h-5 text-amber-500 dark:text-amber-400 mt-0.5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z" clip-rule="evenodd"/>
+          </svg>
+          <p class="text-sm text-amber-700 dark:text-amber-400">
+            Après confirmation, la publicité ne pourra plus être modifiée ni supprimée.
+          </p>
         </div>
 
         <div class="flex gap-3">
           <form method="post" class="flex-1">
             {% csrf_token %}
             <button type="submit"
-              class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
-              ✅ Confirmer et payer
+              class="w-full inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md">
+              <!-- Check Circle -->
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m4.929 4.104A7.956 7.956 0 0 1 20 16c0 2.21-3.582 4-8 4s-8-1.79-8-4c0-.618.13-1.213.368-1.774M20 12c0-2.21-3.582-4-8-4s-8 1.79-8 4 3.582 4 8 4 8-1.79 8-4Z"/>
+              </svg>
+              Confirmer et payer
             </button>
           </form>
           <a href="{% url 'partners:ad_list' %}"
-             class="px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium">
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium">
+            <!-- X / Close -->
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+            </svg>
             Annuler
           </a>
         </div>

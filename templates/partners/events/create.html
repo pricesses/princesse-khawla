@@ -12,12 +12,22 @@
   <div class="mb-6">
     <a href="{% url 'partners:event_list' %}"
        class="text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1 mb-3">
-      ← Retour aux événements
+      <!-- Arrow Left -->
+      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4M5 12l4 4"/>
+      </svg>
+      Retour aux événements
     </a>
     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Nouvel Événement</h1>
-    <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-      ⚠️ La date de début doit être au minimum dans <strong>7 jours</strong>.<br>
-      Le bouton <strong>Booster</strong> sera disponible si elle est dans ≥ 14 jours.
+    <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm flex items-start gap-2">
+      <!-- Exclamation Circle -->
+      <svg class="w-4 h-4 text-amber-500 mt-0.5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z" clip-rule="evenodd"/>
+      </svg>
+      <span>
+        La date de début doit être au minimum dans <strong>7 jours</strong>.<br>
+        Le bouton <strong>Booster</strong> sera disponible si elle est dans ≥ 14 jours.
+      </span>
     </p>
   </div>
 
@@ -33,7 +43,11 @@
     <!-- Basic Information -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
       <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
-        <span class="text-blue-500">ℹ</span> Basic Information
+        <!-- Info Circle -->
+        <svg class="w-5 h-5 text-blue-500 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v1a1 1 0 1 0 2 0V8Zm-1 3a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0v-4a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+        </svg>
+        Basic Information
       </h2>
       <p class="text-sm text-gray-400 dark:text-gray-500 mb-4">Enter the event name in different languages</p>
       <hr class="border-gray-100 dark:border-gray-700 mb-5">
@@ -59,7 +73,11 @@
           value="{{ form.title.value|default:'' }}">
         <button type="button" onclick="translateTitleToFr()"
           class="mt-3 inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:opacity-90 transition">
-          ⇄ Translate to French
+          <!-- Arrows Right Left / Translate -->
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
+          </svg>
+          Translate to French
         </button>
         {% if form.title.errors %}<p class="mt-1 text-xs text-red-500">{{ form.title.errors.0 }}</p>{% endif %}
       </div>
@@ -73,7 +91,10 @@
           class="w-full border border-gray-300 dark:border-gray-500 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 dark:placeholder-gray-400">
         <button type="button" onclick="translateTitleToEn()"
           class="mt-3 inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:opacity-90 transition">
-          ⇄ Translate to English
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
+          </svg>
+          Translate to English
         </button>
       </div>
 
@@ -83,7 +104,11 @@
     <!-- Description -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
       <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
-        <span class="text-blue-500">📄</span> Description
+        <!-- File Lines / Document -->
+        <svg class="w-5 h-5 text-blue-500 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm-.293 9.293a1 1 0 0 1 0 1.414L9.414 14l1.293 1.293a1 1 0 0 1-1.414 1.414l-2-2a1 1 0 0 1 0-1.414l2-2a1 1 0 0 1 1.414 0Zm2.586 1.414a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1 0 1.414l-2 2a1 1 0 0 1-1.414-1.414L14.586 14l-1.293-1.293Z" clip-rule="evenodd"/>
+        </svg>
+        Description
       </h2>
       <p class="text-sm text-gray-400 dark:text-gray-500 mb-4">Event description and details</p>
       <hr class="border-gray-100 dark:border-gray-700 mb-5">
@@ -111,7 +136,13 @@
             <button type="button" onclick="fmt('insertUnorderedList')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">≡</button>
             <button type="button" onclick="fmt('insertOrderedList')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">1≡</button>
             <div class="w-px h-5 bg-gray-300 dark:bg-gray-500 mx-1"></div>
-            <button type="button" onclick="insertLink('en')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">🔗</button>
+            <!-- Link icon -->
+            <button type="button" onclick="insertLink('en')" title="Insérer un lien"
+              class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 w-8 h-8 flex items-center justify-center">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+              </svg>
+            </button>
           </div>
           <div id="editor-en" contenteditable="true"
             class="min-h-40 px-4 py-3 text-sm text-gray-800 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 focus:outline-none"
@@ -121,7 +152,10 @@
         <textarea name="description_en" id="desc_en_hidden" class="hidden"></textarea>
         <button type="button" onclick="translateDescToFr()"
           class="mt-3 inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:opacity-90 transition">
-          ⇄ Translate to French
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
+          </svg>
+          Translate to French
         </button>
         {% if form.description.errors %}<p class="mt-1 text-xs text-red-500">{{ form.description.errors.0 }}</p>{% endif %}
       </div>
@@ -138,7 +172,13 @@
             <button type="button" onclick="fmtFr('insertUnorderedList')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">≡</button>
             <button type="button" onclick="fmtFr('insertOrderedList')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">1≡</button>
             <div class="w-px h-5 bg-gray-300 dark:bg-gray-500 mx-1"></div>
-            <button type="button" onclick="insertLink('fr')" class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm w-8 h-8 flex items-center justify-center">🔗</button>
+            <!-- Link icon -->
+            <button type="button" onclick="insertLink('fr')" title="Insérer un lien"
+              class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 w-8 h-8 flex items-center justify-center">
+              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+              </svg>
+            </button>
           </div>
           <div id="editor-fr" contenteditable="true"
             class="min-h-40 px-4 py-3 text-sm text-gray-800 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 focus:outline-none"
@@ -148,7 +188,10 @@
         <textarea name="description_fr" id="desc_fr_hidden" class="hidden"></textarea>
         <button type="button" onclick="translateDescToEn()"
           class="mt-3 inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:opacity-90 transition">
-          ⇄ Translate to English
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
+          </svg>
+          Translate to English
         </button>
       </div>
 
@@ -158,7 +201,11 @@
     <!-- Event Details -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
       <h2 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1">
-        <span class="text-blue-500">📅</span> Event Details
+        <!-- Calendar -->
+        <svg class="w-5 h-5 text-blue-500 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1-1h2a1 1 0 0 0 1 1 1 1 0 1 1 2 0 1 1 0 0 0 1-1h1a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
+        </svg>
+        Event Details
       </h2>
       <p class="text-sm text-gray-400 dark:text-gray-500 mb-4">Location, dates, time and pricing</p>
       <hr class="border-gray-100 dark:border-gray-700 mb-5">
@@ -199,11 +246,18 @@
         </div>
       </div>
 
-      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl px-4 py-3 text-sm text-blue-700 dark:text-blue-400 mb-5">
-        📌 Règles des dates :<br>
-        • Date de début &lt; 7 jours → Refusé<br>
-        • Date de début ≥ 7 jours → Accepté<br>
-        • Date de début ≥ 14 jours → Bouton Booster disponible
+      <!-- Date rules notice -->
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl px-4 py-3 text-sm text-blue-700 dark:text-blue-400 mb-5 flex items-start gap-3">
+        <!-- Map Pin -->
+        <svg class="w-4 h-4 mt-0.5 shrink-0 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-2.025 5.158l-5.006 5.486a1 1 0 0 1-1.46 0l-5.006-5.486A8 8 0 0 1 11.906 1.994ZM12 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" clip-rule="evenodd"/>
+        </svg>
+        <div>
+          Règles des dates :<br>
+          • Date de début &lt; 7 jours → Refusé<br>
+          • Date de début ≥ 7 jours → Accepté<br>
+          • Date de début ≥ 14 jours → Bouton Booster disponible
+        </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -248,7 +302,11 @@
 
       <button type="button" onclick="addImageInput()" id="add-image-btn"
         class="mt-4 inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition">
-        + Add Another Image
+        <!-- Plus Circle -->
+        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5v14"/>
+        </svg>
+        Add Another Image
       </button>
       <p id="image-limit-msg" class="hidden mt-2 text-xs text-red-500">Maximum 10 images atteint.</p>
     </div>
@@ -256,11 +314,19 @@
     <!-- Boutons -->
     <div class="flex gap-3 pb-4">
       <button type="submit" onclick="syncFields()"
-        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md text-sm">
-        ✅ Créer l'événement
+        class="flex-1 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md text-sm">
+        <!-- Check Circle -->
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+        </svg>
+        Créer l'événement
       </button>
       <a href="{% url 'partners:event_list' %}"
-         class="px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium text-sm text-center">
+         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium text-sm text-center">
+        <!-- X -->
+        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+        </svg>
         Annuler
       </a>
     </div>
@@ -274,7 +340,6 @@
     pointer-events: none;
   }
 
-  /* ── Widgets Django : toujours pleine largeur ── */
   #eventForm input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="hidden"]),
   #eventForm textarea {
     width: 100%;
@@ -284,7 +349,6 @@
   }
   #eventForm .grid > div { min-width: 0; overflow: visible; }
 
-  /* ── Flatpickr responsive styles ── */
   .flatpickr-calendar {
     max-width: 100% !important;
     width: min(340px, 96vw) !important;
@@ -296,7 +360,6 @@
   .flatpickr-day.selected { background: #3b82f6 !important; border-color: #3b82f6 !important; }
   .flatpickr-input { cursor: pointer; }
 
-  /* ── Inputs date/time/text en mode sombre ── */
   .dark #eventForm input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="hidden"]),
   .dark #eventForm textarea {
     background-color: #1a2840 !important;
@@ -316,63 +379,33 @@
   }
   .dark #eventForm input[type="date"],
   .dark #eventForm input[type="time"],
-  .dark #eventForm input[type="datetime-local"] {
-    color-scheme: dark;
-  }
+  .dark #eventForm input[type="datetime-local"] { color-scheme: dark; }
   .dark #eventForm ::-webkit-calendar-picker-indicator {
     filter: invert(0.7) sepia(0.3) saturate(0.5) hue-rotate(180deg);
   }
 
-  /* ── Custom Select — MODE CLAIR (défaut) ── */
-  .custom-select-wrapper {
-    position: relative;
-    width: 100%;
-  }
+  .custom-select-wrapper { position: relative; width: 100%; }
   .custom-select-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.625rem 1rem;
-    background: #f9fafb;
-    border: 1px solid #d1d5db;
-    border-radius: 0.75rem;
-    color: #111827;
-    font-size: 0.875rem;
-    cursor: pointer;
-    user-select: none;
-    transition: border-color .15s, box-shadow .15s;
-    box-sizing: border-box;
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 0.625rem 1rem;
+    background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.75rem;
+    color: #111827; font-size: 0.875rem; cursor: pointer; user-select: none;
+    transition: border-color .15s, box-shadow .15s; box-sizing: border-box;
   }
   .custom-select-trigger:focus,
   .custom-select-wrapper.open .custom-select-trigger {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59,130,246,.2);
-    outline: none;
+    border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.2); outline: none;
   }
   .custom-select-trigger .cs-arrow {
-    border: solid #6b7280;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    transition: transform .2s;
-    flex-shrink: 0;
-    margin-left: 8px;
+    border: solid #6b7280; border-width: 0 2px 2px 0;
+    display: inline-block; padding: 3px; transform: rotate(45deg);
+    transition: transform .2s; flex-shrink: 0; margin-left: 8px;
   }
   .custom-select-wrapper.open .cs-arrow { transform: rotate(-135deg); }
   .custom-select-dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    z-index: 9999;
-    max-height: 220px;
-    overflow-y: auto;
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.75rem;
+    z-index: 9999; max-height: 220px; overflow-y: auto;
     box-shadow: 0 8px 24px rgba(0,0,0,.12);
   }
   .custom-select-wrapper.open .custom-select-dropdown { display: block; }
@@ -380,11 +413,8 @@
   .custom-select-dropdown::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 99px; }
   .custom-select-dropdown::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
   .cs-option {
-    padding: 0.55rem 1rem;
-    font-size: 0.875rem;
-    color: #374151;
-    cursor: pointer;
-    transition: background .1s, color .1s;
+    padding: 0.55rem 1rem; font-size: 0.875rem; color: #374151;
+    cursor: pointer; transition: background .1s, color .1s;
   }
   .cs-option:first-child { border-radius: 0.75rem 0.75rem 0 0; }
   .cs-option:last-child  { border-radius: 0 0 0.75rem 0.75rem; }
@@ -392,18 +422,9 @@
   .cs-option.selected { background: #eff6ff; color: #2563eb; font-weight: 500; }
   .cs-placeholder     { color: #9ca3af; }
 
-  /* ── Custom Select — MODE SOMBRE (classe .dark uniquement) ── */
-  .dark .custom-select-trigger {
-    background: #1a2840 !important;
-    border-color: #2a3d55 !important;
-    color: #dce9f5 !important;
-  }
+  .dark .custom-select-trigger { background: #1a2840 !important; border-color: #2a3d55 !important; color: #dce9f5 !important; }
   .dark .custom-select-trigger .cs-arrow { border-color: #8eacc4 !important; }
-  .dark .custom-select-dropdown {
-    background: #1a2840 !important;
-    border-color: #2a3d55 !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,.45) !important;
-  }
+  .dark .custom-select-dropdown { background: #1a2840 !important; border-color: #2a3d55 !important; box-shadow: 0 8px 24px rgba(0,0,0,.45) !important; }
   .dark .custom-select-dropdown::-webkit-scrollbar-track { background: #141f30; }
   .dark .custom-select-dropdown::-webkit-scrollbar-thumb { background: #2a3d55; }
   .dark .cs-option              { color: #9bb3c9; }
@@ -511,7 +532,11 @@
           <input type="file" name="media" accept="image/*,video/*" multiple class="hidden" onchange="updateFileName(this); previewSingleMedia(this)">
         </label>
         <button type="button" onclick="removeImageInput(this)"
-          class="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-lg font-bold transition">✕</button>
+          class="absolute top-3 right-3 p-1 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition">
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+          </svg>
+        </button>
       </div>
       <div class="mt-2 preview-thumb hidden">
         <img class="w-20 h-20 rounded-xl object-cover border border-gray-200 dark:border-gray-600">
@@ -548,7 +573,6 @@
     }
   }
 
-  /* ── Custom Select Init ── */
   function initCustomSelects() {
     document.querySelectorAll('#eventForm select').forEach(function(nativeSelect) {
       if (nativeSelect.dataset.csInit) return;
@@ -621,55 +645,34 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     initCustomSelects();
-    // Observer le changement de thème en temps réel (toggle dark/light)
-    const observer = new MutationObserver(function() {
-      // Les styles CSS s'appliquent automatiquement via .dark — pas besoin de reinit
-    });
+    const observer = new MutationObserver(function() {});
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class','data-theme'] });
   });
 
-  /* ── Flatpickr Init ── */
   const today = new Date();
   const minDate = new Date(today);
   minDate.setDate(today.getDate() + 7);
 
   const isDark = () => document.documentElement.classList.contains('dark');
-
-  function applyFpTheme() {
-    document.getElementById('fp-dark-theme').disabled = !isDark();
-  }
+  function applyFpTheme() { document.getElementById('fp-dark-theme').disabled = !isDark(); }
   applyFpTheme();
   new MutationObserver(applyFpTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   const fpStart = flatpickr('[name="start_date"]', {
-    locale: 'fr',
-    dateFormat: 'Y-m-d',
-    altInput: true,
-    altFormat: 'd/m/Y',
-    minDate: minDate,
-    disableMobile: false,
+    locale: 'fr', dateFormat: 'Y-m-d', altInput: true, altFormat: 'd/m/Y',
+    minDate: minDate, disableMobile: false,
     onReady: function(_, __, instance) { instance.altInput.placeholder = 'JJ/MM/AAAA'; },
-    onChange: function(selectedDates) {
-      if (selectedDates[0]) fpEnd.set('minDate', selectedDates[0]);
-    }
+    onChange: function(selectedDates) { if (selectedDates[0]) fpEnd.set('minDate', selectedDates[0]); }
   });
 
   const fpEnd = flatpickr('[name="end_date"]', {
-    locale: 'fr',
-    dateFormat: 'Y-m-d',
-    altInput: true,
-    altFormat: 'd/m/Y',
-    minDate: minDate,
-    disableMobile: false,
+    locale: 'fr', dateFormat: 'Y-m-d', altInput: true, altFormat: 'd/m/Y',
+    minDate: minDate, disableMobile: false,
     onReady: function(_, __, instance) { instance.altInput.placeholder = 'JJ/MM/AAAA'; },
   });
 
   flatpickr('[name="event_time"]', {
-    enableTime: true,
-    noCalendar: true,
-    dateFormat: 'H:i',
-    time_24hr: true,
-    disableMobile: false,
+    enableTime: true, noCalendar: true, dateFormat: 'H:i', time_24hr: true, disableMobile: false,
   });
 </script>
 {% endblock %}

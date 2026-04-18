@@ -9,8 +9,9 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.utils import timezone
-from django.core.files.base import ContentFile  # ← AJOUT
-from xhtml2pdf import pisa
+from django.core.files.base import ContentFile
+
+from weasyprint import HTML, CSS
 
 TVA_RATE = Decimal('0.19')
 TIMBRE = Decimal('1.000')
@@ -24,32 +25,20 @@ COMPANY = {
     'matricule': '193856/X/A/M/000',
 }
 
-def fetch_resources(uri, rel):
-    if uri.startswith(settings.STATIC_URL):
-        relative_path = uri.replace(settings.STATIC_URL, "")
-        path = os.path.join(settings.BASE_DIR, 'static', relative_path)
-    elif uri.startswith(settings.MEDIA_URL):
-        relative_path = uri.replace(settings.MEDIA_URL, "")
-        path = os.path.join(settings.MEDIA_ROOT, relative_path)
-    else:
-        path = uri
-    if not os.path.isfile(path):
-        print(f"--- ERREUR PDF : Fichier introuvable : {path} ---")
-    return path
 
 def generate_pdf(html):
-    buffer = BytesIO()
-    pisa_status = pisa.CreatePDF(html, dest=buffer, link_callback=fetch_resources)
-    if pisa_status.err:
-        print("--- ERREUR lors de la génération du PDF ---")
-    buffer.seek(0)
-    return buffer.read()
+    """Génère un PDF à partir d'un HTML avec WeasyPrint."""
+    base_url = os.path.join(settings.BASE_DIR, 'static')
+    pdf_bytes = HTML(string=html, base_url=base_url).write_pdf()
+    return pdf_bytes
+
 
 def _generate_client_code(payment_ref: str) -> str:
     if payment_ref and len(payment_ref) >= 8:
         return f"CL-{payment_ref[:8].upper()}"
     chars = string.ascii_uppercase + string.digits
     return f"CL-{''.join(secrets.choice(chars) for _ in range(8))}"
+
 
 def _compute_amounts(amount_str: str):
     ht = Decimal(str(amount_str)).quantize(Decimal('0.001'), rounding=ROUND_HALF_UP)
@@ -60,6 +49,7 @@ def _compute_amounts(amount_str: str):
         'tva_amount': f"{tva:.3f}",
         'amount_ttc': f"{ttc:.3f}",
     }
+
 
 def send_receipt(partner, payment_type: str, details: dict, payment_ref: str = ''):
     from partners.models import Receipt as ReceiptCounter, ReceiptHistory
@@ -81,6 +71,7 @@ def send_receipt(partner, payment_type: str, details: dict, payment_ref: str = '
         'client_code': client_code,
         'payment_ref': payment_ref or '—',
         **amounts,
+        'logo_path': os.path.join(settings.BASE_DIR, 'static', 'logo_dacnis.png').replace('\\', '/'),
     }
 
     # 1. Rendu HTML
@@ -101,7 +92,7 @@ def send_receipt(partner, payment_type: str, details: dict, payment_ref: str = '
     email.attach(filename, pdf, 'application/pdf')
     email.send(fail_silently=True)
 
-    # 4. Historique en base de données + sauvegarde PDF  ← CORRECTION ICI
+    # 4. Historique en base de données + sauvegarde PDF
     try:
         history = ReceiptHistory.objects.create(
             partner=partner,
@@ -119,3 +110,4 @@ def send_receipt(partner, payment_type: str, details: dict, payment_ref: str = '
 
     except Exception as e:
         print(f"Erreur sauvegarde historique : {e}")
+
