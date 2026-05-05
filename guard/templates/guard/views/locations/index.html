@@ -1,6 +1,6 @@
 {% extends 'guard/base/index.html' %}
 {% load static i18n %}
-
+<!-- TODO: Add partner locations -->
 {% block title %}
      {% if object %}
           {% trans "Edit Location" %}
@@ -196,6 +196,15 @@
                     {% endif %}
                     {% if form.country.help_text %}
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.country.help_text }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="{{ form.partner.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ form.partner.label }}
+                    </label>
+                    {{ form.partner }}
+                    {% if form.partner.errors %}
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.partner.errors.0 }}</p>
                     {% endif %}
                 </div>
                 

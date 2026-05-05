@@ -18,6 +18,7 @@ from .models import (
     PublicTransportTime,
     Partner,
     Sponsor,
+    LegacyPartner,
 )
 from cities_light.models import City
 
@@ -791,38 +792,52 @@ ImageAdFormSet = inlineformset_factory(
 
 
 class PartnerForm(FlowbiteFormMixin, forms.ModelForm):
+    locations = forms.ModelMultipleChoiceField(
+        queryset=Location.objects.all(),
+        required=False,
+        label=_("Assigned Locations"),
+        widget=forms.CheckboxSelectMultiple(attrs={
+            'class': 'space-y-2'
+        }),
+        help_text=_("Select the locations associated with this partner.")
+    )
+
+    # Fields for manual entry if not in list
+    custom_location = forms.CharField(
+        label=_("Custom Location Name"),
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": _("Enter your establishment name")}),
+    )
+    custom_city = forms.ModelChoiceField(
+        queryset=City.objects.all().order_by('name'),
+        required=False,
+        label=_("Custom City"),
+        empty_label=_("— Select City —")
+    )
+
+    password = forms.CharField(
+        label=_("Password"),
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": _("Leave empty to generate automatically")}),
+    )
+
     class Meta:
-        model = Partner
-        fields = ["name", "image", "link"]
+        model = LegacyPartner
+        fields = ["name", "email", "link", "image", "locations"]  # password pas ici (pas en DB)
         widgets = {
-            "name": forms.TextInput(
-                attrs={
-                    "placeholder": _("e.g., Partner name"),
-                }
-            ),
-            "link": forms.URLInput(
-                attrs={
-                    "placeholder": "https://example.com",
-                }
-            ),
-            "image": forms.FileInput(
-                attrs={
-                    "accept": "image/*",
-                }
-            ),
-        }
-        error_messages = {
-            "name": {"required": _("Please enter a name.")},
-            "image": {"required": _("Please upload an image (300x200).")},
-            "link": {"required": _("Please provide a link.")},
+            "name": forms.TextInput(attrs={"placeholder": _("Partner name")}),
+            "email": forms.EmailInput(attrs={"placeholder": _("Partner email (for validation)")}),
+            "link": forms.URLInput(attrs={"placeholder": _("Website or Social link")}),
+            "image": forms.FileInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if "image" in self.fields:
-            self.fields["image"].required = True
-            if self.instance and self.instance.pk:
-                self.fields["image"].required = False
+        # En mode "Edit", on pré-coche toutes les locations déjà liées
+        if self.instance.pk:
+            self.fields['locations'].initial = self.instance.locations.all()
+            # En mode Edit, on cache le champ password
+            self.fields['password'].widget = forms.HiddenInput()
 
 
 class SponsorForm(FlowbiteFormMixin, forms.ModelForm):

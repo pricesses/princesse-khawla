@@ -157,10 +157,10 @@ class Partner(models.Model):
                 )
             self.user = user
         else:
-            if self.email and (self.user.email != self.email or self.user.username != self.email):
-                self.user.email    = self.email
-                self.user.username = self.email
-                self.user.save()
+            # Sync email if changed, but DO NOT overwrite the username
+            if self.email and self.user.email != self.email:
+                self.user.email = self.email
+                self.user.save(update_fields=['email'])
 
         is_new = self._state.adding
         if is_new and not self.contract_start and not self.is_trial:
@@ -434,6 +434,22 @@ class PartnerAd(models.Model):
     @property
     def ad_price_display(self) -> str:
         return f"{self.ad_price:.3f} TND"
+
+    @property
+    def image(self):
+        return self.mobile_image or self.tablet_image
+
+    @property
+    def is_confirmed(self) -> bool:
+        return self.status in ['confirmed', 'active', 'expired']
+
+    @property
+    def is_paid(self) -> bool:
+        return self.status in ['active', 'expired']
+
+    @property
+    def redirect_url(self):
+        return self.destination_link
 
     def save(self, *args, **kwargs):
         from decimal import Decimal

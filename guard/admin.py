@@ -246,17 +246,22 @@ class PublicTransportAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-# @admin.register(Partner)
-# class PartnerAdmin(admin.ModelAdmin):
-#     list_display = ["name", "image", "link"]
-#     search_fields = ["name"]
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ["name", "email", "is_verified", "created_at"]
+    search_fields = ["name", "email"]
+    list_filter = ["is_verified", "created_at"]
 
-#     fieldsets = (
-#         (
-#             _("Basic Information"),
-#             {"fields": ("name", "image", "link")},
-#         ),
-#     )
+    fieldsets = (
+        (
+            _("Basic Information"),
+            {"fields": ("name", "user", "email", "image", "link", "is_verified")},
+        ),
+        (
+            _("Relationships"),
+            {"fields": ("locations",)},
+        ),
+    )
 
 
 @admin.register(Sponsor)

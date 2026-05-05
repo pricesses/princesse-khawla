@@ -191,11 +191,11 @@
 
 <script>
 const PRICES = {
-  '1_month':   { total: 10,  monthly: 10,    label: '{% trans "1 Month" %}' },
-  '3_months':  { total: 25,  monthly: 8.333, label: '{% trans "3 Months" %}' },
-  '6_months':  { total: 50,  monthly: 8.333, label: '{% trans "6 Months" %}' },
-  '10_months': { total: 80,  monthly: 8.000, label: '{% trans "10 Months" %}' },
-  '12_months': { total: 100, monthly: 8.333, label: '{% trans "1 Year" %}' },
+  '1_month':   { total: 10,  monthly: 10,    label: '{% trans "1 month" %}' },
+  '3_months':  { total: 25,  monthly: 8.333, label: '{% trans "3 months" %}' },
+  '6_months':  { total: 50,  monthly: 8.333, label: '{% trans "6 months" %}' },
+  '10_months': { total: 80,  monthly: 8.000, label: '{% trans "10 months" %}' },
+  '12_months': { total: 100, monthly: 8.333, label: '{% trans "1 year" %}' },
 };
 
 let discountPct = {% if applied_coupon %}{{ applied_coupon.discount_percentage }}{% else %}0{% endif %};

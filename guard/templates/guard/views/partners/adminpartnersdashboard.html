@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PartnerAdmin – Gestion des partenaires</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f4;
+    --bg-tertiary: #eeede9;
+    --bg-info: #e6f1fb;
+    --bg-danger: #fcebeb;
+    --bg-success: #eaf3de;
+    --bg-warning: #faeeda;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b68;
+    --text-info: #185fa5;
+    --text-danger: #a32d2d;
+    --text-success: #3b6d11;
+    --text-warning: #854f0b;
+    --border-tertiary: rgba(26,26,24,0.12);
+    --border-secondary: rgba(26,26,24,0.25);
+    --border-info: #b5d4f4;
+    --border-danger: #f7c1c1;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a27;
+      --bg-tertiary: #161614;
+      --bg-info: #0c447c;
+      --bg-danger: #501313;
+      --bg-success: #173404;
+      --bg-warning: #412402;
+      --text-primary: #f0efe9;
+      --text-secondary: #a8a89f;
+      --text-info: #85b7eb;
+      --text-danger: #f09595;
+      --text-success: #97c459;
+      --text-warning: #ef9f27;
+      --border-tertiary: rgba(240,239,233,0.12);
+      --border-secondary: rgba(240,239,233,0.25);
+      --border-info: #0c447c;
+      --border-danger: #791f1f;
+    }
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: var(--bg-primary);
+    border-right: 0.5px solid var(--border-tertiary);
+    padding: 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .logo {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    margin-bottom: 0.75rem;
+  }
+  .logo span {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.55rem 1.25rem;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .nav-item.active { background: var(--bg-secondary); color: var(--text-primary); font-weight: 500; }
+  .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+
+  /* ── Main ── */
+  .main { padding: 1.5rem; overflow: auto; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .topbar h1 { font-size: 20px; font-weight: 500; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-secondary);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: var(--font);
+    transition: background 0.15s;
+  }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn.primary { background: #185fa5; color: #fff; border-color: #185fa5; }
+  .btn.primary:hover { background: #0c447c; }
+  .btn.danger { background: var(--bg-danger); color: var(--text-danger); border-color: var(--border-danger); }
+
+  /* ── Stats ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .stat {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1rem;
+  }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .stat-val { font-size: 22px; font-weight: 500; }
+  .stat-val.blue { color: #185fa5; }
+  .stat-val.green { color: #3b6d11; }
+  .stat-val.amber { color: #854f0b; }
+
+  /* ── Search bar ── */
+  .search-bar { display: flex; gap: 10px; margin-bottom: 1rem; }
+  .search-bar input,
+  .search-bar select {
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font);
+  }
+  .search-bar input { flex: 1; }
+  .search-bar input:focus,
+  .search-bar select:focus { outline: none; border-color: #378add; box-shadow: 0 0 0 2px rgba(55,138,221,.15); }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 0.5px solid var(--border-tertiary);
+  }
+  th {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    background: var(--bg-secondary);
+  }
+  td {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-secondary); }
+
+  /* ── Badges & Pills ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .badge.verified  { background: #eaf3de; color: #3b6d11; }
+  .badge.pending   { background: #faeeda; color: #854f0b; }
+  .badge.inactive  { background: #f1efe8; color: #5f5e5a; }
+  .loc-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #e6f1fb;
+    color: #185fa5;
+    border-radius: 20px;
+    font-size: 11px;
+    padding: 2px 8px;
+    margin: 1px;
+    font-weight: 500;
+  }
+
+  /* ── Icon buttons ── */
+  .actions { display: flex; gap: 6px; }
+  .icon-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-tertiary);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 13px;
+    color: var(--text-primary);
+    font-family: var(--font);
+  }
+  .icon-btn:hover { background: var(--bg-secondary); }
+  .icon-btn.del:hover { background: var(--bg-danger); color: var(--text-danger); }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .modal {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border-tertiary);
+    width: 500px;
+    max-width: 95vw;
+    padding: 1.5rem;
+    animation: slideUp 0.2s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .modal h2 { font-size: 17px; font-weight: 500; margin-bottom: 1.25rem; }
+
+  /* ── Form fields ── */
+  .field { margin-bottom: 1rem; }
+  .field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font);
+  }
+  .field input:focus,
+  .field select:focus { outline: none; border-color: #378add; box-shadow: 0 0 0 2px rgba(55,138,221,.15); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ── Location tag input ── */
+  .loc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    min-height: 38px;
+    cursor: text;
+    background: var(--bg-primary);
+    position: relative;
+  }
+  .loc-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #e6f1fb;
+    color: #185fa5;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .loc-tag button {
+    background: none;
+    border: none;
+    color: #185fa5;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.7;
+  }
+  .loc-tag button:hover { opacity: 1; }
+  #loc-input {
+    border: none;
+    outline: none;
+    font-size: 12px;
+    background: transparent;
+    width: 130px;
+    color: var(--text-primary);
+    font-family: var(--font);
+  }
+  .loc-dropdown {
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    max-height: 150px;
+    overflow-y: auto;
+    background: var(--bg-primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 10;
+  }
+  .loc-opt { padding: 8px 10px; font-size: 13px; cursor: pointer; }
+  .loc-opt:hover { background: var(--bg-secondary); }
+
+  /* ── Email notice ── */
+  .email-notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #e6f1fb;
+    border: 0.5px solid #b5d4f4;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #185fa5;
+    margin-top: 0.75rem;
+  }
+
+  /* ── Modal footer ── */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border-tertiary);
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #185fa5;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    z-index: 200;
+    animation: fadeIn 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    max-width: 320px;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Confirm dialog ── */
+  .confirm-box {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border-tertiary);
+    padding: 1.25rem 1.5rem;
+    width: 360px;
+    max-width: 90vw;
+    animation: slideUp 0.2s ease;
+  }
+  .confirm-box h3 { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
+  .confirm-box p  { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">PartnerAdmin<span>Tableau de bord</span></div>
+
+    <div class="nav-item active" onclick="setView('partners', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="5.5" cy="5" r="2.5"/>
+        <path d="M1 13c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5"/>
+        <circle cx="12" cy="5" r="2"/>
+        <path d="M10.5 13c0-1.9 1.1-3.5 2.5-4"/>
+      </svg>
+      Partenaires
+    </div>
+
+    <div class="nav-item" onclick="setView('locations', this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z"/>
+        <circle cx="8" cy="6" r="1.5"/>
+      </svg>
+      Localisations
+    </div>
+
+    <div class="nav-item" style="margin-top:1rem">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 4h12M2 8h12M2 12h8"/>
+      </svg>
+      Journaux email
+    </div>
+
+    <div class="nav-item" style="margin-top:auto">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="2"/>
+        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/>
+      </svg>
+      Paramètres
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main" id="main-content"></main>
+</div>
+
+<!-- Partner modal -->
+<div class="modal-overlay" id="modal" style="display:none">
+  <div class="modal">
+    <h2 id="modal-title">Nouveau partenaire</h2>
+
+    <div class="field-row">
+      <div class="field"><label>Nom complet *</label><input type="text" id="f-name" placeholder="Ex: Société Martin"></div>
+      <div class="field"><label>Téléphone</label><input type="text" id="f-phone" placeholder="+33 6 00 00 00 00"></div>
+    </div>
+
+    <div class="field"><label>Adresse email *</label><input type="email" id="f-email" placeholder="contact@exemple.com"></div>
+
+    <div class="field">
+      <label>Localisations assignées</label>
+      <div class="loc-tags" id="loc-tags" onclick="document.getElementById('loc-input').focus()" style="position:relative">
+        <input type="text" id="loc-input" placeholder="Tapez pour filtrer..." oninput="filterLocs()" onfocus="showLocs()" onblur="setTimeout(hideLocs, 150)">
+        <div class="loc-dropdown" id="loc-dropdown" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Statut</label>
+        <select id="f-status">
+          <option value="pending">En attente</option>
+          <option value="verified">Vérifié</option>
+          <option value="inactive">Inactif</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Catégorie</label>
+        <select id="f-category">
+          <option value="distributor">Distributeur</option>
+          <option value="reseller">Revendeur</option>
+          <option value="integrator">Intégrateur</option>
+          <option value="other">Autre</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="email-notice" id="email-notice">
+      <span style="font-size:15px">✉</span>
+      Un lien de validation sécurisé sera envoyé à l'adresse email renseignée après création.
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Annuler</button>
+      <button class="btn primary" onclick="savePartner()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Location modal -->
+<div class="modal-overlay" id="loc-modal" style="display:none">
+  <div class="modal" style="width:400px">
+    <h2 id="loc-modal-title">Nouvelle localisation</h2>
+    <div class="field"><label>Nom de la ville *</label><input type="text" id="lf-name" placeholder="Ex: Paris"></div>
+    <div class="field-row">
+      <div class="field"><label>Code postal</label><input type="text" id="lf-zip" placeholder="75001"></div>
+      <div class="field"><label>Pays</label><input type="text" id="lf-country" placeholder="France"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeLocModal()">Annuler</button>
+      <button class="btn primary" onclick="saveLoc()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div class="modal-overlay" id="confirm-modal" style="display:none">
+  <div class="confirm-box">
+    <h3 id="confirm-title">Confirmer la suppression</h3>
+    <p id="confirm-msg">Cette action est irréversible.</p>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn" onclick="document.getElementById('confirm-modal').style.display='none'">Annuler</button>
+      <button class="btn danger" id="confirm-ok">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" style="display:none"></div>
+
+<script>
+/* ── Data ── */
+const LOCS_DEFAULT = [
+  {id:1, name:"Paris",       zip:"75000", country:"France"},
+  {id:2, name:"Lyon",        zip:"69000", country:"France"},
+  {id:3, name:"Marseille",   zip:"13000", country:"France"},
+  {id:4, name:"Bordeaux",    zip:"33000", country:"France"},
+  {id:5, name:"Lille",       zip:"59000", country:"France"},
+  {id:6, name:"Toulouse",    zip:"31000", country:"France"},
+  {id:7, name:"Nice",        zip:"06000", country:"France"},
+  {id:8, name:"Nantes",      zip:"44000", country:"France"},
+  {id:9, name:"Strasbourg",  zip:"67000", country:"France"},
+  {id:10,name:"Rennes",      zip:"35000", country:"France"},
+  {id:11,name:"Montpellier", zip:"34000", country:"France"},
+  {id:12,name:"Grenoble",    zip:"38000", country:"France"},
+];
+
+let locations = [...LOCS_DEFAULT];
+
+let partners = [
+  {id:1, name:"Société Martin",   email:"martin@example.com",      phone:"+33 6 11 22 33 44", locs:[1,2],    status:"verified",  category:"distributor", date:"12/01/2025"},
+  {id:2, name:"Dupont & Fils",    email:"dupont@example.com",       phone:"+33 6 55 66 77 88", locs:[4,3,6],  status:"pending",   category:"reseller",    date:"28/02/2025"},
+  {id:3, name:"Leclerc Associés", email:"leclerc@example.com",      phone:"+33 6 99 00 11 22", locs:[5],      status:"verified",  category:"integrator",  date:"05/03/2025"},
+  {id:4, name:"Innovation Sud",   email:"innovation@example.com",   phone:"+33 4 33 44 55 66", locs:[7,11],   status:"inactive",  category:"other",       date:"17/03/2025"},
+  {id:5, name:"BioTech Est",      email:"biotech@example.com",      phone:"+33 3 77 88 99 00", locs:[9,10],   status:"pending",   category:"distributor", date:"02/04/2025"},
+];
+
+let editId    = null;
+let editLocId = null;
+let selLocs   = [];
+let currentView = 'partners';
+let nextId    = 10;
+let nextLocId = 20;
+
+/* ── Utils ── */
+function today() {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+}
+
+function locName(id) {
+  const l = locations.find(x => x.id === id);
+  return l ? l.name : '?';
+}
+
+function showToast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color || '#185fa5';
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function confirm(title, msg, cb) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent   = msg;
+  document.getElementById('confirm-ok').onclick = () => {
+    document.getElementById('confirm-modal').style.display = 'none';
+    cb();
+  };
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+/* ── Stats ── */
+function getStats() {
+  return {
+    total:    partners.length,
+    verified: partners.filter(p => p.status === 'verified').length,
+    pending:  partners.filter(p => p.status === 'pending').length,
+  };
+}
+
+/* ── Navigation ── */
+function setView(view, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  currentView = view;
+  renderMain();
+}
+
+function renderMain() {
+  if (currentView === 'partners') renderPartnersView();
+  else if (currentView === 'locations') renderLocationsView();
+}
+
+/* ── Partners view ── */
+function renderPartnersView() {
+  const s = getStats();
+  document.getElementById('main-content').innerHTML = `
+    <div class="topbar">
+      <h1>Gestion des partenaires</h1>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="exportCSV()">↓ Export CSV</button>
+        <button class="btn primary" onclick="openModal('new')">+ Nouveau partenaire</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Total partenaires</div><div class="stat-val blue">${s.total}</div></div>
+      <div class="stat"><div class="stat-label">Email vérifiés</div><div class="stat-val green">${s.verified}</div></div>
+      <div class="stat"><div class="stat-label">En attente</div><div class="stat-val amber">${s.pending}</div></div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Rechercher par nom ou email…" oninput="renderTable()">
+      <select id="filter-status" onchange="renderTable()">
+        <option value="">Tous les statuts</option>
+        <option value="verified">Vérifié</option>
+        <option value="pending">En attente</option>
+        <option value="inactive">Inactif</option>
+      </select>
+      <select id="filter-category" onchange="renderTable()">
+        <option value="">Toutes catégories</option>
+        <option value="distributor">Distributeur</option>
+        <option value="reseller">Revendeur</option>
+        <option value="integrator">Intégrateur</option>
+        <option value="other">Autre</option>
+      </select>
+    </div>
+
+  <table>
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th> <th>Localisations</th>
+      <th>Catégorie</th>
+      <th>Statut</th>
+      <th>Créé le</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="table-body"></tbody>
+</table>
+  renderTable();
+}
+
+function renderTable() {
+  const q  = (document.getElementById('search')?.value || '').toLowerCase();
+  const st = document.getElementById('filter-status')?.value || '';
+  const ct = document.getElementById('filter-category')?.value || '';
+
+  const filtered = partners.filter(p => {
+    const mq = !q || p.name.toLowerCase().includes(q) || p.email.toLowerCase().includes(q);
+    const ms = !st || p.status === st;
+    const mc = !ct || p.category === ct;
+    return mq && ms && mc;
+  });
+
+  const catLabels = { distributor:'Distributeur', reseller:'Revendeur', integrator:'Intégrateur', other:'Autre' };
+  const stLabels  = { verified:'Vérifié', pending:'En attente', inactive:'Inactif' };
+
+  const rows = filtered.map(p => `
+    <tr>
+      <td style="font-weight:500">${p.name}</td>
+      <td style="color:var(--text-secondary)">${p.email}</td> <td>${p.locs.map(id => `<span class="loc-pill">${locName(id)}</span>`).join('')}</td>
+      <td style="color:var(--text-secondary);font-size:12px">${catLabels[p.category] || p.category}</td>
+      <td><span class="badge ${p.status}">${stLabels[p.status]}</span></td>
+      <td style="color:var(--text-secondary)">${p.date}</td>
+      <td>
+        <div class="actions">
+          <button class="icon-btn" title="Envoyer lien de validation" onclick="sendValidation(${p.id})">✉</button>
+          <button class="icon-btn" title="Modifier" onclick="openModal(${p.id})">✏</button>
+          <button class="icon-btn del" title="Supprimer" onclick="askDelete(${p.id})">✕</button>
+        </div>
+      </td>
+    </tr>
+  `).join('') || `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-secondary)">Aucun partenaire trouvé</td></tr>`;
+
+  document.getElementById('table-body').innerHTML = rows;
+}
+
+/* ── Locations view ── */
+function renderLocationsView() {
+  document.getElementById('main-content').innerHTML = `
+    <div class="topbar">
+      <h1>Gestion des localisations</h1>
+      <button class="btn primary" onclick="openLocModal('new')">+ Nouvelle localisation</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Total localisations</div><div class="stat-val blue">${locations.length}</div></div>
+      <div class="stat"><div class="stat-label">Avec partenaires</div><div class="stat-val green">${locations.filter(l => partners.some(p => p.locs.includes(l.id))).length}</div></div>
+      <div class="stat"><div class="stat-label">Non assignées</div><div class="stat-val amber">${locations.filter(l => !partners.some(p => p.locs.includes(l.id))).length}</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Ville</th><th>Code postal</th><th>Pays</th><th>Partenaires liés</th><th>Actions</th></tr></thead>
+      <tbody>${locations.map(l => {
+        const linked = partners.filter(p => p.locs.includes(l.id));
+        return `<tr>
+          <td style="font-weight:500">${l.name}</td>
+          <td style="color:var(--text-secondary)">${l.zip || '—'}</td>
+          <td style="color:var(--text-secondary)">${l.country || '—'}</td>
+          <td>${linked.length ? linked.map(p => `<span class="loc-pill">${p.name}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px">Aucun</span>'}</td>
+          <td><div class="actions">
+            <button class="icon-btn" title="Modifier" onclick="openLocModal(${l.id})">✏</button>
+            <button class="icon-btn del" title="Supprimer" onclick="askDeleteLoc(${l.id})">✕</button>
+          </div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  `;
+}
+
+/* ── Partner modal ── */
+function openModal(id) {
+  editId   = id === 'new' ? null : id;
+  selLocs  = [];
+
+  if (editId) {
+    const p = partners.find(x => x.id === editId);
+    document.getElementById('modal-title').textContent = 'Modifier le partenaire';
+    document.getElementById('f-name').value     = p.name;
+    document.getElementById('f-email').value    = p.email;
+    document.getElementById('f-phone').value    = p.phone;
+    document.getElementById('f-status').value   = p.status;
+    document.getElementById('f-category').value = p.category;
+    selLocs = [...p.locs];
+    document.getElementById('email-notice').style.display = 'none';
+  } else {
+    document.getElementById('modal-title').textContent = 'Nouveau partenaire';
+    ['f-name','f-email','f-phone'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-status').value   = 'pending';
+    document.getElementById('f-category').value = 'distributor';
+  }
+  renderLocTags();
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+/* ── Location tag input ── */
+function renderLocTags() {
+  const container = document.getElementById('loc-tags');
+  const inp       = document.getElementById('loc-input');
+  container.innerHTML = '';
+  selLocs.forEach(id => {
+    const span = document.createElement('span');
+    span.className = 'loc-tag';
+    span.innerHTML = `${locName(id)}<button type="button" onclick="removeLoc(${id})">×</button>`;
+    container.appendChild(span);
+  });
+  container.appendChild(inp);
+  const dd = document.getElementById('loc-dropdown');
+  container.appendChild(dd);
+}
+
+function removeLoc(id) { selLocs = selLocs.filter(x => x !== id); renderLocTags(); }
+
+function filterLocs() {
+  const q    = document.getElementById('loc-input').value.toLowerCase();
+  const avail = locations.filter(l => !selLocs.includes(l.id) && l.name.toLowerCase().includes(q));
+  const dd   = document.getElementById('loc-dropdown');
+  dd.innerHTML = avail.map(l => `<div class="loc-opt" onmousedown="addLoc(${l.id})">${l.name}</div>`).join('');
+  dd.style.display = avail.length ? 'block' : 'none';
+}
+
+function showLocs() { filterLocs(); }
+function hideLocs()  { document.getElementById('loc-dropdown').style.display = 'none'; }
+
+function addLoc(id) {
+  selLocs.push(id);
+  document.getElementById('loc-input').value = '';
+  renderLocTags();
+  filterLocs();
+}
+
+/* ── Save partner ── */
+function savePartner() {
+  const name     = document.getElementById('f-name').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+  const phone    = document.getElementById('f-phone').value.trim();
+  const status   = document.getElementById('f-status').value;
+  const category = document.getElementById('f-category').value;
+
+  if (!name)  { showToast('Le nom est obligatoire', '#a32d2d'); return; }
+  if (!email) { showToast('L\'email est obligatoire', '#a32d2d'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Format email invalide', '#a32d2d'); return; }
+
+  if (editId) {
+    const p = partners.find(x => x.id === editId);
+    Object.assign(p, { name, email, phone, locs: selLocs, status, category });
+    showToast('Partenaire mis à jour avec succès');
+  } else {
+    partners.push({ id: nextId++, name, email, phone, locs: selLocs, status, category, date: today() });
+    const msg = status === 'pending'
+      ? `Partenaire créé · Lien de validation envoyé à ${email}`
+      : 'Partenaire créé avec succès';
+    showToast(msg);
+  }
+  closeModal();
+  renderMain();
+}
+
+/* ── Delete partner ── */
+function askDelete(id) {
+  const p = partners.find(x => x.id === id);
+  confirm('Supprimer le partenaire', `"${p.name}" sera définitivement supprimé.`, () => {
+    partners = partners.filter(x => x.id !== id);
+    renderMain();
+    showToast('Partenaire supprimé', '#5f5e5a');
+  });
+}
+
+/* ── Send validation ── */
+function sendValidation(id) {
+  const p = partners.find(x => x.id === id);
+  // TODO: POST /api/partners/:id/send-verification
+  showToast(`Lien de validation envoyé à ${p.email}`);
+}
+
+/* ── Location modal ── */
+function openLocModal(id) {
+  editLocId = id === 'new' ? null : id;
+  if (editLocId) {
+    const l = locations.find(x => x.id === editLocId);
+    document.getElementById('loc-modal-title').textContent = 'Modifier la localisation';
+    document.getElementById('lf-name').value    = l.name;
+    document.getElementById('lf-zip').value     = l.zip || '';
+    document.getElementById('lf-country').value = l.country || '';
+  } else {
+    document.getElementById('loc-modal-title').textContent = 'Nouvelle localisation';
+    ['lf-name','lf-zip','lf-country'].forEach(id => document.getElementById(id).value = '');
+  }
+  document.getElementById('loc-modal').style.display = 'flex';
+}
+
+function closeLocModal() { document.getElementById('loc-modal').style.display = 'none'; }
+
+function saveLoc() {
+  const name    = document.getElementById('lf-name').value.trim();
+  const zip     = document.getElementById('lf-zip').value.trim();
+  const country = document.getElementById('lf-country').value.trim();
+  if (!name) { showToast('Le nom de la ville est obligatoire', '#a32d2d'); return; }
+
+  if (editLocId) {
+    const l = locations.find(x => x.id === editLocId);
+    Object.assign(l, { name, zip, country });
+    showToast('Localisation mise à jour');
+  } else {
+    locations.push({ id: nextLocId++, name, zip, country });
+    showToast('Localisation créée');
+  }
+  closeLocModal();
+  renderMain();
+}
+
+function askDeleteLoc(id) {
+  const l = locations.find(x => x.id === id);
+  const used = partners.filter(p => p.locs.includes(id)).length;
+  const msg  = used ? `"${l.name}" est utilisée par ${used} partenaire(s). Cette action est irréversible.` : `"${l.name}" sera définitivement supprimée.`;
+  confirm('Supprimer la localisation', msg, () => {
+    locations = locations.filter(x => x.id !== id);
+    partners.forEach(p => { p.locs = p.locs.filter(x => x !== id); });
+    renderMain();
+    showToast('Localisation supprimée', '#5f5e5a');
+  });
+}
+
+/* ── Export CSV ── */
+function exportCSV() {
+  const header = ['ID','Nom','Email','Téléphone','Localisations','Catégorie','Statut','Créé le'];
+  const rows   = partners.map(p => [
+    p.id, p.name, p.email, p.phone,
+    p.locs.map(locName).join(' | '),
+    p.category, p.status, p.date
+  ]);
+  const csv    = [header, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob   = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url    = URL.createObjectURL(blob);
+  const a      = document.createElement('a');
+  a.href = url; a.download = 'partenaires.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Export CSV téléchargé');
+}
+
+/* ── Init ── */
+renderMain();
+</script>
+</body>
+</html>

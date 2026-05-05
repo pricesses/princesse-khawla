@@ -1,0 +1,23 @@
+{% load i18n %}{% autoescape off %}
+{% trans "Hello" %} {{ company_name }},
+
+{% trans "Thank you for joining FielMedina!" %}
+
+{% if username or password %}
+{% trans "Your login credentials:" %}
+{% if username %}  {% trans "Username:" %} {{ username }}{% endif %}
+{% if password %}  {% trans "Password:" %} {{ password }}{% endif %}
+
+{% trans "Please keep this information secure." %}
+{% endif %}
+
+{% trans "To activate your account, please click on the link below:" %}
+
+{{ verification_url }}
+
+{% trans "This link will expire in 24 hours." %}
+
+{% trans "If you did not create an account, you can safely ignore this email." %}
+
+{% trans "The FielMedina Team" %}
+{% endautoescape %}

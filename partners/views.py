@@ -22,9 +22,19 @@ from partners.receipt import send_receipt
 def partner_required(view_func):
     @login_required(login_url='shared:login')
     def wrapper(request, *args, **kwargs):
-        try:
+        partner = None
+        # Try new Partner profile
+        if hasattr(request.user, 'partner_profile'):
             partner = request.user.partner_profile
-        except Partner.DoesNotExist:
+        # Try LegacyPartner profile
+        elif hasattr(request.user, 'legacy_partner_profile'):
+            partner = request.user.legacy_partner_profile
+            # Check verification status for legacy partners
+            if not partner.is_verified:
+                messages.error(request, _("Votre compte partenaire n'est pas encore vérifié."))
+                return redirect('shared:login')
+        
+        if not partner:
             return redirect('guard:dashboard')
 
         if not partner.is_active:
@@ -455,13 +465,10 @@ def change_password(request):
 def change_email(request):
     partner = request.partner
     if request.method == 'POST':
-        new_email     = request.POST.get('new_email', '').strip().lower()
-        confirm_email = request.POST.get('confirm_email', '').strip().lower()
+        new_email = request.POST.get('new_email', '').strip().lower()
 
         if not new_email or new_email == partner.email:
             messages.error(request, "Email invalide ou identique à l'actuel.", extra_tags='email')
-        elif new_email != confirm_email:
-            messages.error(request, "Les emails ne correspondent pas.", extra_tags='email')
         elif Partner.objects.filter(email=new_email).exists():
             messages.error(request, "Cet email est déjà utilisé.", extra_tags='email')
         else:

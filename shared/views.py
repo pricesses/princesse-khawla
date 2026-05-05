@@ -60,8 +60,16 @@ class CustomLoginView(LoginView):
                     return reverse_lazy('partners:dashboard')
             except Exception:
                 pass
+        
+        # 3. Legacy Partner actif → Partner Dashboard
+        if hasattr(user, 'legacy_partner_profile'):
+            try:
+                if user.legacy_partner_profile.is_verified:
+                    return reverse_lazy('partners:dashboard')
+            except Exception:
+                pass
 
-        # 3. Default → partner dashboard (jamais login pour éviter loop)
+        # 4. Default → partner dashboard (jamais login pour éviter loop)
         return reverse_lazy('partners:dashboard')
 
     def form_valid(self, form):

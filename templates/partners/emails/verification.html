@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .content { padding: 30px 20px; text-align: center; }
+        .footer { text-align: center; font-size: 12px; color: #b2bec3; padding-top: 20px; border-top: 1px solid #f0f0f0; padding-bottom: 20px; }
+        .emphasis { color: #6c5ce7; font-weight: bold; }
+        .verify-link { color: #6c5ce7; word-break: break-all; font-size: 14px; }
+        .brand-header {
+            background: linear-gradient(135deg, #1a2a4a 0%, #0d1b35 100%);
+            border-radius: 12px 12px 0 0;
+            padding: 35px 20px 30px;
+            text-align: center;
+        }
+        .brand-header h1 { color: #ffffff; font-size: 22px; font-weight: 700; margin: 0 0 6px 0; }
+        .brand-header p { color: #a0aec0; font-size: 14px; margin: 0; }
+    </style>
+</head>
+<body>
+{% load i18n static %}
+<div class="container">
+    <div class="brand-header">
+        <img src="cid:icon_id" alt="FielMedina" style="width:56px; height:56px; border-radius:10px; display:block; margin:0 auto 18px auto;">
+        <h1>{% trans "Verify your account" %}</h1>
+        <p>{% trans "Partner account activation" %}</p>
+    </div>
+    <div class="content">
+        <p>{% blocktrans %}Hello <strong>{{ company_name }}</strong>,{% endblocktrans %}</p>
+        <p>{% trans "Thank you for registering on our partner management platform." %}</p>
+        
+        {% if username or password %}
+        <div style="background:#f8f4ff; border:1px solid #6c5ce7; border-radius:8px; padding:15px; margin:20px 0; text-align:left;">
+            <p style="margin:0 0 8px 0; font-weight:bold; color:#6c5ce7;">{% trans "Your login credentials:" %}</p>
+            {% if username %}
+            <p style="margin:4px 0;"><strong>{% trans "Username:" %}</strong> {{ username }}</p>
+            {% endif %}
+            {% if password %}
+            <p style="margin:4px 0;"><strong>{% trans "Password:" %}</strong> {{ password }}</p>
+            {% endif %}
+            <p style="margin:8px 0 0 0; font-size:12px; color:#636e72;">{% trans "Please keep this information secure." %}</p>
+        </div>
+        {% endif %}
+
+        <p>{% trans "To activate your account, please click on the link below:" %}</p>
+        <p>
+            <a href="{{ verification_url }}" class="verify-link">{{ verification_url }}</a>
+        </p>
+        <p style="margin-top: 20px; font-size: 14px; color: #636e72;">
+            {% blocktrans %}This security link will expire in <span class="emphasis">24 hours</span>.{% endblocktrans %}
+        </p>
+    </div>
+    <div class="footer">
+        <p>{% trans "&copy; 2026 FielMedina. All rights reserved." %}</p>
+        <p>{% trans "If you did not make this request, you can safely ignore this email." %}</p>
+    </div>
+</div>
+</body>

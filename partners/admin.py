@@ -243,21 +243,21 @@ class PartnerAdmin(admin.ModelAdmin):
         if not obj.is_trial:
             return '—'
         if obj.is_trial_expired:
-            return format_html('<span style="color:red">🔴 Trial expiré</span>')
+            return format_html('<span style="color:red">{}</span>', '🔴 Trial expiré')
         if obj.trial_end:
             days = (obj.trial_end - timezone.now().date()).days
             return format_html('<span style="color:green">🟢 Trial — {} j restants</span>', days)
-        return format_html('<span style="color:blue">🔵 Trial</span>')
+        return format_html('<span style="color:blue">{}</span>', '🔵 Trial')
     trial_display.short_description = "Trial"
 
     def status_display(self, obj):
         if obj.is_temporarily_disabled:
-            return format_html('<span style="color:orange">⏸ Désactivé</span>')
+            return format_html('<span style="color:orange">{}</span>', '⏸ Désactivé')
         if obj.account_frozen:
-            return format_html('<span style="color:red">🔒 Suspendu</span>')
+            return format_html('<span style="color:red">{}</span>', '🔒 Suspendu')
         if obj.is_verified:
-            return format_html('<span style="color:green">✅ Actif</span>')
-        return format_html('<span style="color:gray">⏳ En attente</span>')
+            return format_html('<span style="color:green">{}</span>', '✅ Actif')
+        return format_html('<span style="color:gray">{}</span>', '⏳ En attente')
     status_display.short_description = "Statut"
 
     def days_left_display(self, obj):
@@ -265,7 +265,7 @@ class PartnerAdmin(admin.ModelAdmin):
         if days is None:
             return "—"
         if days <= 0:
-            return format_html('<span style="color:red">Expiré</span>')
+            return format_html('<span style="color:red">{}</span>', 'Expiré')
         return f"{days} jours"
     days_left_display.short_description = "Expiration"
 

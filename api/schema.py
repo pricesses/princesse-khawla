@@ -37,7 +37,7 @@ from partners.models import (
 @strawberry.type
 class ImageFieldType:
     @strawberry.field
-    def url(self, info, root) -> str:
+    def url(self, info: strawberry.Info, root) -> str:
         if not root:
             return ""
         try:

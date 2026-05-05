@@ -1,8 +1,9 @@
 import os
 import uuid
+import hashlib  # ← AJOUT ISLEM
 from io import BytesIO
 
-
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin  # ← AJOUT ISLEM
 from django.db import models
 from django.db.models.signals import post_delete
 from django.db.models import FileField
@@ -18,6 +19,9 @@ from PIL import Image as PilImage
 from PIL import ImageOps
 from django.utils import timezone
 from datetime import timedelta
+# ⚠️  Vérifie les chemins exacts de UUIDModel, TimeStampedModel, CustomUserManager dans ton projet
+# from model_utils.models import UUIDModel, TimeStampedModel
+# from guard.managers import CustomUserManager
 
 
 def location_image_path(instance, filename):
@@ -144,6 +148,15 @@ class Location(models.Model):
         blank=True,
         related_name="locations",
         verbose_name=_("Category"),
+    )
+    # ── AJOUT ISLEM : lien vers le partenaire propriétaire ──
+    partner = models.ForeignKey(
+        'guard.LegacyPartner',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="owned_locations",
+        verbose_name=_("Partner"),
     )
     name = models.CharField(max_length=255)
     country = models.ForeignKey(
@@ -541,10 +554,33 @@ def resize_to_fixed(image_field, size=(300, 200)):
         return None
 
 
-class Partner(models.Model):
+# =============================================================================
+# PARTNER — AJOUT ISLEM : renommé LegacyPartner + email + locations + is_verified
+# =============================================================================
+class LegacyPartner(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Name"))
     image = models.ImageField(upload_to="partners/", verbose_name=_("Image"))
     link = models.URLField(verbose_name=_("Link"))
+
+    # ── AJOUT ISLEM ──
+    user = models.OneToOneField(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='legacy_partner_profile',
+        null=True,
+        blank=True,
+        verbose_name=_("User Account")
+    )
+    email = models.EmailField(unique=True, verbose_name=_("Email"), null=True, blank=True)
+    locations = models.ManyToManyField(
+        "Location",
+        blank=True,
+        related_name="legacy_partners",
+        verbose_name=_("Locations"),
+    )
+    is_verified = models.BooleanField(default=False, verbose_name=_("Is Verified"))
+    created_at = models.DateTimeField(auto_now_add=True)
+    # ─────────────────
 
     class Meta:
         verbose_name = _("Partner")
@@ -562,7 +598,66 @@ class Partner(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def is_active(self):
+        return self.is_verified
 
+    @property
+    def events(self):
+        if self.user and hasattr(self.user, 'profile'):
+            return self.user.profile.events.all()
+        return Event.objects.none()
+
+    @property
+    def ads(self):
+        from guard.models import Ad
+        if self.user and hasattr(self.user, 'profile'):
+            return Ad.objects.filter(client=self.user.profile)
+        return Ad.objects.none()
+
+    @property
+    def is_contract_active(self):
+        return True
+
+    @property
+    def days_until_expiry(self):
+        return 365
+
+    @property
+    def can_add_content(self):
+        return True
+
+    @property
+    def logo(self):
+        return self.image
+
+    @property
+    def company_name(self):
+        return self.name
+
+
+# Alias pour ne pas casser l'ancien code qui utilise encore "Partner"
+Partner = LegacyPartner
+
+# CLICKS
+# =============================================================================
+class AdClick(models.Model):
+    ad         = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name="click_records")
+    clicked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name        = _("Ad Click Record")
+        verbose_name_plural = _("Ad Click Records")
+
+
+class EventClick(models.Model):
+    event      = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="click_records")
+    clicked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name        = _("Event Click Record")
+        verbose_name_plural = _("Event Click Records")
+        
 class Sponsor(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Name"))
     image = models.ImageField(upload_to="sponsors/", verbose_name=_("Image"))
@@ -585,7 +680,7 @@ class Sponsor(models.Model):
         return self.name
 
 
-@receiver(post_delete, sender=Partner)
+@receiver(post_delete, sender=LegacyPartner)
 @receiver(post_delete, sender=Sponsor)
 def cleanup_all_files(sender, instance, **kwargs):
     for field in instance._meta.fields:
@@ -713,3 +808,33 @@ class ClickLog(models.Model):
 
     def __str__(self):
         return f"{self.content_type} #{self.object_id} — {self.clicked_at:%Y-%m-%d %H:%M}"
+
+
+# =============================================================================
+# AJOUT ISLEM — Token de vérification email
+# =============================================================================
+class EmailVerificationToken(models.Model):
+    """
+    Jeton UUID à usage unique pour valider l'email d'un partenaire.
+    Lié à LegacyPartner. Expire après TOKEN_EXPIRY_HOURS heures.
+    """
+    id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    partner    = models.ForeignKey(
+        LegacyPartner,
+        on_delete=models.CASCADE,
+        related_name='verification_tokens',
+    )
+    expires_at = models.DateTimeField()
+    is_used    = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name        = _("Email Verification Token")
+        verbose_name_plural = _("Email Verification Tokens")
+
+    def is_valid(self):
+        """Retourne True si le token n'est pas expiré et pas encore utilisé."""
+        return not self.is_used and self.expires_at > timezone.now()
+
+    def __str__(self):
+        return f'Token[{self.id}] → {self.partner.email}'

@@ -22,12 +22,14 @@ PERIOD_MONTHS = {
     '12_months': 12,
 }
 
+from django.utils.translation import gettext_lazy as _
+
 PERIOD_LABELS = {
-    '1_month':   '1 Mois',
-    '3_months':  '3 Mois',
-    '6_months':  '6 Mois',
-    '10_months': '10 Mois',
-    '12_months': '12 Mois (1 An)',
+    '1_month':   _('1 month'),
+    '3_months':  _('3 months'),
+    '6_months':  _('6 months'),
+    '10_months': _('10 months'),
+    '12_months': _('1 year'),
 }
 
 # ── CAT 2 : Prix boost événement ──────────────────────────────────────────────
