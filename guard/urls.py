@@ -63,6 +63,11 @@ from .views import (
     SponsorCreateView,
     SponsorUpdateView,
     SponsorDeleteView,
+    # ── Guides ───────────────────────────────────────────────────────
+    GuideListView,
+    GuideCreateView,
+    GuideUpdateView,
+    GuideDeleteView,
     # ── API helpers ──────────────────────────────────────────────────
     get_cities_by_country,
     get_subregions_by_city,
@@ -130,6 +135,12 @@ urlpatterns = [
             path("sponsors/create/", SponsorCreateView.as_view(), name="sponsor_create"),
             path("sponsors/update/<int:pk>/", SponsorUpdateView.as_view(), name="sponsor_update"),
             path("sponsors/delete/<int:pk>/", SponsorDeleteView.as_view(), name="sponsor_delete"),
+
+            # Guides
+            path("guides/", GuideListView.as_view(), name="guidesList"),
+            path("guides/create/", GuideCreateView.as_view(), name="guide_create"),
+            path("guides/update/<int:pk>/", GuideUpdateView.as_view(), name="guide_update"),
+            path("guides/delete/<int:pk>/", GuideDeleteView.as_view(), name="guide_delete"),
 
             # Staff Ads
             path("adsList/", AdListView.as_view(), name="adsList"),

@@ -1,0 +1,173 @@
+{% extends 'guard/base/index.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Guides" %}{% endblock title %}
+
+{% block body %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div class="flex items-center gap-4">
+        <div class="p-3 bg-blue-600/10 rounded-2xl">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+        </div>
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{% trans "Guide Management" %}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">{% trans "Review and manage all registered tour guides." %}</p>
+        </div>
+    </div>
+    <div class="flex gap-3">
+        <a href="{% url 'guard:guide_create' %}" class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none hover:bg-blue-700 transition-all duration-200 font-bold text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            {% trans "Register New Guide" %}
+        </a>
+    </div>
+</div>
+
+<div class="bg-white dark:bg-gray-800/50 rounded-3xl shadow-xl shadow-gray-200/40 dark:shadow-none border border-gray-100 dark:border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table id="guide-list" class="w-full text-sm text-left border-collapse">
+            <thead class="text-[11px] text-gray-400 uppercase bg-gray-50/80 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-700 tracking-wider font-bold">
+                <tr>
+                    <th class="px-6 py-5">{% trans "Identity" %}</th>
+                    <th class="px-6 py-5">{% trans "Contact & Support" %}</th>
+                    <th class="px-6 py-5">{% trans "Earnings" %}</th>
+                    <th class="px-6 py-5">{% trans "Account Status" %}</th>
+                    <th class="px-6 py-5 text-right">{% trans "Management" %}</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
+                {% for data in guides %}
+                <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-4">
+                            <div class="relative flex-shrink-0">
+                                {% if data.photo %}
+                                    <img src="{{ data.photo.url }}" class="w-12 h-12 rounded-2xl object-cover ring-2 ring-white dark:ring-gray-700 shadow-sm">
+                                {% else %}
+                                    <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-lg">
+                                        {{ data.user.first_name|first|default:"G" }}
+                                    </div>
+                                {% endif %}
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></div>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ data.user.first_name }} {{ data.user.last_name }}</div>
+                                <div class="text-[10px] font-medium text-gray-400 truncate">• @{{ data.user.username }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-xs font-bold text-gray-700 dark:text-gray-300">{{ data.email }}</div>
+                        <div class="text-[10px] text-gray-400 font-medium mt-0.5">{{ data.phone|default:"No contact number" }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400 leading-none">{{ data.wallet_balance|default:"0.000" }}</span>
+                            <span class="text-[9px] text-gray-400 font-bold uppercase mt-1">{% trans "TND Balance" %}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-100/50 dark:border-blue-800/50">
+                            {% trans "Active" %}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{% url 'guard:guide_update' data.id %}" class="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all" title="{% trans 'Edit Profile' %}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            </a>
+                            <a href="{% url 'guard:guide_delete' data.id %}" class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all" title="{% trans 'Remove Guide' %}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-24 text-center">
+                        <div class="max-w-xs mx-auto text-center">
+                            <div class="w-20 h-20 bg-gray-50 dark:bg-gray-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                            </div>
+                            <h4 class="text-base font-bold text-gray-900 dark:text-white mb-2">{% trans "No guides registered" %}</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-6 font-medium">{% trans "Start building your network by adding your first tour guide." %}</p>
+                            <a href="{% url 'guard:guide_create' %}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-xs font-bold rounded-xl hover:bg-blue-700 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                                {% trans "Add First Guide" %}
+                            </a>
+                        </div>
+                    </td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock body %}
+
+{% block extrascript %}
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+<script>
+if (document.getElementById("guide-list") && typeof simpleDatatables.DataTable !== 'undefined') {
+   const dataTable = new simpleDatatables.DataTable("#guide-list", {
+      searchable: true,
+      perPageSelect: false,
+      labels: {
+          placeholder: "{% trans 'Search professional guides...' %}",
+          noRows: "{% trans 'No guides found' %}",
+          info: "{% trans 'Showing {start} to {end} of {rows} entries' %}"
+      }
+   });
+   
+   // Add custom styling to datatable elements
+   const searchInput = document.querySelector('.datatable-input');
+   if (searchInput) {
+       searchInput.classList.add('bg-gray-50', 'dark:bg-gray-900/30', 'border-none', 'rounded-2xl', 'text-xs', 'font-bold', 'p-4', 'focus:ring-2', 'focus:ring-blue-500/20', 'transition-all', 'w-full', 'sm:w-72', 'dark:text-white', 'placeholder-gray-400');
+   }
+}
+</script>
+<style>
+/* Datatable Overrides */
+.datatable-wrapper .datatable-top {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+.datatable-search {
+    width: 100%;
+}
+@media (min-width: 640px) {
+    .datatable-search { width: auto; }
+}
+.datatable-container {
+    border-top: 1px solid rgba(0,0,0,0.03);
+}
+.dark .datatable-container {
+    border-top-color: rgba(255,255,255,0.03);
+}
+.datatable-bottom {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(0,0,0,0.03);
+}
+.dark .datatable-bottom {
+    border-top-color: rgba(255,255,255,0.03);
+}
+.datatable-info {
+    font-size: 10px !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9ca3af !important;
+}
+/* Ensure table layout is consistent */
+table.datatable-table {
+    border-collapse: collapse !important;
+}
+.datatable-table thead th {
+    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+.dark .datatable-table thead th {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+}
+</style>
+{% endblock extrascript %}

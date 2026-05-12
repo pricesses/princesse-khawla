@@ -1148,6 +1148,112 @@ def verify_partner_email(request):
         return HttpResponse("Le lien est invalide ou a expiré.", status=400)
 
 # =============================================================================
+# GUIDES (Custom Admin CRUD)
+# =============================================================================
+from guides.models import Guide
+from guides.forms import GuideAdminForm
+from guides.email_utils import send_guide_welcome_email
+import string
+import secrets
+
+class GuideListView(UserPassesTestMixin, LoginRequiredMixin, ListView):
+    model = Guide
+    template_name = "guard/views/guides/list.html"
+    context_object_name = "guides"
+    ordering = ["-created_at"]
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+class GuideCreateView(UserPassesTestMixin, LoginRequiredMixin, CreateView):
+    model = Guide
+    form_class = GuideAdminForm
+    template_name = "guard/views/guides/index.html"
+    success_url = reverse_lazy("guard:guidesList")
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        plain_password = form.cleaned_data.get('password') or ''.join(
+            secrets.choice(string.ascii_letters + string.digits) for _ in range(10)
+        )
+        
+        # Create user account
+        if not self.object.user_id:
+            base_username = form.cleaned_data.get('first_name', '') + '_' + form.cleaned_data.get('last_name', '')
+            base_username = base_username.strip('_').lower()
+            if not base_username:
+                base_username = self.object.email.split('@')[0]
+            
+            username = base_username
+            counter = 1
+            while User.objects.filter(username=username).exists():
+                username = f"{base_username}{counter}"
+                counter += 1
+
+            user = User.objects.create_user(
+                username=username,
+                email=self.object.email,
+                password=plain_password,
+                is_active=True,
+                first_name=form.cleaned_data.get('first_name', ''),
+                last_name=form.cleaned_data.get('last_name', '')
+            )
+            self.object.user = user
+        
+        self.object.save()
+        
+        # Send welcome email
+        try:
+            send_guide_welcome_email(self.object, plain_password)
+            messages.success(self.request, _("Guide created successfully. An email with credentials was sent."))
+        except Exception as e:
+            logger.error(f"Error sending guide email: {e}")
+            messages.warning(self.request, _("Guide created, but welcome email could not be sent."))
+
+        return HttpResponseRedirect(self.get_success_url())
+
+class GuideUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
+    model = Guide
+    form_class = GuideAdminForm
+    template_name = "guard/views/guides/index.html"
+    success_url = reverse_lazy("guard:guidesList")
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def form_valid(self, form):
+        self.object = form.save()
+        # Update user names
+        if self.object.user:
+            self.object.user.first_name = form.cleaned_data.get('first_name', '')
+            self.object.user.last_name = form.cleaned_data.get('last_name', '')
+            self.object.user.save(update_fields=['first_name', 'last_name'])
+
+        messages.success(self.request, _("Guide updated successfully."))
+        return HttpResponseRedirect(self.get_success_url())
+
+class GuideDeleteView(UserPassesTestMixin, LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Guide
+    template_name = "guard/views/guides/delete.html"
+    success_url = reverse_lazy("guard:guidesList")
+    success_message = _("Guide deleted successfully.")
+
+    def delete(self, request, *args, **kwargs):
+        guide = self.get_object()
+        user = guide.user
+        response = super().delete(request, *args, **kwargs)
+        if user:
+            user.delete()
+        messages.success(self.request, self.success_message)
+        return response
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+# =============================================================================
 # SPONSORS (AJOUT ISLEM — now with UserPassesTestMixin)
 # =============================================================================
 

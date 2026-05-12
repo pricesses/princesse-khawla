@@ -1,0 +1,13 @@
+# 
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "dashboard_hero_subtitle"
+msgstr "Your professional performance at a glance. Manage your suggestions and track your earnings here."
+
+msgid "guide_tips_description"
+msgstr "Guides with detailed descriptions and multiple languages receive 40% more suggestions on average."
+

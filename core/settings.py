@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "guard",
     "shared",
     "partners",
+    "guides",
 ]
 
 MIDDLEWARE = [

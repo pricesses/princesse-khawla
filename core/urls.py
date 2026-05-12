@@ -15,6 +15,7 @@ urlpatterns = [
     path("tinymce/", include("tinymce.urls")),
     path("i18n/", include("django.conf.urls.i18n")),
     path("partners/", include("partners.urls", namespace="partners")),
+    path("guides/", include("guides.urls")),
     path("graphql/", AsyncGraphQLView.as_view(schema=schema)),
     path("", include("api.urls")),
     path("", include("shared.urls")),

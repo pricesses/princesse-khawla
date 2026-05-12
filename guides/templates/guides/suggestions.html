@@ -1,0 +1,90 @@
+{% extends "guard/views/dashboard.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{% trans "Suggestions History" %}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">{% trans "View and manage all your tour guide requests." %}</p>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-[10px] uppercase font-black tracking-widest text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <th class="px-6 py-5">{% trans "Client Detail" %}</th>
+                        <th class="px-6 py-5">{% trans "Visit Date" %}</th>
+                        <th class="px-6 py-5 text-center">{% trans "Status" %}</th>
+                        <th class="px-6 py-5">{% trans "Group Composition" %}</th>
+                        <th class="px-6 py-5 text-center">{% trans "Total Price" %}</th>
+                        <th class="px-6 py-5 text-right">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
+                    {% for sug in suggestions %}
+                    <tr class="hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors">
+                        <td class="px-6 py-5">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">{{ sug.client_name }}</span>
+                                <span class="text-[10px] text-gray-400 font-medium">{{ sug.client_email }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5">
+                            <span class="text-xs font-bold text-gray-700 dark:text-gray-300">{{ sug.date|date:"d/m/Y" }}</span>
+                        </td>
+                        <td class="px-6 py-5 text-center">
+                            {% if sug.status == 'approved' %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50">
+                                    {% trans "Approved" %}
+                                </span>
+                            {% elif sug.status == 'rejected' %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-800/50">
+                                    {% trans "Rejected" %}
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/50">
+                                    {% trans "Pending" %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-5">
+                            <div class="flex gap-2">
+                                <span class="text-[10px] font-bold px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400">Ad: {{ sug.nb_adults }}</span>
+                                <span class="text-[10px] font-bold px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400">Child >6: {{ sug.nb_children_over_6 }}</span>
+                                <span class="text-[10px] font-bold px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400">Child <6: {{ sug.nb_children_under_6 }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-5 text-center">
+                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">{{ sug.total_price|floatformat:3 }} TND</span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            {% if sug.status == 'pending' %}
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{% url 'approve_suggestion' sug.pk %}" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-[10px] font-black transition-all">
+                                    {% trans "Approve" %}
+                                </a>
+                                <a href="{% url 'reject_suggestion' sug.pk %}" class="px-3 py-1.5 bg-white dark:bg-gray-700 border border-rose-100 dark:border-rose-900/50 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl text-[10px] font-black transition-all">
+                                    {% trans "Reject" %}
+                                </a>
+                            </div>
+                            {% else %}
+                            <span class="text-[10px] font-black uppercase text-gray-400">{% trans "Processed" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-400 font-medium text-sm">
+                            {% trans "No suggestions history available." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

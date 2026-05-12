@@ -13,9 +13,9 @@
             </path>
           </svg>
         </button>
-        <a href="{% if partner %}{% url 'partners:dashboard' %}{% else %}{% url 'guard:dashboard' %}{% endif %}" class="flex ms-2 md:me-24">
+        <a href="{% if partner %}{% url 'partners:dashboard' %}{% else %}{% url 'guard:dashboard' %}{% endif %}" class="flex ms-1 sm:ms-2 md:me-24">
           <img src="{% static 'logo.png' %}" class="h-10 -me-2" alt="FielMedina Logo" />
-          <span class="self-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
+          <span class="hidden sm:inline-flex self-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
         </a>
       </div>
 
@@ -45,6 +45,10 @@
               <li>
                 {% if partner %}
                   <a href="{% url 'partners:account' %}"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                    role="menuitem">{% trans "Settings" %}</a>
+                {% elif guide %}
+                  <a href="{% url 'guide_settings' %}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem">{% trans "Settings" %}</a>
                 {% else %}

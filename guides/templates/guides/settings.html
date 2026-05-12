@@ -1,0 +1,198 @@
+{% extends "guard/views/dashboard.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">{% trans "Profile Settings" %}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">{% trans "Manage your professional identity and service preferences." %}</p>
+        </div>
+        <button type="submit" form="settings-form" class="px-8 py-3 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 transition-all font-black text-sm">
+            {% trans "Save Changes" %}
+        </button>
+    </div>
+
+    <form id="settings-form" method="post" enctype="multipart/form-data" class="space-y-8">
+        {% csrf_token %}
+
+        <!-- Section: Account Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-[2.5rem] p-8 border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/40 dark:shadow-none">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-2xl text-blue-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <h3 class="text-lg font-black text-gray-900 dark:text-white">{% trans "Account Information" %}</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "First Name" %}</label>
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Last Name" %}</label>
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Email Address" %}</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                    <p class="text-[10px] text-gray-400 font-medium ml-1 italic">{% trans "Note: Changing your email will require verification." %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Professional Profile -->
+        <div class="bg-white dark:bg-gray-800 rounded-[2.5rem] p-8 border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/40 dark:shadow-none">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-2xl text-amber-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                </div>
+                <h3 class="text-lg font-black text-gray-900 dark:text-white">{% trans "Professional Profile" %}</h3>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Photo Upload -->
+                <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <div class="relative group">
+                        <div class="relative">
+                            {% if guide.photo %}
+                                <img src="{{ guide.photo.url }}" id="photo-preview" class="w-32 h-32 rounded-[2rem] object-cover ring-4 ring-gray-50 dark:ring-gray-700 shadow-lg group-hover:opacity-75 transition-opacity">
+                            {% else %}
+                                <div id="photo-placeholder" class="w-32 h-32 rounded-[2rem] bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-400 group-hover:bg-indigo-100 transition-colors">
+                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                </div>
+                            {% endif %}
+                            <label for="{{ form.photo.id_for_label }}" class="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 rounded-[2rem] cursor-pointer transition-opacity">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-4 w-full">
+                        <div class="space-y-2">
+                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Profile Photo" %}</label>
+                            <div class="flex items-center gap-3">
+                                <label for="{{ form.photo.id_for_label }}" class="flex-1 flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-700 rounded-2xl cursor-pointer hover:border-blue-400 transition-all group">
+                                    <span id="file-name" class="text-xs font-bold text-gray-400 truncate">{% if guide.photo %}{{ guide.photo.name|truncatechars:20 }}{% else %}{% trans "Choose a professional photo..." %}{% endif %}</span>
+                                    <span class="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase rounded-lg group-hover:bg-blue-700 transition-colors">{% trans "Browse" %}</span>
+                                </label>
+                                <div class="hidden">
+                                    {{ form.photo }}
+                                </div>
+                            </div>
+                            {{ form.photo.errors }}
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Contact Phone" %}</label>
+                            {{ form.phone }}
+                            {{ form.phone.errors }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "About You (Bio)" %}</label>
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Spoken Languages" %}</label>
+                    {{ form.languages }}
+                    {{ form.languages.errors }}
+                    <p class="text-[10px] text-gray-400 font-medium ml-1 italic">{% trans "Separate languages with commas (e.g. Arabic, English, French)." %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Service Pricing -->
+        <div class="bg-white dark:bg-gray-800 rounded-[2.5rem] p-8 border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/40 dark:shadow-none">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl text-emerald-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <h3 class="text-lg font-black text-gray-900 dark:text-white">{% trans "Service Pricing" %}</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                <div class="space-y-4">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative">
+                            {{ form.accepts_children }}
+                        </div>
+                        <span class="text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors">{% trans "Family Friendly (Accepts Children)" %}</span>
+                    </label>
+                    <div class="space-y-2">
+                        <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Base Price per Adult (TND)" %}</label>
+                        {{ form.price_adult }}
+                        {{ form.price_adult.errors }}
+                    </div>
+                </div>
+                
+                <div class="space-y-2" id="child-price-container" style="{% if not guide.accepts_children %}opacity: 0.5; pointer-events: none;{% endif %}">
+                    <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Price per Child > 6yrs (TND)" %}</label>
+                    {{ form.price_child }}
+                    {{ form.price_child.errors }}
+                    <p class="text-[10px] text-gray-400 font-medium ml-1 italic">{% trans "* Children under 6 are free by default." %}</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const acceptsChildren = document.querySelector('input[name="accepts_children"]');
+    const childPriceContainer = document.getElementById('child-price-container');
+    const photoInput = document.querySelector('input[name="photo"]');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoPlaceholder = document.getElementById('photo-placeholder');
+
+    if (acceptsChildren) {
+        acceptsChildren.addEventListener('change', function() {
+            if (this.checked) {
+                childPriceContainer.style.opacity = '1';
+                childPriceContainer.style.pointerEvents = 'auto';
+            } else {
+                childPriceContainer.style.opacity = '0.5';
+                childPriceContainer.style.pointerEvents = 'none';
+            }
+        });
+    }
+
+    if (photoInput) {
+        photoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            const fileNameLabel = document.getElementById('file-name');
+            
+            if (file) {
+                // Update label text
+                if (fileNameLabel) {
+                    fileNameLabel.textContent = file.name;
+                    fileNameLabel.classList.remove('text-gray-400');
+                    fileNameLabel.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (photoPreview) {
+                        photoPreview.src = e.target.result;
+                    } else if (photoPlaceholder) {
+                        const img = document.createElement('img');
+                        img.id = 'photo-preview';
+                        img.src = e.target.result;
+                        img.className = 'w-32 h-32 rounded-[2rem] object-cover ring-4 ring-gray-50 dark:ring-gray-700 shadow-lg';
+                        photoPlaceholder.replaceWith(img);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

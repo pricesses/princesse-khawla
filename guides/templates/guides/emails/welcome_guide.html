@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f6f9; }
+        .wrapper { padding: 30px 10px; }
+        .container { max-width: 600px; margin: 0 auto; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; }
+        .brand-header {
+            background: linear-gradient(135deg, #1a2a4a 0%, #0d1b35 100%);
+            padding: 35px 20px 30px;
+            text-align: center;
+        }
+        .brand-header img { width: 80px; height: auto; display: block; margin: 0 auto 16px auto; }
+        .brand-header h1 { color: #ffffff; font-size: 22px; font-weight: 700; margin: 0 0 6px 0; }
+        .brand-header p { color: #a0aec0; font-size: 14px; margin: 0; }
+        .content { padding: 35px 30px; }
+        .greeting { font-size: 16px; margin-bottom: 12px; }
+        .intro { color: #555; margin-bottom: 24px; }
+        .credentials-box {
+            background: #f0f4ff;
+            border: 1px solid #6c8ef7;
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 20px 0;
+        }
+        .credentials-box .label { font-size: 13px; font-weight: 700; color: #4a6cf7; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .credentials-box .cred-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #d0d9ff; }
+        .credentials-box .cred-row:last-child { border-bottom: none; }
+        .credentials-box .cred-icon { width: 20px; height: 20px; vertical-align: middle; }
+        .credentials-box .cred-key { font-size: 13px; color: #666; width: 100px; }
+        .credentials-box .cred-val { font-size: 14px; font-weight: 600; color: #1a2a4a; word-break: break-all; }
+        .warning-box {
+            background: #fff8e1;
+            border-left: 4px solid #f59e0b;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+        .btn-wrapper { text-align: center; margin: 28px 0 10px; }
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #4a6cf7, #6c5ce7);
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+        .footer {
+            background: #f8f9fb;
+            text-align: center;
+            font-size: 12px;
+            color: #b2bec3;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        .footer a { color: #6c8ef7; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="brand-header">
+            <img src="cid:logo_img" alt="FielMedina">
+            <h1>Bienvenue sur {{ company_name }} !</h1>
+            <p>Accès Professionnel Guide</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <p class="greeting">Bonjour <strong>{{ guide_name }}</strong>,</p>
+            <p class="intro">
+                Votre compte Guide a été créé avec succès par notre équipe.
+                Voici vos identifiants de connexion pour accéder à votre tableau de bord personnel :
+            </p>
+
+            <!-- Credentials -->
+            <div class="credentials-box">
+                <div class="label">Vos identifiants de connexion</div>
+                <div class="cred-row">
+                    <img src="cid:user_icon" class="cred-icon" alt="User">
+                    <span class="cred-key">Utilisateur :</span>
+                    <span class="cred-val">{{ username }}</span>
+                </div>
+                <div class="cred-row">
+                    <img src="cid:lock_icon" class="cred-icon" alt="Lock">
+                    <span class="cred-key">Mot de passe :</span>
+                    <span class="cred-val">{{ password }}</span>
+                </div>
+            </div>
+
+            <!-- Warning -->
+            <div class="warning-box" style="display: flex; align-items: flex-start; gap: 12px;">
+                <img src="cid:alert_icon" style="width: 20px; height: 20px; margin-top: 2px;" alt="Warning">
+                <span>
+                    Pour votre sécurité, nous vous recommandons de <strong>changer votre mot de passe</strong>
+                    dès votre première connexion depuis les paramètres de votre profil.
+                </span>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="btn-wrapper">
+                <a href="{{ login_url }}" class="btn">
+                    Accéder à mon Tableau de Bord
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Ceci est un message automatique, merci de ne pas y répondre.</p>
+            <p>&copy; 2026 {{ company_name }}. Tous droits réservés.</p>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

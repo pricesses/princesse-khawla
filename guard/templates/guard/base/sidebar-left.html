@@ -107,6 +107,96 @@
           </form>
      </div>
 
+{% elif guide %}
+
+     <!-- ════════════════════════════════
+          NAV GUIDE
+          ════════════════════════════════ -->
+     <div class="pt-2">
+          <ul class="space-y-2">
+
+                <li>
+                    <a href="{% url 'guide_dashboard' %}"
+                         class="flex items-center p-3 text-gray-700 rounded-xl dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-white group transition-all duration-150">
+                         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-green-900/40 shadow-sm transition-colors border border-gray-100 dark:border-gray-700">
+                              <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-green-500" fill="currentColor" viewBox="0 0 22 21">
+                                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                              </svg>
+                         </span>
+                         <span class="ms-3 font-medium">{% trans "Dashboard" %}</span>
+                    </a>
+               </li>
+
+                <li>
+                    <a href="{% url 'guide_suggestions' %}"
+                         class="flex items-center p-3 text-gray-700 rounded-xl dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-white group transition-all duration-150">
+                         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-green-900/40 shadow-sm transition-colors border border-gray-100 dark:border-gray-700">
+                              <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                   <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                              </svg>
+                         </span>
+                         <span class="ms-3 font-medium">{% trans "Suggestions" %}</span>
+                    </a>
+               </li>
+
+                <li>
+                    <a href="{% url 'guide_reviews' %}"
+                         class="flex items-center p-3 text-gray-700 rounded-xl dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-white group transition-all duration-150">
+                         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-green-900/40 shadow-sm transition-colors border border-gray-100 dark:border-gray-700">
+                              <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-green-500" fill="currentColor" viewBox="0 0 20 18">
+                                   <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+                              </svg>
+                         </span>
+                         <span class="ms-3 font-medium">{% trans "Reviews" %}</span>
+                    </a>
+               </li>
+
+          </ul>
+     </div>
+
+     <div class="pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
+          <p class="px-2 mb-3 text-xs font-semibold text-gray-400 uppercase tracking-wider dark:text-gray-500">
+               {% trans "Account" %}
+          </p>
+          <ul class="space-y-2">
+                <li>
+                    <a href="{% url 'guide_settings' %}"
+                         class="flex items-center p-3 text-gray-700 rounded-xl dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-white group transition-all duration-150">
+                         <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-gray-700 shadow-sm transition-colors border border-gray-100 dark:border-gray-700">
+                              <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-green-600 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
+                                   <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
+                              </svg>
+                         </span>
+                         <span class="ms-3 font-medium">{% trans "Settings" %}</span>
+                    </a>
+               </li>
+          </ul>
+     </div>
+      <div class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+          <form action="{% url 'set_language' %}" method="post" class="w-full">
+               {% csrf_token %}
+               <input name="next" type="hidden" value="{{ request.get_full_path }}">
+               <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14.002h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                         </svg>
+                    </div>
+                    <select name="language" onchange="this.form.submit()" class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                         {% get_current_language as LANGUAGE_CODE %}
+                         {% get_available_languages as LANGUAGES %}
+                         {% get_language_info_list for LANGUAGES as languages %}
+                         {% for language in languages %}
+                              <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                   {{ language.name_local }}
+                              </option>
+                         {% endfor %}
+                    </select>
+               </div>
+          </form>
+     </div>
+
 {% else %}
 
      <!-- ════════════════════════════════
@@ -186,6 +276,14 @@
                          <path d="M475-160q4 0 8-2t6-4l328-328q12-12 17.5-27t5.5-30q0-16-5.5-30.5T817-607L647-777q-11-12-25.5-17.5T591-800q-15 0-30 5.5T534-777l-11 11 74 75q15 14 22 32t7 38q0 42-28.5 70.5T527-522q-20 0-38.5-7T456-550l-75-74-175 175q-3 3-4.5 6.5T200-435q0 8 6 14.5t14 6.5q4 0 8-2t6-4l136-136 56 56-135 136q-3 3-4.5 6.5T285-350q0 8 6 14t14 6q4 0 8-2t6-4l136-135 56 56-135 136q-3 2-4.5 6t-1.5 8q0 8 6 14t14 6q4 0 7.5-1.5t6.5-4.5l136-135 56 56-136 136q-3 3-4.5 6.5T454-180q0 8 6.5 14t14.5 6Zm-1 80q-37 0-65.5-24.5T375-166q-34-5-57-28t-28-57q-34-5-56.5-28.5T206-336q-38-5-62-33t-24-66q0-20 7.5-38.5T149-506l232-231 131 131q2 3 6 4.5t8 1.5q9 0 15-5.5t6-14.5q0-4-1.5-8t-4.5-6L398-777q-11-12-25.5-17.5T342-800q-15 0-30 5.5T285-777L144-635q-9 9-15 21t-8 24q-2 12 0 24.5t8 23.5l-58 58q-17-23-25-50.5T40-590q2-28 14-54.5T87-692l141-141q24-23 53.5-35t60.5-12q31 0 60.5 12t52.5 35l11 11 11-11q24-23 53.5-35t60.5-12q31 0 60.5 12t52.5 35l169 169q23 23 35 53t12 61q0 31-12 60.5T873-437L545-110q-14 14-32.5 22T474-80Zm-99-560Z"/>
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">{% trans "Partners" %}</span>
+               </a>
+          </li>
+          <li>
+               <a href="{% url 'guard:guidesList' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg class="shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap">{% trans "Guides" %}</span>
                </a>
           </li>
           <li>

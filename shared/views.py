@@ -69,7 +69,11 @@ class CustomLoginView(LoginView):
             except Exception:
                 pass
 
-        # 4. Default → partner dashboard (jamais login pour éviter loop)
+        # 4. Guide actif → Guide Dashboard
+        if hasattr(user, 'guide_profile'):
+            return reverse_lazy('guide_dashboard')
+
+        # 5. Default → partner dashboard (jamais login pour éviter loop)
         return reverse_lazy('partners:dashboard')
 
     def form_valid(self, form):
