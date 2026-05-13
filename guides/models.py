@@ -36,6 +36,21 @@ class Guide(models.Model):
             self.stars = round(avg, 1)
             self.save(update_fields=['stars'])
 
+    @property
+    def total_brut(self):
+        """Somme des montants bruts de toutes les suggestions approuvées."""
+        from decimal import Decimal
+        result = self.suggestions.filter(status='approved').aggregate(
+            s=models.Sum('total_price')
+        )['s']
+        return result or Decimal('0')
+
+    @property
+    def total_commission(self):
+        """Somme des commissions (5%) sur toutes les suggestions approuvées."""
+        approved = self.suggestions.filter(status='approved')
+        return sum(s.commission_amount for s in approved)
+
 class GuideReview(models.Model):
     guide = models.ForeignKey(Guide, on_delete=models.CASCADE, related_name='reviews')
     client_name = models.CharField(max_length=255)
@@ -66,9 +81,21 @@ class GuideSuggestion(models.Model):
     nb_children_over_6 = models.PositiveIntegerField(default=0)
     
     total_price = models.DecimalField(max_digits=10, decimal_places=3, default=0.000)
+    commission_rate = models.DecimalField(max_digits=5, decimal_places=2, default=5.00)  # % prélevé par la plateforme
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def commission_amount(self):
+        """Montant de la commission (5% du total)."""
+        from decimal import Decimal
+        return round(self.total_price * self.commission_rate / Decimal('100'), 3)
+
+    @property
+    def net_guide_amount(self):
+        """Montant net reversé au guide après déduction de la commission."""
+        return round(self.total_price - self.commission_amount, 3)
 
     def calculate_total(self):
         # Children under 6 are free
@@ -84,19 +111,24 @@ class GuideSuggestion(models.Model):
             self.calculate_total()
             self.save()
             
-            # Update guide wallet balance
-            self.guide.wallet_balance += self.total_price
+            # Update guide wallet balance with NET amount (after commission)
+            self.guide.wallet_balance += self.net_guide_amount
             self.guide.save(update_fields=['wallet_balance'])
             
             # Add to calendar/availability
             GuideAvailability.objects.get_or_create(guide=self.guide, date=self.date, is_available=False)
             
-            # Create wallet transaction
+            # Create wallet transaction showing gross, commission and net
             GuideWalletTransaction.objects.create(
                 guide=self.guide,
-                amount=self.total_price,
+                amount=self.net_guide_amount,
                 transaction_type='credit',
-                description=f"Approbation de la suggestion de {self.client_name} pour le {self.date}"
+                description=(
+                    f"Approbation de la suggestion de {self.client_name} pour le {self.date} | "
+                    f"Brut: {self.total_price} TND | "
+                    f"Commission ({self.commission_rate}%): -{self.commission_amount} TND | "
+                    f"Net: {self.net_guide_amount} TND"
+                )
             )
 
     def __str__(self):

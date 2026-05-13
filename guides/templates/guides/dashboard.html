@@ -17,13 +17,30 @@
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Wallet Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/50 dark:shadow-none flex items-center gap-5 group hover:border-emerald-200 transition-all duration-300">
-            <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+        <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/50 dark:shadow-none group hover:border-emerald-200 transition-all duration-300">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform flex-shrink-0">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{% trans "Wallet Balance" %}</p>
+                    <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ guide.wallet_balance|floatformat:3 }} <span class="text-xs text-gray-400">TND</span></h3>
+                </div>
             </div>
-            <div>
-                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{% trans "Wallet Balance" %}</p>
-                <h3 class="text-2xl font-black text-gray-900 dark:text-white">{{ guide.wallet_balance|floatformat:3 }} <span class="text-xs text-gray-400">TND</span></h3>
+            <!-- Breakdown -->
+            <div class="border-t border-gray-100 dark:border-gray-700 pt-3 space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{% trans "Brut encaissé" %}</span>
+                    <span class="text-xs font-black text-gray-600 dark:text-gray-300">{{ total_brut|floatformat:3 }} TND</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider">{% trans "Commission (5%)" %}</span>
+                    <span class="text-xs font-black text-rose-500 dark:text-rose-400">-{{ total_commission|floatformat:3 }} TND</span>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-dashed border-gray-100 dark:border-gray-700">
+                    <span class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">{% trans "Net reçu" %}</span>
+                    <span class="text-xs font-black text-emerald-600 dark:text-emerald-400">{{ total_net|floatformat:3 }} TND</span>
+                </div>
             </div>
         </div>
 
@@ -49,6 +66,71 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Commission Breakdown Banner -->
+    <div class="bg-white dark:bg-gray-800 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-200/50 dark:shadow-none overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-50 dark:border-gray-700 flex items-center gap-2">
+            <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" /></svg>
+            <h3 class="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">{% trans "Récapitulatif Financier (Missions Approuvées)" %}</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-[10px] uppercase font-black tracking-widest text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <th class="px-6 py-4">{% trans "Mission (Client)" %}</th>
+                        <th class="px-6 py-4 text-center">{% trans "Date" %}</th>
+                        <th class="px-6 py-4 text-center">{% trans "Montant Brut" %}</th>
+                        <th class="px-6 py-4 text-center">{% trans "Commission (5%)" %}</th>
+                        <th class="px-6 py-4 text-center">{% trans "Net Reçu" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
+                    {% for sug in guide.suggestions.all %}
+                    {% if sug.status == 'approved' %}
+                    <tr class="hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">{{ sug.client_name }}</span>
+                                <span class="text-[10px] text-gray-400 font-medium">{{ sug.client_email }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-xs font-bold text-gray-600 dark:text-gray-300">{{ sug.date|date:"d/m/Y" }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black text-gray-700 dark:text-gray-200">{{ sug.total_price|floatformat:3 }} TND</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-flex flex-col items-center">
+                                <span class="text-sm font-black text-rose-500 dark:text-rose-400">-{{ sug.commission_amount|floatformat:3 }} TND</span>
+                                <span class="text-[9px] text-gray-400 font-bold">({{ sug.commission_rate }}%)</span>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">{{ sug.net_guide_amount|floatformat:3 }} TND</span>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% empty %}
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-gray-50/70 dark:bg-gray-900/40 border-t-2 border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <td colspan="2" class="px-6 py-4 text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">{% trans "TOTAL" %}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black text-gray-800 dark:text-gray-100">{{ total_brut|floatformat:3 }} TND</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black text-rose-500 dark:text-rose-400">-{{ total_commission|floatformat:3 }} TND</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">{{ total_net|floatformat:3 }} TND</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
     <!-- Calendrier -->
 <div class="bg-white dark:bg-gray-800 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-xl overflow-hidden">

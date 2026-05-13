@@ -32,6 +32,8 @@
                     <th class="px-6 py-5">{% trans "Identity" %}</th>
                     <th class="px-6 py-5">{% trans "Contact & Support" %}</th>
                     <th class="px-6 py-5">{% trans "Earnings" %}</th>
+                    <th class="px-6 py-5 text-center">{% trans "Total Brut (Approuvé)" %}</th>
+                    <th class="px-6 py-5 text-center">{% trans "Commission Plateforme" %}</th>
                     <th class="px-6 py-5">{% trans "Account Status" %}</th>
                     <th class="px-6 py-5 text-right">{% trans "Management" %}</th>
                 </tr>
@@ -67,6 +69,18 @@
                             <span class="text-[9px] text-gray-400 font-bold uppercase mt-1">{% trans "TND Balance" %}</span>
                         </div>
                     </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex flex-col items-center">
+                            <span class="text-sm font-black text-gray-700 dark:text-gray-200 leading-none">{{ data.total_brut|floatformat:3 }}</span>
+                            <span class="text-[9px] text-gray-400 font-bold uppercase mt-1">TND</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex flex-col items-center">
+                            <span class="text-sm font-black text-rose-500 dark:text-rose-400 leading-none">{{ data.total_commission|floatformat:3 }}</span>
+                            <span class="text-[9px] text-gray-400 font-bold uppercase mt-1">TND (5%)</span>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-100/50 dark:border-blue-800/50">
                             {% trans "Active" %}
@@ -85,7 +99,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="px-6 py-24 text-center">
+                    <td colspan="7" class="px-6 py-24 text-center">
                         <div class="max-w-xs mx-auto text-center">
                             <div class="w-20 h-20 bg-gray-50 dark:bg-gray-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6">
                                 <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>

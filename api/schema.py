@@ -29,6 +29,10 @@ from partners.models import (
     PartnerAd,
 )
 
+from guides.models import (
+    Guide, GuideReview, GuideSuggestion, GuideAvailability,
+)
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TYPES EXISTANTS (inchangés)
@@ -494,7 +498,7 @@ class PublicTransportNodeType:
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# NOUVEAUX TYPES — Partners
+# TYPES — Partners
 # ═══════════════════════════════════════════════════════════════════════════════
 
 @strawberry.type
@@ -543,7 +547,56 @@ class PartnerAccountPublicType:
     is_verified:  bool
 
 
-# ── Helpers (synchrones — appelés dans sync_to_async) ─────────────────────────
+# ═══════════════════════════════════════════════════════════════════════════════
+# TYPES — Guides
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@strawberry.type
+class GuidePublicType:
+    """Profil public d'un guide, visible par l'application mobile."""
+    id:               int
+    full_name:        str
+    photo_url:        Optional[str]
+    description:      str
+    languages:        str
+    accepts_children: bool
+    price_adult:      float
+    price_child:      float
+    stars:            float
+    phone:            Optional[str]
+    review_count:     int
+
+
+@strawberry.type
+class GuideReviewPublicType:
+    id:          int
+    client_name: str
+    rating:      int
+    comment:     str
+    created_at:  str
+
+
+@strawberry.type
+class GuideAvailabilityType:
+    date:         str   # "YYYY-MM-DD"
+    is_available: bool
+
+
+@strawberry.type
+class GuideSuggestionPayload:
+    ok:      bool
+    message: Optional[str] = None
+
+
+@strawberry.type
+class GuideReviewPayload:
+    ok:      bool
+    message: Optional[str] = None
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# HELPERS
+# ═══════════════════════════════════════════════════════════════════════════════
 
 def _serialize_partner_event(event: PartnerEvent) -> PartnerEventAccountType:
     media_list = [
@@ -595,6 +648,46 @@ def _serialize_partner_account(p: PartnerAccount) -> PartnerAccountPublicType:
     )
 
 
+def _serialize_guide(guide: Guide, request=None) -> GuidePublicType:
+    photo_url = None
+    if guide.photo:
+        try:
+            photo_url = request.build_absolute_uri(guide.photo.url) if request else guide.photo.url
+        except Exception:
+            photo_url = guide.photo.url
+
+    return GuidePublicType(
+        id               = guide.id,
+        full_name        = guide.user.get_full_name() or guide.user.username,
+        photo_url        = photo_url,
+        description      = guide.description,
+        languages        = guide.languages,
+        accepts_children = guide.accepts_children,
+        price_adult      = float(guide.price_adult),
+        price_child      = float(guide.price_child),
+        stars            = guide.stars,
+        phone            = guide.phone or None,
+        review_count     = guide.reviews.count(),
+    )
+
+
+def _serialize_guide_review(review: GuideReview) -> GuideReviewPublicType:
+    return GuideReviewPublicType(
+        id          = review.id,
+        client_name = review.client_name,
+        rating      = review.rating,
+        comment     = review.comment,
+        created_at  = review.created_at.strftime("%Y-%m-%d"),
+    )
+
+
+def _serialize_guide_availability(av: GuideAvailability) -> GuideAvailabilityType:
+    return GuideAvailabilityType(
+        date         = av.date.strftime("%Y-%m-%d"),
+        is_available = av.is_available,
+    )
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # QUERY
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -602,7 +695,7 @@ def _serialize_partner_account(p: PartnerAccount) -> PartnerAccountPublicType:
 @strawberry.type
 class Query:
 
-    # ── Queries existantes ────────────────────────────────────────────────────
+    # ── Pages ─────────────────────────────────────────────────────────────────
 
     @strawberry.field
     def pages(self, is_active: Optional[bool] = None) -> List[PageType]:
@@ -618,6 +711,8 @@ class Query:
             .filter(is_active=True)
             .first()
         )
+
+    # ── Locations ─────────────────────────────────────────────────────────────
 
     @strawberry.field
     def locations(
@@ -644,6 +739,8 @@ class Query:
     def location_categories(self) -> List[LocationCategoryType]:
         return LocationCategory.objects.all()
 
+    # ── Hikings ───────────────────────────────────────────────────────────────
+
     @strawberry.field
     def hikings(
         self,
@@ -661,6 +758,8 @@ class Query:
     @strawberry.field
     def hiking(self, id: strawberry.ID) -> Optional[HikingType]:
         return Hiking.objects.prefetch_related("images", "locations").filter(pk=id).first()
+
+    # ── Events ────────────────────────────────────────────────────────────────
 
     @strawberry.field
     def events(
@@ -692,6 +791,8 @@ class Query:
     def event_categories(self) -> List[EventCategoryType]:
         return EventCategory.objects.all()
 
+    # ── Ads ───────────────────────────────────────────────────────────────────
+
     @strawberry.field
     def ads(
         self,
@@ -716,6 +817,8 @@ class Query:
     def ad(self, id: strawberry.ID) -> Optional[AdType]:
         return Ad.objects.filter(pk=id).first()
 
+    # ── Tips ──────────────────────────────────────────────────────────────────
+
     @strawberry.field
     def tips(
         self,
@@ -729,6 +832,8 @@ class Query:
         if limit is not None:
             qs = qs[offset: offset + limit]
         return qs
+
+    # ── Public Transport ──────────────────────────────────────────────────────
 
     @strawberry.field
     def public_transports(
@@ -767,6 +872,8 @@ class Query:
     def public_transport_types(self) -> List[PublicTransportTypeType]:
         return PublicTransportType.objects.all()
 
+    # ── Cities ────────────────────────────────────────────────────────────────
+
     @strawberry.field
     def nearest_city(
         self, lat: float, lon: float, max_distance_km: Optional[float] = None
@@ -802,6 +909,8 @@ class Query:
             return None
         return City.objects.filter(pk=nearest).first()
 
+    # ── Partners & Sponsors ───────────────────────────────────────────────────
+
     @strawberry.field
     def partners(self) -> List[PartnerType]:
         return Partner.objects.all()
@@ -813,8 +922,6 @@ class Query:
     @strawberry.field
     def sponsors(self) -> List[SponsorType]:
         return Sponsor.objects.all()
-
-    # ── NOUVELLES Queries Partners — async avec sync_to_async ─────────────────
 
     @strawberry.field(description="Evenements partenaires publies")
     async def partner_events(
@@ -887,9 +994,76 @@ class Query:
                 return None
         return await sync_to_async(_get)()
 
+    # ── Guides ────────────────────────────────────────────────────────────────
+
+    @strawberry.field(description="Liste des guides avec leur profil public")
+    async def guides(
+        self,
+        info: strawberry.Info,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> List[GuidePublicType]:
+        request = info.context.request
+        def _get():
+            qs = (
+                Guide.objects
+                .select_related("user")
+                .prefetch_related("reviews")
+                .order_by("-stars")[offset: offset + limit]
+            )
+            return [_serialize_guide(g, request) for g in qs]
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Profil public d'un guide par ID")
+    async def guide(
+        self,
+        info: strawberry.Info,
+        id: int,
+    ) -> Optional[GuidePublicType]:
+        request = info.context.request
+        def _get():
+            try:
+                g = Guide.objects.select_related("user").prefetch_related("reviews").get(id=id)
+                return _serialize_guide(g, request)
+            except Guide.DoesNotExist:
+                return None
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Avis clients d'un guide")
+    async def guide_reviews(
+        self,
+        guide_id: int,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> List[GuideReviewPublicType]:
+        def _get():
+            qs = (
+                GuideReview.objects
+                .filter(guide_id=guide_id)
+                .order_by("-created_at")[offset: offset + limit]
+            )
+            return [_serialize_guide_review(r) for r in qs]
+        return await sync_to_async(_get)()
+
+    @strawberry.field(description="Disponibilites d'un guide (dates occupees et libres)")
+    async def guide_availability(
+        self,
+        guide_id: int,
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+    ) -> List[GuideAvailabilityType]:
+        def _get():
+            qs = GuideAvailability.objects.filter(guide_id=guide_id).order_by("date")
+            if year is not None:
+                qs = qs.filter(date__year=year)
+            if month is not None:
+                qs = qs.filter(date__month=month)
+            return [_serialize_guide_availability(a) for a in qs]
+        return await sync_to_async(_get)()
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# MUTATION (inchangee)
+# MUTATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
 @strawberry.type
@@ -905,6 +1079,9 @@ class RegisterDevicePayload:
 
 @strawberry.type
 class Mutation:
+
+    # ── Préférences utilisateur ───────────────────────────────────────────────
+
     @strawberry.mutation
     def sync_user_preference(
         self,
@@ -934,6 +1111,8 @@ class Mutation:
     def forget_me(self, user_uid: uuid.UUID) -> SyncUserPreferencePayload:
         UserPreference.objects.filter(user_uid=user_uid).delete()
         return SyncUserPreferencePayload(ok=True)
+
+    # ── FCM ───────────────────────────────────────────────────────────────────
 
     @strawberry.mutation
     def register_fcm_device(
@@ -969,6 +1148,74 @@ class Mutation:
             logger = logging.getLogger(__name__)
             logger.error(f"Error registering FCM device: {e}", exc_info=True)
             return RegisterDevicePayload(ok=False, message=f"Error registering device: {str(e)}")
+
+    # ── Guides ────────────────────────────────────────────────────────────────
+
+    @strawberry.mutation(description="Soumettre une demande de visite guidee")
+    async def submit_guide_suggestion(
+        self,
+        guide_id:            int,
+        client_name:         str,
+        client_email:        str,
+        date:                str,   # "YYYY-MM-DD"
+        nb_adults:           int,
+        nb_children_under_6: int = 0,
+        nb_children_over_6:  int = 0,
+        message:             str = "",
+    ) -> GuideSuggestionPayload:
+        def _create():
+            try:
+                guide = Guide.objects.get(id=guide_id)
+            except Guide.DoesNotExist:
+                return GuideSuggestionPayload(ok=False, message="Guide introuvable.")
+
+            try:
+                visit_date = datetime.date.fromisoformat(date)
+            except ValueError:
+                return GuideSuggestionPayload(ok=False, message="Format de date invalide (attendu : YYYY-MM-DD).")
+
+            if GuideAvailability.objects.filter(guide=guide, date=visit_date, is_available=False).exists():
+                return GuideSuggestionPayload(ok=False, message="Le guide n'est pas disponible a cette date.")
+
+            suggestion = GuideSuggestion(
+                guide               = guide,
+                client_name         = client_name,
+                client_email        = client_email,
+                date                = visit_date,
+                nb_adults           = nb_adults,
+                nb_children_under_6 = nb_children_under_6,
+                nb_children_over_6  = nb_children_over_6,
+                message             = message,
+            )
+            suggestion.calculate_total()
+            suggestion.save()
+            return GuideSuggestionPayload(ok=True, message="Votre demande a bien ete envoyee.")
+        return await sync_to_async(_create)()
+
+    @strawberry.mutation(description="Laisser un avis sur un guide")
+    async def submit_guide_review(
+        self,
+        guide_id:    int,
+        client_name: str,
+        rating:      int,
+        comment:     str,
+    ) -> GuideReviewPayload:
+        def _create():
+            if not (1 <= rating <= 5):
+                return GuideReviewPayload(ok=False, message="La note doit etre entre 1 et 5.")
+            try:
+                guide = Guide.objects.get(id=guide_id)
+            except Guide.DoesNotExist:
+                return GuideReviewPayload(ok=False, message="Guide introuvable.")
+
+            GuideReview.objects.create(
+                guide       = guide,
+                client_name = client_name,
+                rating      = rating,
+                comment     = comment,
+            )
+            return GuideReviewPayload(ok=True, message="Merci pour votre avis !")
+        return await sync_to_async(_create)()
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

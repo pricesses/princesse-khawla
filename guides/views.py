@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+from django.db.models import Sum
+from decimal import Decimal
 from .models import Guide, GuideSuggestion, GuideReview, GuideAvailability
 from .forms import GuideSettingsForm
 from .email_utils import send_guide_email_change_confirmation
@@ -21,11 +23,21 @@ def guide_dashboard(request):
             'adults': s.nb_adults,
             'children': s.nb_children_over_6 + s.nb_children_under_6,
         }
+
+    # Financial summary for the guide (approved suggestions only)
+    approved = list(guide.suggestions.filter(status='approved'))
+    total_brut = sum(s.total_price for s in approved) or Decimal('0')
+    total_commission = sum(s.commission_amount for s in approved)
+    total_net = sum(s.net_guide_amount for s in approved)
+
     context = {
         'guide': guide,
         'suggestions_pending': suggestions_pending,
         'recent_reviews': recent_reviews,
         'booked_dates_json': json.dumps(booked),
+        'total_brut': total_brut,
+        'total_commission': total_commission,
+        'total_net': total_net,
     }
     return render(request, 'guides/dashboard.html', context)
 

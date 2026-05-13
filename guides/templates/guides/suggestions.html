@@ -19,7 +19,9 @@
                         <th class="px-6 py-5">{% trans "Visit Date" %}</th>
                         <th class="px-6 py-5 text-center">{% trans "Status" %}</th>
                         <th class="px-6 py-5">{% trans "Group Composition" %}</th>
-                        <th class="px-6 py-5 text-center">{% trans "Total Price" %}</th>
+                        <th class="px-6 py-5 text-center">{% trans "Montant Brut" %}</th>
+                        <th class="px-6 py-5 text-center">{% trans "Commission (5%)" %}</th>
+                        <th class="px-6 py-5 text-center">{% trans "Net Guide" %}</th>
                         <th class="px-6 py-5 text-right">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
@@ -58,7 +60,14 @@
                             </div>
                         </td>
                         <td class="px-6 py-5 text-center">
-                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">{{ sug.total_price|floatformat:3 }} TND</span>
+                            <span class="text-sm font-black text-gray-700 dark:text-gray-300">{{ sug.total_price|floatformat:3 }} TND</span>
+                        </td>
+                        <td class="px-6 py-5 text-center">
+                            <span class="text-sm font-black text-rose-500 dark:text-rose-400">-{{ sug.commission_amount|floatformat:3 }} TND</span>
+                            <div class="text-[9px] text-gray-400 font-bold uppercase mt-0.5">({{ sug.commission_rate }}%)</div>
+                        </td>
+                        <td class="px-6 py-5 text-center">
+                            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">{{ sug.net_guide_amount|floatformat:3 }} TND</span>
                         </td>
                         <td class="px-6 py-5 text-right">
                             {% if sug.status == 'pending' %}
@@ -77,7 +86,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-gray-400 font-medium text-sm">
+                        <td colspan="8" class="px-6 py-12 text-center text-gray-400 font-medium text-sm">
                             {% trans "No suggestions history available." %}
                         </td>
                     </tr>
