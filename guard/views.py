@@ -72,6 +72,7 @@ except ImportError:
     send_validation_email = None
 
 try:
+    # pyrefly: ignore [missing-import]
     from shared.services import ShortIOService, KonnectService
 except ImportError:
     ShortIOService = KonnectService = None
@@ -1225,12 +1226,16 @@ class GuideUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
         return self.request.user.is_staff
 
     def form_valid(self, form):
-        self.object = form.save()
-        # Update user names
+        self.object = form.save()  # form.save() gère déjà admin_stars + GuideAdminRating
+
+        # Sync user names
         if self.object.user:
             self.object.user.first_name = form.cleaned_data.get('first_name', '')
-            self.object.user.last_name = form.cleaned_data.get('last_name', '')
+            self.object.user.last_name  = form.cleaned_data.get('last_name', '')
             self.object.user.save(update_fields=['first_name', 'last_name'])
+
+        # Recalcule client_stars au cas où des reviews auraient été ajoutées entre-temps
+        self.object.update_client_stars()
 
         messages.success(self.request, _("Guide updated successfully."))
         return HttpResponseRedirect(self.get_success_url())

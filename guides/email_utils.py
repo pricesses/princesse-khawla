@@ -50,6 +50,94 @@ def send_guide_welcome_email(guide, password):
 
     msg.send(fail_silently=False)
 
+def send_new_suggestion_email(guide, suggestion):
+    """
+    Notifie le guide par e-mail d'une nouvelle demande.
+    La langue de l'email suit guide.preferred_language ('fr' ou 'en').
+    """
+    lang = getattr(guide, 'preferred_language', 'fr')
+    with translation.override(lang):
+        _send_new_suggestion_email_inner(guide, suggestion)
+
+
+def _send_new_suggestion_email_inner(guide, suggestion):
+    guide_name  = guide.user.get_full_name() or guide.user.username
+    site_url    = getattr(settings, 'SITE_URL', 'http://localhost:8000')
+    commission  = suggestion.commission_rate
+
+    adults_subtotal   = round(suggestion.nb_adults * float(guide.price_adult), 3)
+    children_subtotal = round(suggestion.nb_children_over_6 * float(guide.price_child), 3)
+    total_price       = round(float(suggestion.total_price) if float(suggestion.total_price) > 0
+                              else adults_subtotal + children_subtotal, 3)
+    net_amount        = round(total_price * (1 - float(commission) / 100), 3)
+
+    lang = getattr(guide, 'preferred_language', 'fr')
+
+    if lang == 'en':
+        subject    = "🔔 New Booking Request — FielMedina"
+        text_intro = f"Hello {guide_name},\n\nYou have received a new tour booking request.\n\n"
+        text_body  = (
+            f"Client  : {suggestion.client_name} ({suggestion.client_email})\n"
+            f"Date    : {suggestion.date.strftime('%d/%m/%Y')}\n"
+            f"Group   : {suggestion.nb_adults} adult(s)"
+            f"{f', {suggestion.nb_children_over_6} child(ren) >6 yrs' if suggestion.nb_children_over_6 else ''}"
+            f"{f', {suggestion.nb_children_under_6} child(ren) <6 yrs' if suggestion.nb_children_under_6 else ''}\n"
+            f"Amount  : {total_price:.3f} TND (net: {net_amount:.3f} TND)\n\n"
+            f"View your dashboard: {site_url}/guides/suggestions/"
+        )
+    else:
+        subject    = "🔔 Nouvelle demande de réservation — FielMedina"
+        text_intro = f"Bonjour {guide_name},\n\nVous avez reçu une nouvelle demande de réservation.\n\n"
+        text_body  = (
+            f"Client  : {suggestion.client_name} ({suggestion.client_email})\n"
+            f"Date    : {suggestion.date.strftime('%d/%m/%Y')}\n"
+            f"Groupe  : {suggestion.nb_adults} adulte(s)"
+            f"{f', {suggestion.nb_children_over_6} enfant(s) >6 ans' if suggestion.nb_children_over_6 else ''}"
+            f"{f', {suggestion.nb_children_under_6} enfant(s) <6 ans' if suggestion.nb_children_under_6 else ''}\n"
+            f"Montant : {total_price:.3f} TND (net : {net_amount:.3f} TND)\n\n"
+            f"Consultez votre tableau de bord : {site_url}/guides/suggestions/"
+        )
+
+    context = {
+        'guide_name':                     guide_name,
+        'lang':                           lang,
+        'suggestion_client_name':         suggestion.client_name,
+        'suggestion_client_email':        suggestion.client_email,
+        'suggestion_date':                suggestion.date.strftime('%d/%m/%Y'),
+        'suggestion_nb_adults':           suggestion.nb_adults,
+        'suggestion_nb_children_over_6':  suggestion.nb_children_over_6,
+        'suggestion_nb_children_under_6': suggestion.nb_children_under_6,
+        'suggestion_message':             suggestion.message,
+        'price_adult':                    f"{float(guide.price_adult):.3f}",
+        'price_child':                    f"{float(guide.price_child):.3f}",
+        'adults_subtotal':                f"{adults_subtotal:.3f}",
+        'children_subtotal':              f"{children_subtotal:.3f}",
+        'suggestion_total_price':         f"{total_price:.3f}",
+        'commission_rate':                commission,
+        'net_amount':                     f"{net_amount:.3f}",
+        'dashboard_url':                  f"{site_url}/guides/suggestions/",
+        'company_name':                   'FielMedina',
+    }
+
+    from_email   = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@fielmedina.com')
+    html_content = render_to_string('guides/emails/new_suggestion_notify.html', context)
+    text_content = text_intro + text_body
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [guide.email])
+    msg.mixed_subtype = 'related'
+    msg.attach_alternative(html_content, "text/html")
+
+    logo_path = os.path.join(settings.BASE_DIR, 'static', 'icon.png')
+    if os.path.exists(logo_path):
+        with open(logo_path, 'rb') as f:
+            img = MIMEImage(f.read())
+            img.add_header('Content-ID', '<logo_img>')
+            img.add_header('Content-Disposition', 'inline', filename='icon.png')
+            msg.attach(img)
+
+    msg.send(fail_silently=False)
+
+
 def send_guide_email_change_confirmation(guide, new_email):
     """
     Sends a confirmation link when the guide updates their email.

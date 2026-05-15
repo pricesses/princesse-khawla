@@ -17,6 +17,14 @@ class GuideSettingsForm(forms.ModelForm):
         'placeholder': 'email@example.com'
     }))
 
+    # ── Sélecteur de langues identique au formulaire admin ─────────────────
+    languages_list = forms.MultipleChoiceField(
+        choices=[],          # sera injecté dynamiquement depuis LANGUAGES_CHOICES
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label=_("Spoken Languages")
+    )
+
     class Meta:
         model = Guide
         fields = ['phone', 'photo', 'description', 'languages', 'accepts_children', 'price_adult', 'price_child']
@@ -30,10 +38,8 @@ class GuideSettingsForm(forms.ModelForm):
                 'rows': 4,
                 'placeholder': 'Tell us about yourself...'
             }),
-            'languages': forms.TextInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'placeholder': 'e.g. Français, Anglais'
-            }),
+            # languages est maintenant caché — alimenté par languages_list
+            'languages': forms.HiddenInput(),
             'price_adult': forms.NumberInput(attrs={
                 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
             }),
@@ -50,13 +56,28 @@ class GuideSettingsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Injecte les choix depuis la constante partagée
+        self.fields['languages_list'].choices = LANGUAGES_CHOICES
+
         if not self.instance.pk or not self.instance.phone:
             self.fields['phone'].initial = '+216 '
-            
+
         if self.instance and self.instance.user:
             self.fields['first_name'].initial = self.instance.user.first_name
             self.fields['last_name'].initial = self.instance.user.last_name
             self.fields['email'].initial = self.instance.email
+
+        # Pré-coche les langues déjà enregistrées
+        if self.instance and self.instance.pk and self.instance.languages:
+            saved = [l.strip() for l in self.instance.languages.split(',')]
+            self.fields['languages_list'].initial = saved
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Fusionne les cases cochées en chaîne CSV stockée dans `languages`
+        selected = cleaned_data.get('languages_list', [])
+        cleaned_data['languages'] = ', '.join(selected)
+        return cleaned_data
 
     def clean_photo(self):
         photo = self.cleaned_data.get('photo')
@@ -99,50 +120,62 @@ class GuideAdminForm(forms.ModelForm):
         required=False,
         label=_("Langues parlées")
     )
-    stars = forms.FloatField(
-        required=False, min_value=0, max_value=5,
-        label=_("Note initiale (étoiles)"),
-        widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0', 'max': '5', 'autocomplete': 'off'})
+
+    # ── NOTE ADMIN (remplace l'ancien champ `stars`) ───────────────────────
+    # Ce champ alimente admin_stars sur le modèle Guide ET crée/met à jour
+    # un enregistrement GuideAdminRating.
+    admin_stars = forms.FloatField(
+        required=False,
+        min_value=0,
+        max_value=5,
+        label=_("Note Administrateur (étoiles)"),
+        widget=forms.NumberInput(attrs={
+            'step': '1',
+            'min': '0',
+            'max': '5',
+            'autocomplete': 'off',
+            # L'id est utilisé par le JS du template pour le widget étoiles
+            'id': 'id_admin_stars',
+        })
     )
 
     class Meta:
         model = Guide
-        fields = ['first_name', 'last_name', 'email', 'phone', 'languages',
-                  'accepts_children', 'price_adult', 'price_child',
-                  'photo', 'description', 'stars']
+        fields = [
+            'first_name', 'last_name', 'email', 'phone', 'languages',
+            'accepts_children', 'price_adult', 'price_child',
+            'photo', 'description',
+            # NE PAS inclure 'stars' ni 'admin_stars' du modèle directement :
+            # on passe par le champ de formulaire admin_stars ci-dessus.
+        ]
         widgets = {
             'first_name':  forms.TextInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'placeholder': 'First Name',
-                'autocomplete': 'off'
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
+                'placeholder': 'First Name', 'autocomplete': 'off'
             }),
             'last_name':   forms.TextInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'placeholder': 'Last Name',
-                'autocomplete': 'off'
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
+                'placeholder': 'Last Name', 'autocomplete': 'off'
             }),
             'email':       forms.EmailInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'placeholder': 'email@example.com',
-                'autocomplete': 'off'
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
+                'placeholder': 'email@example.com', 'autocomplete': 'off'
             }),
             'phone':       forms.TextInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'placeholder': '+216 ...',
-                'autocomplete': 'off'
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
+                'placeholder': '+216 ...', 'autocomplete': 'off'
             }),
             'price_adult': forms.NumberInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
                 'placeholder': '0.0'
             }),
             'price_child': forms.NumberInput(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
                 'placeholder': '0.0'
             }),
             'description': forms.Textarea(attrs={
-                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
-                'rows': 4,
-                'placeholder': 'Tell us about the guide...'
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200',
+                'rows': 4, 'placeholder': 'Tell us about the guide...'
             }),
             'languages':   forms.HiddenInput(),
             'accepts_children': forms.CheckboxInput(attrs={
@@ -161,14 +194,22 @@ class GuideAdminForm(forms.ModelForm):
                 self.fields['last_name'].initial  = self.instance.user.last_name
             except Exception:
                 pass
-        # Pre-populate languages checkboxes from the stored CSV string
+
+        # Pré-remplit les cases langue depuis le CSV stocké
         if self.instance and self.instance.pk and self.instance.languages:
             saved = [l.strip() for l in self.instance.languages.split(',')]
             self.fields['languages_list'].initial = saved
 
+        # Pré-remplit la note admin depuis admin_stars ou GuideAdminRating
+        if self.instance and self.instance.pk:
+            try:
+                self.fields['admin_stars'].initial = self.instance.admin_rating.rating
+            except Exception:
+                self.fields['admin_stars'].initial = self.instance.admin_stars or 0.0
+
     def clean(self):
         cleaned_data = super().clean()
-        # Merge checkbox selections back into the hidden 'languages' CSV field
+        # Fusionne les cases langue dans le champ CSV caché
         selected = cleaned_data.get('languages_list', [])
         cleaned_data['languages'] = ', '.join(selected)
         return cleaned_data
@@ -178,3 +219,32 @@ class GuideAdminForm(forms.ModelForm):
 
     def clean_description(self):
         return self.cleaned_data.get('description')
+
+    def save(self, commit=True):
+        """
+        Surcharge save() pour propager admin_stars vers :
+        1. guide.admin_stars (champ modèle)
+        2. GuideAdminRating (table dédiée)
+        3. guide.stars (moyenne pondérée globale)
+        """
+        guide = super().save(commit=False)
+
+        admin_stars_value = self.cleaned_data.get('admin_stars')
+        if admin_stars_value is not None:
+            guide.admin_stars = round(float(admin_stars_value), 1)
+
+        # Recalcule la note globale avant de sauvegarder
+        guide._update_global_stars()
+
+        if commit:
+            guide.save()
+
+            # Crée ou met à jour GuideAdminRating
+            if admin_stars_value is not None:
+                from .models import GuideAdminRating
+                GuideAdminRating.objects.update_or_create(
+                    guide=guide,
+                    defaults={'rating': guide.admin_stars},
+                )
+
+        return guide

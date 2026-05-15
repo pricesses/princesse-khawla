@@ -72,8 +72,9 @@
                         <p class="mt-3 text-xs font-medium text-red-500 bg-red-50 dark:bg-red-900/10 p-2 rounded-lg">{{ form.photo.errors.0 }}</p>
                     {% endif %}
 
-                    <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-800">
-                        <h4 class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider mb-2">{% trans "Rating Level" %}</h4>
+                    <div class="mt-6 p-4 bg-indigo-50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100 dark:border-indigo-800">
+                        <h4 class="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider mb-1">{% trans "Note Administrateur" %}</h4>
+                        <p class="text-[10px] text-indigo-400 font-medium mb-3">{% trans "Évaluation interne de la plateforme (0-5). Contribue à 40% du score global." %}</p>
                         <div id="star-rating-ui" class="flex items-center gap-2">
                             {% for i in "12345" %}
                             <button type="button" class="star-btn p-1 transition-all duration-200 transform hover:scale-125" data-value="{{ forloop.counter }}">
@@ -82,16 +83,16 @@
                                 </svg>
                             </button>
                             {% endfor %}
-                            <span id="star-value-label" class="ms-2 text-sm font-bold text-gray-600 dark:text-gray-300">0.0</span>
+                            <span id="star-value-label" class="ms-2 text-sm font-bold text-indigo-600 dark:text-indigo-300">0.0</span>
                         </div>
-                        <div class="hidden">{{ form.stars }}</div>
+                        <div class="hidden">{{ form.admin_stars }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white shadow-xl shadow-blue-200/50 dark:shadow-none">
+            <div class="bg-gradient-to-br from-indigo-700 via-indigo-600 to-blue-600 rounded-3xl p-6 text-blue shadow-xl shadow-indigo-200/50 dark:shadow-none">
                 <h4 class="font-bold text-lg mb-2">{% trans "Quick Actions" %}</h4>
-                <p class="text-blue-100 text-xs mb-6 font-medium">{% trans "Save your progress or cancel modifications." %}</p>
+                <p class="text-blue text-xs mb-6 font-medium">{% trans "Save your progress or cancel modifications." %}</p>
                 <div class="space-y-3">
                     <button type="submit" class="w-full flex items-center justify-center gap-2 py-3 bg-white text-blue-700 font-bold rounded-2xl hover:bg-blue-50 transition-colors shadow-lg">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
@@ -292,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ── Star rating UI ───────────────────────────────────────
     const starBtns = document.querySelectorAll('.star-btn');
-    const starsInput = document.getElementById('{{ form.stars.id_for_label }}');
+    const starsInput = document.getElementById('{{ form.admin_stars.id_for_label }}');
     const starLabel = document.getElementById('star-value-label');
 
     function highlightStars(value) {

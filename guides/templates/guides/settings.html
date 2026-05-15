@@ -100,11 +100,23 @@
                     {{ form.description.errors }}
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-3">
                     <label class="text-xs font-black uppercase tracking-wider text-gray-400 ml-1">{% trans "Spoken Languages" %}</label>
-                    {{ form.languages }}
-                    {{ form.languages.errors }}
-                    <p class="text-[10px] text-gray-400 font-medium ml-1 italic">{% trans "Separate languages with commas (e.g. Arabic, English, French)." %}</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {% for choice in form.languages_list %}
+                        <label class="lang-card relative flex items-center justify-between p-3 rounded-2xl border-2 border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 cursor-pointer transition-all duration-200 hover:border-blue-200 hover:bg-blue-50/30 dark:hover:border-blue-700 dark:hover:bg-blue-900/20 group select-none">
+                            <div class="flex items-center gap-2">
+                                {{ choice.tag }}
+                                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ choice.choice_label }}</span>
+                            </div>
+                            <svg class="lang-check w-5 h-5 text-blue-500 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <div class="hidden">{{ form.languages }}</div>
+                    {{ form.languages_list.errors }}
                 </div>
             </div>
         </div>
@@ -140,6 +152,11 @@
                     <p class="text-[10px] text-gray-400 font-medium ml-1 italic">{% trans "* Children under 6 are free by default." %}</p>
                 </div>
             </div>
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" form="settings-form" class="px-8 py-3 bg-indigo-600 text-white rounded-2xl shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 transition-all font-black text-sm">
+                {% trans "Save Changes" %}
+            </button>
         </div>
     </form>
 </div>
@@ -193,6 +210,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    // ── Language card selection (same style as admin form) ───────────────
+    function initLangCards() {
+        document.querySelectorAll('.lang-card').forEach(function(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            const checkIcon = card.querySelector('.lang-check');
+
+            // Hide the native checkbox (styling only)
+            if (checkbox) checkbox.style.display = 'none';
+
+            function applyState() {
+                if (!checkbox) return;
+                if (checkbox.checked) {
+                    card.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'dark:border-blue-500');
+                    card.classList.remove('border-gray-100', 'dark:border-gray-700', 'bg-gray-50', 'dark:bg-gray-900/50');
+                    if (checkIcon) checkIcon.classList.remove('hidden');
+                } else {
+                    card.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'dark:border-blue-500');
+                    card.classList.add('border-gray-100', 'dark:border-gray-700', 'bg-gray-50', 'dark:bg-gray-900/50');
+                    if (checkIcon) checkIcon.classList.add('hidden');
+                }
+            }
+
+            // Apply initial state (pre-checked languages)
+            applyState();
+
+            // Toggle on card click
+            card.addEventListener('click', function() {
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    applyState();
+                }
+            });
+        });
+    }
+    initLangCards();
+
 });
 </script>
 {% endblock %}
