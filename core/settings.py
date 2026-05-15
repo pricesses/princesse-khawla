@@ -235,7 +235,7 @@ KONNECT_RECEIVER_WALLET_ID = env("KONNECT_RECEIVER_WALLET_ID", default="")
 # WhatsApp via Twilio
 # ──────────────────────────────────────────
 WHATSAPP_ENABLED     = True
-TWILIO_ACCOUNT_SID   = "AC8f5fb5589d3b50a68e2183c32732c35f"
-TWILIO_AUTH_TOKEN    = "5f7a158639abd86b05e231580a707b0a"
+TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID", default="")
+TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN", default="")
 TWILIO_WHATSAPP_FROM = "whatsapp:+14155238886"
 SITE_URL             = "http://localhost:8000"
