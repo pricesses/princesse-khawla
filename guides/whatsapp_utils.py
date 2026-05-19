@@ -84,31 +84,60 @@ def send_whatsapp_message(to_phone: str, message: str) -> bool:
 
 def send_new_suggestion_whatsapp(guide, suggestion) -> bool:
     """
-    Notifie le guide par WhatsApp qu'il a reçu une nouvelle demande de réservation.
+    Notifie le guide par WhatsApp d'une nouvelle demande de réservation.
+    La langue du message suit guide.preferred_language ('fr' ou 'en').
     """
     guide_name = guide.user.get_full_name() or guide.user.username
+    lang = getattr(guide, 'preferred_language', 'fr')
 
-    # Calcul manuel du montant (total_price = 0 à la création, avant approve())
+    # Calcul du montant (total_price = 0 à la création, avant approve())
     adults_subtotal   = round(suggestion.nb_adults * float(guide.price_adult), 3)
     children_subtotal = round(suggestion.nb_children_over_6 * float(guide.price_child), 3)
     total_price       = round(adults_subtotal + children_subtotal, 3)
     commission        = float(suggestion.commission_rate)
     net_amount        = round(total_price * (1 - commission / 100), 3)
 
-    message = (
-        f"🔔 *Nouvelle demande de réservation — FielMedina*\n\n"
-        f"Bonjour *{guide_name}*,\n\n"
-        f"Vous avez reçu une nouvelle demande de visite guidée :\n\n"
-        f"👤 *Client :* {suggestion.client_name}\n"
-        f"📅 *Date souhaitée :* {suggestion.date.strftime('%d/%m/%Y')}\n"
-        f"👥 *Groupe :* "
-        f"{suggestion.nb_adults} adulte(s)"
-        f"{f', {suggestion.nb_children_over_6} enfant(s) >6 ans' if suggestion.nb_children_over_6 else ''}"
-        f"{f', {suggestion.nb_children_under_6} enfant(s) <6 ans' if suggestion.nb_children_under_6 else ''}\n"
-        f"💰 *Montant estimé :* {total_price:.3f} TND\n"
-        f"💵 *Net après commission ({commission:.0f}%) :* {net_amount:.3f} TND\n\n"
-        f"Connectez-vous à votre tableau de bord pour accepter ou refuser cette demande.\n"
-        f"{getattr(settings, 'SITE_URL', 'http://localhost:8000')}/guides/suggestions/"
-    )
+    site_url = getattr(settings, 'SITE_URL', 'http://localhost:8000')
+
+    if lang == 'en':
+        # ── English message ───────────────────────────────────────────────
+        group_line = f"{suggestion.nb_adults} adult(s)"
+        if suggestion.nb_children_over_6:
+            group_line += f", {suggestion.nb_children_over_6} child(ren) >6 yrs"
+        if suggestion.nb_children_under_6:
+            group_line += f", {suggestion.nb_children_under_6} child(ren) <6 yrs"
+
+        message = (
+            f"🔔 *New Booking Request — FielMedina*\n\n"
+            f"Hello *{guide_name}*,\n\n"
+            f"You have received a new guided tour request:\n\n"
+            f"👤 *Client:* {suggestion.client_name}\n"
+            f"📅 *Requested date:* {suggestion.date.strftime('%d/%m/%Y')}\n"
+            f"👥 *Group:* {group_line}\n"
+            f"💰 *Estimated amount:* {total_price:.3f} TND\n"
+            f"💵 *Net after commission ({commission:.0f}%):* {net_amount:.3f} TND\n\n"
+            f"Log in to your dashboard to accept or decline this request.\n"
+            f"{site_url}/guides/suggestions/"
+        )
+    else:
+        # ── French message (default) ──────────────────────────────────────
+        group_line = f"{suggestion.nb_adults} adulte(s)"
+        if suggestion.nb_children_over_6:
+            group_line += f", {suggestion.nb_children_over_6} enfant(s) >6 ans"
+        if suggestion.nb_children_under_6:
+            group_line += f", {suggestion.nb_children_under_6} enfant(s) <6 ans"
+
+        message = (
+            f"🔔 *Nouvelle demande de réservation — FielMedina*\n\n"
+            f"Bonjour *{guide_name}*,\n\n"
+            f"Vous avez reçu une nouvelle demande de visite guidée :\n\n"
+            f"👤 *Client :* {suggestion.client_name}\n"
+            f"📅 *Date souhaitée :* {suggestion.date.strftime('%d/%m/%Y')}\n"
+            f"👥 *Groupe :* {group_line}\n"
+            f"💰 *Montant estimé :* {total_price:.3f} TND\n"
+            f"💵 *Net après commission ({commission:.0f}%) :* {net_amount:.3f} TND\n\n"
+            f"Connectez-vous à votre tableau de bord pour accepter ou refuser cette demande.\n"
+            f"{site_url}/guides/suggestions/"
+        )
 
     return send_whatsapp_message(guide.phone, message)

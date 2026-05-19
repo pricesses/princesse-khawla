@@ -9,12 +9,12 @@ via Django's LocaleMiddleware — uses the project's own .po translation files.
 import secrets
 import base64
 import os
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import gettext as _
 from django.conf import settings
 from email.mime.image import MIMEImage
+from shared.utils import SafeRelatedEmailMessage
 
 
 def send_email_change_confirmation(partner, new_email: str, request=None) -> None:
@@ -89,13 +89,12 @@ def send_email_change_confirmation(partner, new_email: str, request=None) -> Non
         # ── 8. Send ───────────────────────────────────────────────────────────
         from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@fielmedina.com')
 
-        msg = EmailMultiAlternatives(
+        msg = SafeRelatedEmailMessage(
             subject    = _('Confirm your new email address — FielMedina'),
             body       = text_content,
             from_email = from_email,
             to         = [new_email],
         )
-        msg.mixed_subtype = 'related'  # ✅ Nécessaire pour que les images CID s'affichent
         msg.attach_alternative(html_content, "text/html")
 
         # ✅ Attacher le logo en tant que CID (Content-ID)

@@ -27,7 +27,7 @@ class GuideSettingsForm(forms.ModelForm):
 
     class Meta:
         model = Guide
-        fields = ['phone', 'photo', 'description', 'languages', 'accepts_children', 'price_adult', 'price_child']
+        fields = ['phone', 'photo', 'description', 'languages', 'accepts_children', 'price_adult', 'price_child', 'preferred_language']
         widgets = {
             'phone': forms.TextInput(attrs={
                 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-all duration-200',
@@ -52,6 +52,8 @@ class GuideSettingsForm(forms.ModelForm):
             'photo': forms.FileInput(attrs={
                 'class': 'block w-full text-sm text-gray-900 border border-gray-300 rounded-xl cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 p-2'
             }),
+            # Caché — géré via les boutons radio dans le template
+            'preferred_language': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -72,11 +74,18 @@ class GuideSettingsForm(forms.ModelForm):
             saved = [l.strip() for l in self.instance.languages.split(',')]
             self.fields['languages_list'].initial = saved
 
+        # Pré-remplit la langue de notification
+        if self.instance and self.instance.pk:
+            self.fields['preferred_language'].initial = self.instance.preferred_language or 'fr'
+
     def clean(self):
         cleaned_data = super().clean()
         # Fusionne les cases cochées en chaîne CSV stockée dans `languages`
         selected = cleaned_data.get('languages_list', [])
         cleaned_data['languages'] = ', '.join(selected)
+        # Préserve explicitement la langue de notification
+        if not cleaned_data.get('preferred_language'):
+            cleaned_data['preferred_language'] = self.instance.preferred_language or 'fr'
         return cleaned_data
 
     def clean_photo(self):

@@ -1,11 +1,11 @@
 import secrets
 import os
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.translation import gettext as _
 from django.conf import settings
 from email.mime.image import MIMEImage
+from shared.utils import SafeRelatedEmailMessage
 
 def send_guide_welcome_email(guide, password):
     """
@@ -27,8 +27,7 @@ def send_guide_welcome_email(guide, password):
     html_content = render_to_string('guides/emails/welcome_guide.html', context)
     text_content = f"Bonjour {context['guide_name']},\n\nVotre compte guide a été créé.\nEmail: {context['email']}\nMot de passe: {context['password']}\nConnectez-vous ici: {context['login_url']}"
 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-    msg.mixed_subtype = 'related'  # Required for CID logo images to show in Gmail
+    msg = SafeRelatedEmailMessage(subject, text_content, from_email, to_email)
     msg.attach_alternative(html_content, "text/html")
     
     # Attach icons if they exist
@@ -123,8 +122,7 @@ def _send_new_suggestion_email_inner(guide, suggestion):
     html_content = render_to_string('guides/emails/new_suggestion_notify.html', context)
     text_content = text_intro + text_body
 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [guide.email])
-    msg.mixed_subtype = 'related'
+    msg = SafeRelatedEmailMessage(subject, text_content, from_email, [guide.email])
     msg.attach_alternative(html_content, "text/html")
 
     logo_path = os.path.join(settings.BASE_DIR, 'static', 'icon.png')
@@ -164,8 +162,7 @@ def send_guide_email_change_confirmation(guide, new_email):
     html_content = render_to_string('guides/emails/email_change_confirm.html', context)
     text_content = f"Bonjour,\n\nVeuillez confirmer votre nouvelle adresse email en cliquant sur ce lien: {confirmation_url}"
 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-    msg.mixed_subtype = 'related'  # Required for CID logo images to show in Gmail
+    msg = SafeRelatedEmailMessage(subject, text_content, from_email, to_email)
     msg.attach_alternative(html_content, "text/html")
 
     # Attach logo if exists

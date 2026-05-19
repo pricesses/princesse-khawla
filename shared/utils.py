@@ -6,8 +6,22 @@ from django.core.files.base import ContentFile
 from django.utils.translation import activate, gettext_lazy as _
 from django.core import signing
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 logger = logging.getLogger(__name__)
+
+class SafeRelatedEmailMessage(EmailMultiAlternatives):
+    """
+    Subclass of EmailMultiAlternatives that automatically sets the MIME
+    type to multipart/related instead of multipart/mixed when there are
+    attachments, avoiding the deprecated/removed `mixed_subtype` attribute
+    in Django 5+.
+    """
+    def message(self, *args, **kwargs):
+        msg = super().message(*args, **kwargs)
+        if self.attachments:
+            msg.set_type('multipart/related')
+        return msg
 
 def optimize_image(image_field, resize_width=None):
     if not image_field:
@@ -32,7 +46,6 @@ def optimize_image(image_field, resize_width=None):
         return None
 
 def send_validation_email(partner, plain_password=None, lang='fr'):
-    from django.core.mail import EmailMultiAlternatives
     from django.template.loader import render_to_string
     from email.mime.image import MIMEImage
  
@@ -62,14 +75,13 @@ def send_validation_email(partner, plain_password=None, lang='fr'):
         logger.error(f"Erreur rendu template email : {e}")
         return False
  
-    email = EmailMultiAlternatives(
+    email = SafeRelatedEmailMessage(
         subject,
         text_content,
         settings.DEFAULT_FROM_EMAIL,
         [partner.email],
     )
     email.attach_alternative(html_content, "text/html")
-    email.mixed_subtype = 'related'
 
     # Attach Icon as CID
     try:

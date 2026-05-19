@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,260 +11,205 @@
             color: #2d3748;
             line-height: 1.6;
         }
-        .wrapper { padding: 40px 16px; }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-
-        /* ── Header ── */
-        .header {
-            background: linear-gradient(135deg, #1a2a4a 0%, #2d4a7a 100%);
-            padding: 36px 30px 30px;
-            text-align: center;
-        }
-        .header img  { width: 70px; height: auto; display: block; margin: 0 auto 14px; }
-        .header h1   { color: #ffffff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-        .header p    { color: #93c5fd; font-size: 13px; }
-
-        /* ── Alert banner ── */
-        .alert-banner {
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            padding: 18px 30px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .alert-banner .bell-icon { font-size: 28px; flex-shrink: 0; }
-        .alert-banner h2 { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-        .alert-banner p  { color: #c7d2fe; font-size: 12px; }
-
-        /* ── Content ── */
-        .content { padding: 30px; }
-        .greeting { font-size: 15px; color: #374151; margin-bottom: 20px; }
-        .greeting strong { color: #1a2a4a; }
-
-        /* ── Info card ── */
-        .info-card {
-            background: #f8faff;
-            border: 1px solid #e0e7ff;
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-        .info-card-header {
-            background: #eef2ff;
-            padding: 10px 18px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #4f46e5;
-        }
-        .info-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 13px 18px;
-            border-bottom: 1px solid #e8edf7;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-row .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-        .info-row .label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #9ca3af;
-            margin-bottom: 2px;
-        }
-        .info-row .value { font-size: 14px; font-weight: 600; color: #1f2937; }
-
-        /* ── Pricing summary ── */
-        .pricing {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 12px;
-            padding: 16px 18px;
-            margin: 20px 0;
-        }
-        .pricing-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 0;
-            font-size: 13px;
-            color: #374151;
-        }
-        .pricing-row.total {
-            border-top: 1px dashed #86efac;
-            margin-top: 8px;
-            padding-top: 10px;
-            font-weight: 800;
-            font-size: 15px;
-            color: #15803d;
-        }
-        .pricing-row .amount { font-weight: 700; }
-
-        /* ── Message block ── */
-        .message-block {
-            background: #fffbeb;
-            border-left: 4px solid #f59e0b;
-            border-radius: 0 8px 8px 0;
-            padding: 12px 16px;
-            margin: 16px 0;
-            font-size: 13px;
-            color: #78350f;
-            font-style: italic;
-        }
-
-        /* ── CTA Button ── */
-        .btn-wrapper { text-align: center; margin: 28px 0 8px; }
-        .btn {
-            display: inline-block;
-            padding: 14px 36px;
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            color: #ffffff !important;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            letter-spacing: 0.2px;
-        }
-        .btn-hint {
-            text-align: center;
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 8px;
-        }
-
-        /* ── Footer ── */
-        .footer {
-            background: #f9fafb;
-            border-top: 1px solid #e5e7eb;
-            padding: 20px 30px;
-            text-align: center;
-            font-size: 11px;
-            color: #9ca3af;
-        }
-        .footer a { color: #6366f1; text-decoration: none; }
     </style>
 </head>
-<body>
-<div class="wrapper">
-<div class="container">
+<body style="background-color:#f0f4f8; margin:0; padding:0;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f0f4f8; padding:40px 16px;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.08);">
 
-    <!-- Header -->
-    <div class="header">
-        <img src="cid:logo_img" alt="FielMedina">
-        <h1>{{ company_name }}</h1>
-        <p>Plateforme de Guides Touristiques Professionnels</p>
-    </div>
+    <!-- ══ HEADER ══ -->
+    <tr>
+        <td style="background:linear-gradient(135deg,#1a2a4a 0%,#2d4a7a 100%); padding:36px 30px 30px; text-align:center;">
+            <img src="cid:logo_img" alt="FielMedina" style="width:70px; height:auto; display:block; margin:0 auto 14px;">
+            <h1 style="color:#ffffff; font-size:20px; font-weight:700; margin-bottom:4px;">{{ company_name }}</h1>
+            <p style="color:#93c5fd; font-size:13px; margin:0;">
+                {% if lang == 'en' %}Professional Tourism Guide Platform{% else %}Plateforme de Guides Touristiques Professionnels{% endif %}
+            </p>
+        </td>
+    </tr>
 
-    <!-- Alert banner -->
-    <div class="alert-banner">
-        <span class="bell-icon">🔔</span>
-        <div>
-            <h2>Nouvelle Demande de Réservation</h2>
-            <p>Un client souhaite vous engager comme guide</p>
-        </div>
-    </div>
-
-    <!-- Content -->
-    <div class="content">
-
-        <p class="greeting">Bonjour <strong>{{ guide_name }}</strong>,</p>
-        <p style="font-size:14px;color:#4b5563;margin-bottom:20px;">
-            Vous avez reçu une nouvelle demande de visite guidée. Veuillez la consulter et y répondre rapidement.
-        </p>
-
-        <!-- Client & trip info -->
-        <div class="info-card">
-            <div class="info-card-header">Détails de la demande</div>
-
-            <div class="info-row">
-                <span class="icon">👤</span>
-                <div>
-                    <div class="label">Client</div>
-                    <div class="value">{{ suggestion_client_name }}</div>
-                    <div style="font-size:12px;color:#6b7280;margin-top:2px;">{{ suggestion_client_email }}</div>
-                </div>
-            </div>
-
-            <div class="info-row">
-                <span class="icon">📅</span>
-                <div>
-                    <div class="label">Date souhaitée</div>
-                    <div class="value">{{ suggestion_date }}</div>
-                </div>
-            </div>
-
-            <div class="info-row">
-                <span class="icon">👥</span>
-                <div>
-                    <div class="label">Composition du groupe</div>
-                    <div class="value">
-                        {{ suggestion_nb_adults }} adulte{{ suggestion_nb_adults|pluralize }}
-                        {% if suggestion_nb_children_over_6 %}
-                            · {{ suggestion_nb_children_over_6 }} enfant{{ suggestion_nb_children_over_6|pluralize }} (&gt;6 ans)
+    <!-- ══ ALERT BANNER ══ -->
+    <tr>
+        <td style="background:linear-gradient(135deg,#6366f1,#4f46e5); padding:18px 30px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td width="44" style="font-size:28px; vertical-align:middle;">🔔</td>
+                    <td style="vertical-align:middle; padding-left:14px;">
+                        {% if lang == 'en' %}
+                            <h2 style="color:#fff; font-size:16px; font-weight:700; margin:0 0 2px;">New Booking Request</h2>
+                            <p style="color:#c7d2fe; font-size:12px; margin:0;">A client wants to book you as their guide</p>
+                        {% else %}
+                            <h2 style="color:#fff; font-size:16px; font-weight:700; margin:0 0 2px;">Nouvelle Demande de Réservation</h2>
+                            <p style="color:#c7d2fe; font-size:12px; margin:0;">Un client souhaite vous engager comme guide</p>
                         {% endif %}
-                        {% if suggestion_nb_children_under_6 %}
-                            · {{ suggestion_nb_children_under_6 }} enfant{{ suggestion_nb_children_under_6|pluralize }} (&lt;6 ans, gratuit)
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
 
-        <!-- Message from client -->
-        {% if suggestion_message %}
-        <div class="message-block">
-            <strong>Message du client :</strong><br>
-            "{{ suggestion_message }}"
-        </div>
-        {% endif %}
+    <!-- ══ CONTENT ══ -->
+    <tr>
+        <td style="padding:30px;">
 
-        <!-- Pricing summary -->
-        <div class="pricing">
-            <div class="pricing-row">
-                <span>Adultes ({{ suggestion_nb_adults }} × {{ price_adult }} TND)</span>
-                <span class="amount">{{ adults_subtotal }} TND</span>
-            </div>
-            {% if suggestion_nb_children_over_6 %}
-            <div class="pricing-row">
-                <span>Enfants &gt;6 ans ({{ suggestion_nb_children_over_6 }} × {{ price_child }} TND)</span>
-                <span class="amount">{{ children_subtotal }} TND</span>
-            </div>
+            <!-- Greeting -->
+            {% if lang == 'en' %}
+                <p style="font-size:15px; color:#374151; margin-bottom:10px;">Hello <strong style="color:#1a2a4a;">{{ guide_name }}</strong>,</p>
+                <p style="font-size:14px; color:#4b5563; margin-bottom:20px;">You have received a new tour booking request. Please review it and respond promptly.</p>
+            {% else %}
+                <p style="font-size:15px; color:#374151; margin-bottom:10px;">Bonjour <strong style="color:#1a2a4a;">{{ guide_name }}</strong>,</p>
+                <p style="font-size:14px; color:#4b5563; margin-bottom:20px;">Vous avez reçu une nouvelle demande de visite guidée. Veuillez la consulter et y répondre rapidement.</p>
             {% endif %}
-            <div class="pricing-row total">
-                <span>💰 Montant brut estimé</span>
-                <span>{{ suggestion_total_price }} TND</span>
-            </div>
-        </div>
 
-        <p style="font-size:12px;color:#9ca3af;text-align:center;margin-bottom:20px;">
-            * Le net perçu après commission ({{ commission_rate }}%) sera de <strong style="color:#15803d;">{{ net_amount }} TND</strong>.
-        </p>
+            <!-- ── Info Card ── -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8faff; border:1px solid #e0e7ff; border-radius:12px; overflow:hidden; margin:20px 0;">
+                <!-- Card header -->
+                <tr>
+                    <td colspan="3" style="background:#eef2ff; padding:10px 18px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#4f46e5;">
+                        {% if lang == 'en' %}Request Details{% else %}Détails de la demande{% endif %}
+                    </td>
+                </tr>
+                <!-- Client row -->
+                <tr>
+                    <td style="padding:13px 18px; border-bottom:1px solid #e8edf7; font-size:18px; vertical-align:top; width:36px;">👤</td>
+                    <td style="padding:13px 18px; border-bottom:1px solid #e8edf7; vertical-align:top;">
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#9ca3af; margin-bottom:2px;">
+                            {% if lang == 'en' %}Client{% else %}Client{% endif %}
+                        </div>
+                        <div style="font-size:14px; font-weight:600; color:#1f2937;">{{ suggestion_client_name }}</div>
+                        <div style="font-size:12px; color:#6b7280; margin-top:2px;">{{ suggestion_client_email }}</div>
+                    </td>
+                </tr>
+                <!-- Date row -->
+                <tr>
+                    <td style="padding:13px 18px; border-bottom:1px solid #e8edf7; font-size:18px; vertical-align:top; width:36px;">📅</td>
+                    <td style="padding:13px 18px; border-bottom:1px solid #e8edf7; vertical-align:top;">
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#9ca3af; margin-bottom:2px;">
+                            {% if lang == 'en' %}Requested Date{% else %}Date souhaitée{% endif %}
+                        </div>
+                        <div style="font-size:14px; font-weight:600; color:#1f2937;">{{ suggestion_date }}</div>
+                    </td>
+                </tr>
+                <!-- Group row -->
+                <tr>
+                    <td style="padding:13px 18px; font-size:18px; vertical-align:top; width:36px;">👥</td>
+                    <td style="padding:13px 18px; vertical-align:top;">
+                        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#9ca3af; margin-bottom:2px;">
+                            {% if lang == 'en' %}Group Composition{% else %}Composition du groupe{% endif %}
+                        </div>
+                        <div style="font-size:14px; font-weight:600; color:#1f2937;">
+                            {% if lang == 'en' %}
+                                {{ suggestion_nb_adults }} adult{{ suggestion_nb_adults|pluralize }}
+                                {% if suggestion_nb_children_over_6 %} &bull; {{ suggestion_nb_children_over_6 }} child{{ suggestion_nb_children_over_6|pluralize }} (&gt;6 yrs){% endif %}
+                                {% if suggestion_nb_children_under_6 %} &bull; {{ suggestion_nb_children_under_6 }} child{{ suggestion_nb_children_under_6|pluralize }} (&lt;6 yrs, free){% endif %}
+                            {% else %}
+                                {{ suggestion_nb_adults }} adulte{{ suggestion_nb_adults|pluralize }}
+                                {% if suggestion_nb_children_over_6 %} &bull; {{ suggestion_nb_children_over_6 }} enfant{{ suggestion_nb_children_over_6|pluralize }} (&gt;6 ans){% endif %}
+                                {% if suggestion_nb_children_under_6 %} &bull; {{ suggestion_nb_children_under_6 }} enfant{{ suggestion_nb_children_under_6|pluralize }} (&lt;6 ans, gratuit){% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-        <!-- CTA -->
-        <div class="btn-wrapper">
-            <a href="{{ dashboard_url }}" class="btn">Voir la demande sur mon tableau de bord</a>
-        </div>
-        <p class="btn-hint">Répondez rapidement pour améliorer votre taux d'acceptation ✨</p>
+            <!-- ── Client message ── -->
+            {% if suggestion_message %}
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fffbeb; border-left:4px solid #f59e0b; border-radius:0 8px 8px 0; margin:16px 0;">
+                <tr>
+                    <td style="padding:12px 16px; font-size:13px; color:#78350f; font-style:italic;">
+                        {% if lang == 'en' %}<strong>Client message:</strong>{% else %}<strong>Message du client :</strong>{% endif %}<br>
+                        "{{ suggestion_message }}"
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
 
-    </div>
+            <!-- ── Pricing Summary ── -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; margin:20px 0;">
+                <tr>
+                    <td style="padding:12px 18px 4px; font-size:13px; color:#374151;">
+                        {% if lang == 'en' %}
+                            Adults ({{ suggestion_nb_adults }} &times; {{ price_adult }} TND)
+                        {% else %}
+                            Adultes ({{ suggestion_nb_adults }} &times; {{ price_adult }} TND)
+                        {% endif %}
+                    </td>
+                    <td align="right" style="padding:12px 18px 4px; font-size:13px; font-weight:700; color:#374151; white-space:nowrap;">
+                        {{ adults_subtotal }} TND
+                    </td>
+                </tr>
+                {% if suggestion_nb_children_over_6 %}
+                <tr>
+                    <td style="padding:4px 18px; font-size:13px; color:#374151;">
+                        {% if lang == 'en' %}
+                            Children &gt;6 yrs ({{ suggestion_nb_children_over_6 }} &times; {{ price_child }} TND)
+                        {% else %}
+                            Enfants &gt;6 ans ({{ suggestion_nb_children_over_6 }} &times; {{ price_child }} TND)
+                        {% endif %}
+                    </td>
+                    <td align="right" style="padding:4px 18px; font-size:13px; font-weight:700; color:#374151; white-space:nowrap;">
+                        {{ children_subtotal }} TND
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="2" style="padding:0 18px;"><hr style="border:none; border-top:1px dashed #86efac; margin:8px 0;"></td>
+                </tr>
+                <tr>
+                    <td style="padding:4px 18px 14px; font-size:15px; font-weight:800; color:#15803d;">
+                        💰 {% if lang == 'en' %}Estimated gross amount{% else %}Montant brut estimé{% endif %}
+                    </td>
+                    <td align="right" style="padding:4px 18px 14px; font-size:15px; font-weight:800; color:#15803d; white-space:nowrap;">
+                        {{ suggestion_total_price }} TND
+                    </td>
+                </tr>
+            </table>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>Vous recevez cet email car vous êtes guide enregistré sur {{ company_name }}.</p>
-        <p style="margin-top:6px;">&copy; 2026 {{ company_name }}. Tous droits réservés.</p>
-    </div>
+            <!-- Commission note -->
+            <p style="font-size:12px; color:#9ca3af; text-align:center; margin-bottom:20px;">
+                {% if lang == 'en' %}
+                    * Your net amount after commission ({{ commission_rate }}%) will be <strong style="color:#15803d;">{{ net_amount }} TND</strong>.
+                {% else %}
+                    * Le net perçu après commission ({{ commission_rate }}%) sera de <strong style="color:#15803d;">{{ net_amount }} TND</strong>.
+                {% endif %}
+            </p>
 
-</div>
-</div>
+            <!-- ── CTA Button ── -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 8px;">
+                <tr>
+                    <td align="center">
+                        <a href="{{ dashboard_url }}"
+                           style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,#4f46e5,#6366f1); color:#ffffff; text-decoration:none; border-radius:10px; font-weight:700; font-size:15px; letter-spacing:0.2px;">
+                            {% if lang == 'en' %}View request on my dashboard{% else %}Voir la demande sur mon tableau de bord{% endif %}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-top:8px; font-size:11px; color:#9ca3af;">
+                        {% if lang == 'en' %}Respond quickly to improve your acceptance rate ✨{% else %}Répondez rapidement pour améliorer votre taux d'acceptation ✨{% endif %}
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+
+    <!-- ══ FOOTER ══ -->
+    <tr>
+        <td style="background:#f9fafb; border-top:1px solid #e5e7eb; padding:20px 30px; text-align:center; font-size:11px; color:#9ca3af;">
+            {% if lang == 'en' %}
+                <p>You receive this email because you are a registered guide on {{ company_name }}.</p>
+                <p style="margin-top:6px;">&copy; 2026 {{ company_name }}. All rights reserved.</p>
+            {% else %}
+                <p>Vous recevez cet email car vous êtes guide enregistré sur {{ company_name }}.</p>
+                <p style="margin-top:6px;">&copy; 2026 {{ company_name }}. Tous droits réservés.</p>
+            {% endif %}
+        </td>
+    </tr>
+
+</table>
+</td></tr>
+</table>
 </body>
 </html>

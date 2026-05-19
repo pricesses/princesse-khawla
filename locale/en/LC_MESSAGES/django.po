@@ -1,13 +1,4233 @@
-# 
+#
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-18 15:31+0100\n"
+"Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 
+#: .\guard\admin.py:40 .\guard\admin.py:90 .\guard\admin.py:148
+#: .\guard\admin.py:172 .\guard\admin.py:223 .\guard\admin.py:257
+#: .\guard\admin.py:274 .\guard\templates\guard\views\events\index.html:92
+#: .\guard\templates\guard\views\hiking\index.html:72
+#: .\guard\templates\guard\views\locations\index.html:72 .\shared\admin.py:16
+#: .\templates\partners\events\create.html:48
+msgid "Basic Information"
+msgstr ""
+
+#: .\guard\admin.py:44 .\guard\templates\guard\views\locations\index.html:168
+msgid "Location Details"
+msgstr ""
+
+#: .\guard\admin.py:94
+msgid "Event Schedule"
+msgstr ""
+
+#: .\guard\admin.py:106 .\guard\admin.py:355
+msgid "Details"
+msgstr ""
+
+#: .\guard\admin.py:152 .\guard\templates\guard\views\hiking\index.html:329
+msgid "Geolocation"
+msgstr ""
+
+#: .\guard\admin.py:176 .\guard\models.py:52
+msgid "Ad Images"
+msgstr ""
+
+#: .\guard\admin.py:180
+msgid "Link Information"
+msgstr ""
+
+#: .\guard\admin.py:189
+msgid "Statistics"
+msgstr ""
+
+#: .\guard\admin.py:261
+msgid "Relationships"
+msgstr ""
+
+#: .\guard\admin.py:301 .\guard\models.py:211 .\guard\models.py:579
+#: .\guard\templates\guard\base\sidebar-left.html:232
+#: .\guard\templates\guard\views\dashboard.html:98
+#: .\guard\templates\guard\views\locations\index.html:24
+msgid "Locations"
+msgstr ""
+
+#: .\guard\admin.py:304 .\guard\models.py:321
+#: .\guard\templates\guard\base\sidebar-left.html:36
+#: .\guard\templates\guard\views\dashboard.html:58
+#: .\guard\templates\guard\views\dashboard.html:112
+#: .\guard\templates\guard\views\events\index.html:35
+msgid "Events"
+msgstr ""
+
+#: .\guard\admin.py:307 .\guard\models.py:255
+#: .\guard\templates\guard\views\dashboard.html:126
+msgid "Hikings"
+msgstr ""
+
+#: .\guard\admin.py:310
+msgid "Advertisements"
+msgstr ""
+
+#: .\guard\admin.py:313
+msgid "Devices & Users"
+msgstr ""
+
+#: .\guard\admin.py:316
+msgid "Notifications (24h)"
+msgstr ""
+
+#: .\guard\admin.py:319
+msgid "System"
+msgstr ""
+
+#: .\guard\admin.py:322
+msgid "Timestamps"
+msgstr ""
+
+#: .\guard\admin.py:349
+msgid "Activity"
+msgstr ""
+
+#: .\guard\admin.py:352
+msgid "Entity"
+msgstr ""
+
+#: .\guard\admin.py:378
+msgid "Notification Info"
+msgstr ""
+
+#: .\guard\admin.py:381 .\guard\templates\guard\views\locations\index.html:266
+#: .\shared\admin.py:17 .\shared\models.py:115
+msgid "Content"
+msgstr ""
+
+#: .\guard\admin.py:384
+msgid "Delivery"
+msgstr ""
+
+#: .\guard\admin.py:387
+msgid "Response"
+msgstr ""
+
+#: .\guard\forms.py:64 .\guard\forms.py:287 .\guard\forms.py:527
+#: .\templates\partners\events\create.html:66
+msgid "Name (English)"
+msgstr ""
+
+#: .\guard\forms.py:69
+msgid "Enter location name in English"
+msgstr ""
+
+#: .\guard\forms.py:73 .\guard\forms.py:230 .\guard\forms.py:296
+#: .\guard\forms.py:413 .\guard\forms.py:530 .\guard\forms.py:605
+msgid "Please enter the name in English."
+msgstr ""
+
+#: .\guard\forms.py:77 .\guard\forms.py:300 .\guard\forms.py:534
+#: .\templates\partners\events\create.html:84
+msgid "Name (French)"
+msgstr ""
+
+#: .\guard\forms.py:82
+msgid "Enter location name in French"
+msgstr ""
+
+#: .\guard\forms.py:86 .\guard\forms.py:235 .\guard\forms.py:309
+#: .\guard\forms.py:418 .\guard\forms.py:537 .\guard\forms.py:609
+msgid "Please enter the name in French."
+msgstr ""
+
+#: .\guard\forms.py:91
+msgid "Story (English)"
+msgstr ""
+
+#: .\guard\forms.py:95 .\guard\forms.py:240
+msgid "Please enter the story in English."
+msgstr ""
+
+#: .\guard\forms.py:99
+msgid "Story (French)"
+msgstr ""
+
+#: .\guard\forms.py:103 .\guard\forms.py:245
+msgid "Please enter the story in French."
+msgstr ""
+
+#: .\guard\forms.py:128
+msgid "Select location category"
+msgstr ""
+
+#: .\guard\forms.py:134
+msgid "Select location country"
+msgstr ""
+
+#: .\guard\forms.py:140
+msgid "Select location city"
+msgstr ""
+
+#: .\guard\forms.py:146 .\guard\forms.py:578
+msgid "e.g., 36.8065"
+msgstr ""
+
+#: .\guard\forms.py:152 .\guard\forms.py:584
+msgid "e.g., 10.1815"
+msgstr ""
+
+#: .\guard\forms.py:159
+msgid "Opening time"
+msgstr ""
+
+#: .\guard\forms.py:165
+msgid "Closing time"
+msgstr ""
+
+#: .\guard\forms.py:170
+msgid "e.g., 5.00"
+msgstr ""
+
+#: .\guard\forms.py:185
+msgid "Please select a category."
+msgstr ""
+
+#: .\guard\forms.py:188
+msgid "Please select a country."
+msgstr ""
+
+#: .\guard\forms.py:191 .\guard\forms.py:500 .\guard\forms.py:591
+msgid "Please select a city."
+msgstr ""
+
+#: .\guard\forms.py:196
+msgid "Latitude in decimal degrees (e.g., 36.8065)"
+msgstr ""
+
+#: .\guard\forms.py:197
+msgid "Longitude in decimal degrees (e.g., 10.1815)"
+msgstr ""
+
+#: .\guard\forms.py:198 .\guard\forms.py:199
+msgid "Leave empty if location is always open"
+msgstr ""
+
+#: .\guard\forms.py:200
+msgid "Leave empty if admission is free"
+msgstr ""
+
+#: .\guard\forms.py:201
+msgid "Enable advertisements for this location"
+msgstr ""
+
+#: .\guard\forms.py:256
+msgid "Opening time must be before closing time."
+msgstr ""
+
+#: .\guard\forms.py:292 .\templates\partners\events\create.html:69
+msgid "Enter event name in English"
+msgstr ""
+
+#: .\guard\forms.py:305 .\templates\partners\events\create.html:87
+msgid "Enter event name in French"
+msgstr ""
+
+#: .\guard\forms.py:314 .\guard\forms.py:477 .\guard\forms.py:541
+#: .\templates\partners\events\create.html:125
+msgid "Description (English)"
+msgstr ""
+
+#: .\guard\forms.py:318 .\guard\forms.py:423 .\guard\forms.py:545
+#: .\guard\forms.py:613
+msgid "Please enter the description in English."
+msgstr ""
+
+#: .\guard\forms.py:322 .\guard\forms.py:482 .\guard\forms.py:549
+#: .\templates\partners\events\create.html:161
+msgid "Description (French)"
+msgstr ""
+
+#: .\guard\forms.py:326 .\guard\forms.py:428 .\guard\forms.py:553
+#: .\guard\forms.py:617
+msgid "Please enter the description in French."
+msgstr ""
+
+#: .\guard\forms.py:331 .\guard\forms.py:688
+#: .\templates\partners\ads\create.html:85
+#: .\templates\partners\events\create.html:264
+msgid "Destination Link"
+msgstr ""
+
+#: .\guard\forms.py:338 .\templates\partners\events\create.html:266
+msgid "The destination URL for this event."
+msgstr ""
+
+#: .\guard\forms.py:361
+msgid "Select event location"
+msgstr ""
+
+#: .\guard\forms.py:366 .\guard\forms.py:493 .\guard\forms.py:571
+#: .\guard\forms.py:719 .\guard\forms.py:902
+#: .\guard\templates\guard\views\partners\index.html:81
+msgid "Select city"
+msgstr ""
+
+#: .\guard\forms.py:371
+msgid "Select event category"
+msgstr ""
+
+#: .\guard\forms.py:377
+msgid "Select event start date"
+msgstr ""
+
+#: .\guard\forms.py:383
+msgid "Select event end date"
+msgstr ""
+
+#: .\guard\forms.py:389
+msgid "Select event time"
+msgstr ""
+
+#: .\guard\forms.py:394
+msgid "Enter event price"
+msgstr ""
+
+#: .\guard\forms.py:512
+msgid "Description (English) is required."
+msgstr ""
+
+#: .\guard\forms.py:513
+msgid "Description (French) is required."
+msgstr ""
+
+#: .\guard\forms.py:635
+msgid "Select location"
+msgstr ""
+
+#: .\guard\forms.py:678 .\templates\partners\ads\create.html:32
+msgid "Ad Name"
+msgstr ""
+
+#: .\guard\forms.py:682
+msgid "e.g., Summer Campaign 2026"
+msgstr ""
+
+#: .\guard\forms.py:685
+msgid "If empty, a name like 'ADS-XXXXXX' will be auto-generated."
+msgstr ""
+
+#: .\guard\forms.py:696
+msgid "The destination URL for this ad. This will be tracked via Short.io."
+msgstr ""
+
+#: .\guard\forms.py:714
+msgid "Select country"
+msgstr ""
+
+#: .\guard\forms.py:729 .\guard\templates\guard\views\ads\list.html:95
+#: .\guard\templates\guard\views\guides\list.html:86
+#: .\guard\templates\guard\views\pages\list.html:65 .\shared\models.py:110
+#: .\shared\models.py:184 .\shared\models.py:247
+msgid "Active"
+msgstr ""
+
+#: .\guard\forms.py:758
+#, python-format
+msgid "Mobile image must be exactly 320x50 pixels. Uploaded: %(w)sx%(h)s"
+msgstr ""
+
+#: .\guard\forms.py:777
+#, python-format
+msgid "Tablet image must be exactly 728x90 pixels. Uploaded: %(w)sx%(h)s"
+msgstr ""
+
+#: .\guard\forms.py:798 .\guard\templates\guard\views\partners\list.html:24
+msgid "Assigned Locations"
+msgstr ""
+
+#: .\guard\forms.py:802
+msgid "Select the locations associated with this partner."
+msgstr ""
+
+#: .\guard\forms.py:807
+msgid "Custom Location Name"
+msgstr ""
+
+#: .\guard\forms.py:809
+msgid "Enter your establishment name"
+msgstr ""
+
+#: .\guard\forms.py:814
+msgid "Custom City"
+msgstr ""
+
+#: .\guard\forms.py:815
+msgid "— Select City —"
+msgstr ""
+
+#: .\guard\forms.py:819 .\shared\forms.py:65 .\shared\forms.py:80
+msgid "Password"
+msgstr ""
+
+#: .\guard\forms.py:821
+msgid "Leave empty to generate automatically"
+msgstr ""
+
+#: .\guard\forms.py:828
+msgid "Partner name"
+msgstr ""
+
+#: .\guard\forms.py:829
+msgid "Partner email (for validation)"
+msgstr ""
+
+#: .\guard\forms.py:830
+msgid "Website or Social link"
+msgstr ""
+
+#: .\guard\forms.py:850
+msgid "e.g., Sponsor name"
+msgstr ""
+
+#: .\guard\forms.py:865
+msgid "Please enter a name."
+msgstr ""
+
+#: .\guard\forms.py:866
+msgid "Please upload an image (300x200)."
+msgstr ""
+
+#: .\guard\forms.py:867
+msgid "Please provide a link."
+msgstr ""
+
+#: .\guard\forms.py:894
+msgid "Select transport type"
+msgstr ""
+
+#: .\guard\forms.py:909
+msgid "Select departure city"
+msgstr ""
+
+#: .\guard\forms.py:916
+msgid "Select arrival city"
+msgstr ""
+
+#: .\guard\forms.py:923
+msgid "Select departure region"
+msgstr ""
+
+#: .\guard\forms.py:930
+msgid "Select arrival region"
+msgstr ""
+
+#: .\guard\forms.py:937
+msgid "e.g., Line 32, Train 105, or Metro L1"
+msgstr ""
+
+#: .\guard\forms.py:951
+msgid "Please select a transport type."
+msgstr ""
+
+#: .\guard\forms.py:1032
+msgid "City is required for bus routes."
+msgstr ""
+
+#: .\guard\forms.py:1034
+msgid "Departure region is required for bus."
+msgstr ""
+
+#: .\guard\forms.py:1036
+msgid "Arrival region is required for bus."
+msgstr ""
+
+#: .\guard\forms.py:1038
+msgid "Bus number is required."
+msgstr ""
+
+#: .\guard\forms.py:1051
+msgid "Departure station is required for trains."
+msgstr ""
+
+#: .\guard\forms.py:1053
+msgid "Arrival station is required for trains."
+msgstr ""
+
+#: .\guard\forms.py:1074
+msgid ""
+"For metro: select EITHER (departure + arrival cities) OR (departure + "
+"arrival regions), but NOT both."
+msgstr ""
+
+#: .\guard\forms.py:1078 .\guard\forms.py:1079
+msgid "Cannot select both cities and regions."
+msgstr ""
+
+#: .\guard\forms.py:1095
+msgid ""
+"For metro: select either (departure + arrival cities) OR (departure + "
+"arrival regions)."
+msgstr ""
+
+#: .\guard\forms.py:1114
+msgid "Select time"
+msgstr ""
+
+#: .\guard\models.py:51
+msgid "Ad Image"
+msgstr ""
+
+#: .\guard\models.py:66
+msgid "Hiking Image"
+msgstr ""
+
+#: .\guard\models.py:67
+msgid "Hiking Images"
+msgstr ""
+
+#: .\guard\models.py:81
+msgid "Location Image"
+msgstr ""
+
+#: .\guard\models.py:82
+msgid "Location Images"
+msgstr ""
+
+#: .\guard\models.py:96
+msgid "Event Image"
+msgstr ""
+
+#: .\guard\models.py:97
+msgid "Event Images"
+msgstr ""
+
+#: .\guard\models.py:111
+msgid "Location Category"
+msgstr ""
+
+#: .\guard\models.py:112
+msgid "Location Categories"
+msgstr ""
+
+#: .\guard\models.py:119
+msgid "Sunday"
+msgstr ""
+
+#: .\guard\models.py:120
+msgid "Monday"
+msgstr ""
+
+#: .\guard\models.py:121
+msgid "Tuesday"
+msgstr ""
+
+#: .\guard\models.py:122
+msgid "Wednesday"
+msgstr ""
+
+#: .\guard\models.py:123
+msgid "Thursday"
+msgstr ""
+
+#: .\guard\models.py:124
+msgid "Friday"
+msgstr ""
+
+#: .\guard\models.py:125
+msgid "Saturday"
+msgstr ""
+
+#: .\guard\models.py:130
+msgid "Day"
+msgstr ""
+
+#: .\guard\models.py:134
+msgid "Weekday"
+msgstr ""
+
+#: .\guard\models.py:135
+msgid "Weekdays"
+msgstr ""
+
+#: .\guard\models.py:150 .\guard\models.py:296
+#: .\guard\templates\guard\views\locations\list.html:38
+#: .\templates\partners\events\create.html:220
+msgid "Category"
+msgstr ""
+
+#: .\guard\models.py:159 .\guard\models.py:586
+msgid "Partner"
+msgstr ""
+
+#: .\guard\models.py:168 .\guard\models.py:360
+#: .\guard\templates\guard\views\locations\list.html:54
+msgid "Country"
+msgstr ""
+
+#: .\guard\models.py:176 .\guard\models.py:290 .\guard\models.py:368
+#: .\guard\models.py:466 .\guard\templates\guard\views\hiking\list.html:33
+#: .\guard\templates\guard\views\locations\list.html:46
+#: .\guard\templates\guard\views\tips\list.html:25
+#: .\templates\partners\events\create.html:215
+msgid "City"
+msgstr ""
+
+#: .\guard\models.py:180
+msgid "Active Ads"
+msgstr ""
+
+#: .\guard\models.py:181
+msgid "Story"
+msgstr ""
+
+#: .\guard\models.py:183
+msgid "Open From"
+msgstr ""
+
+#: .\guard\models.py:186
+msgid "Add opening hours if the location is open from a specific time"
+msgstr ""
+
+#: .\guard\models.py:189
+msgid "Open To"
+msgstr ""
+
+#: .\guard\models.py:192
+msgid "Add opening hours if the location is open to a specific time"
+msgstr ""
+
+#: .\guard\models.py:197
+msgid "Admission Fee"
+msgstr ""
+
+#: .\guard\models.py:200
+msgid "Add admission fee if the location has a specific admission fee"
+msgstr ""
+
+#: .\guard\models.py:204
+msgid "Closed Days"
+msgstr ""
+
+#: .\guard\models.py:210 .\guard\models.py:244 .\guard\models.py:305
+#: .\guard\templates\guard\views\events\list.html:33
+#: .\guard\templates\guard\views\hiking\index.html:293
+#: .\guard\templates\guard\views\locations\list.html:30
+#: .\templates\partners\events\create.html:210
+msgid "Location"
+msgstr ""
+
+#: .\guard\models.py:239 .\guard\models.py:336
+msgid "Cities"
+msgstr ""
+
+#: .\guard\models.py:241 .\guard\models.py:561 .\guard\models.py:662
+#: .\guard\templates\guard\views\ads\list.html:25
+#: .\guard\templates\guard\views\hiking\list.html:25
+#: .\guard\templates\guard\views\locations\partials\cat_list.html:8
+#: .\guard\templates\guard\views\partners\list.html:23
+#: .\guard\templates\guard\views\sponsors\list.html:23 .\shared\models.py:239
+msgid "Name"
+msgstr ""
+
+#: .\guard\models.py:242 .\guard\models.py:316
+#: .\guard\templates\guard\views\events\index.html:230
+#: .\guard\templates\guard\views\hiking\index.html:161
+#: .\guard\templates\guard\views\tips\list.html:33 .\shared\models.py:240
+#: .\templates\partners\events\create.html:107
+#, fuzzy
+#| msgid "guide_tips_description"
+msgid "Description"
+msgstr ""
+"Guides with detailed descriptions and multiple languages receive 40% more "
+"suggestions on average."
+
+#: .\guard\models.py:254 .\guard\templates\guard\base\sidebar-left.html:238
+#: .\guard\templates\guard\views\hiking\index.html:24
+msgid "Hiking"
+msgstr ""
+
+#: .\guard\models.py:267
+msgid "Event Category"
+msgstr ""
+
+#: .\guard\models.py:268
+msgid "Event Categories"
+msgstr ""
+
+#: .\guard\models.py:282 .\guard\models.py:376
+#: .\guides\templates\guides\dashboard.html:234
+msgid "Client"
+msgstr ""
+
+#: .\guard\models.py:307 .\guard\templates\guard\views\events\list.html:41
+#: .\templates\partners\ads\create.html:95
+#: .\templates\partners\events\create.html:228
+msgid "Start Date"
+msgstr ""
+
+#: .\guard\models.py:308 .\guard\templates\guard\views\events\list.html:49
+#: .\templates\partners\ads\create.html:100
+#: .\templates\partners\events\create.html:233
+msgid "End Date"
+msgstr ""
+
+#: .\guard\models.py:309 .\guard\models.py:529
+#: .\templates\partners\events\create.html:238
+msgid "Time"
+msgstr ""
+
+#: .\guard\models.py:311 .\guard\templates\guard\views\events\list.html:57
+#: .\shared\models.py:242 .\templates\partners\ads\confirm.html:42
+#: .\templates\partners\events\create.html:259
+msgid "Price"
+msgstr ""
+
+#: .\guard\models.py:313
+msgid "The link to subscribe"
+msgstr ""
+
+#: .\guard\models.py:320 .\guard\templates\guard\views\events\list.html:25
+msgid "Event"
+msgstr ""
+
+#: .\guard\models.py:341
+msgid "Tip"
+msgstr ""
+
+#: .\guard\models.py:342 .\guard\templates\guard\base\sidebar-left.html:262
+#: .\guard\templates\guard\views\tips\index.html:24
+msgid "Tips"
+msgstr ""
+
+#: .\guard\models.py:352
+msgid "Add a name"
+msgstr ""
+
+#: .\guard\models.py:380
+msgid "Size: 320x50 pixels"
+msgstr ""
+
+#: .\guard\models.py:381
+msgid "Mobile Image (320x50)"
+msgstr ""
+
+#: .\guard\models.py:387
+msgid "Size: 728x90 pixels"
+msgstr ""
+
+#: .\guard\models.py:388
+msgid "Tablet Image (728x90)"
+msgstr ""
+
+#: .\guard\models.py:401 .\guides\templates\guides\suggestions.html:57
+msgid "Ad"
+msgstr ""
+
+#: .\guard\models.py:402 .\guard\templates\guard\base\sidebar-left.html:48
+#: .\guard\templates\guard\base\sidebar-left.html:324
+#: .\guard\templates\guard\views\ads\index.html:24
+#: .\guard\templates\guard\views\dashboard.html:72
+#: .\guard\templates\guard\views\dashboard.html:80
+#: .\guard\templates\guard\views\dashboard.html:140
+msgid "Ads"
+msgstr ""
+
+#: .\guard\models.py:442 .\guard\models.py:458
+msgid "Public Transport Type"
+msgstr ""
+
+#: .\guard\models.py:443
+msgid "Public Transport Types"
+msgstr ""
+
+#: .\guard\models.py:474
+msgid "From City"
+msgstr ""
+
+#: .\guard\models.py:482
+msgid "To City"
+msgstr ""
+
+#: .\guard\models.py:490
+msgid "From region"
+msgstr ""
+
+#: .\guard\models.py:498
+msgid "To region"
+msgstr ""
+
+#: .\guard\models.py:504
+msgid "Bus number"
+msgstr ""
+
+#: .\guard\models.py:508
+msgid "Is Return Journey"
+msgstr ""
+
+#: .\guard\models.py:509
+msgid "Check this if this is a return journey"
+msgstr ""
+
+#: .\guard\models.py:513 .\guard\models.py:527
+msgid "Public Transport"
+msgstr ""
+
+#: .\guard\models.py:514
+#: .\guard\templates\guard\views\publicTransports\index.html:24
+#: .\guard\templates\guard\views\publicTransports\list.html:4
+#: .\guard\templates\guard\views\publicTransports\list.html:18
+#: .\guard\templates\guard\views\publicTransports\list.html:26
+msgid "Public Transports"
+msgstr ""
+
+#: .\guard\models.py:532
+msgid "Public Transport Time"
+msgstr ""
+
+#: .\guard\models.py:533
+msgid "Public Transport Times"
+msgstr ""
+
+#: .\guard\models.py:562 .\guard\models.py:663
+msgid "Image"
+msgstr ""
+
+#: .\guard\models.py:563 .\guard\models.py:664
+#: .\guard\templates\guard\views\ads\list.html:30
+#: .\guard\templates\guard\views\partners\list.html:25
+#: .\guard\templates\guard\views\sponsors\list.html:24
+#: .\templates\partners\events\list.html:75
+msgid "Link"
+msgstr ""
+
+#: .\guard\models.py:572
+msgid "User Account"
+msgstr ""
+
+#: .\guard\models.py:574 .\guard\templates\guard\views\locations\list.html:62
+#: .\shared\forms.py:175 .\templates\partners\account.html:23
+msgid "Email"
+msgstr ""
+
+#: .\guard\models.py:581
+msgid "Is Verified"
+msgstr ""
+
+#: .\guard\models.py:587 .\guard\templates\guard\base\sidebar-left.html:278
+#: .\guard\templates\guard\views\partners\list.html:4
+msgid "Partners"
+msgstr ""
+
+#: .\guard\models.py:649
+msgid "Ad Click Record"
+msgstr ""
+
+#: .\guard\models.py:650
+msgid "Ad Click Records"
+msgstr ""
+
+#: .\guard\models.py:658
+msgid "Event Click Record"
+msgstr ""
+
+#: .\guard\models.py:659
+msgid "Event Click Records"
+msgstr ""
+
+#: .\guard\models.py:667
+msgid "sponsor"
+msgstr ""
+
+#: .\guard\models.py:668
+msgid "sponsors"
+msgstr ""
+
+#: .\guard\models.py:832
+msgid "Email Verification Token"
+msgstr ""
+
+#: .\guard\models.py:833
+msgid "Email Verification Tokens"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:4
+msgid "Login"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:15
+msgid "Sign in to your account"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:45
+msgid "Forgot password?"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:50
+#: .\guard\templates\guard\auth\password_reset_complete.html:18
+#: .\guard\templates\guard\auth\register.html:49
+msgid "Sign in"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:53
+msgid "Don’t have an account yet?"
+msgstr ""
+
+#: .\guard\templates\guard\auth\login.html:53
+msgid "Sign up"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change.html:4
+#: .\guard\templates\guard\auth\password_change.html:11
+#: .\guard\templates\guard\auth\settings.html:88
+#: .\templates\partners\account.html:73
+msgid "Change password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change.html:15
+msgid "Use a strong password that you do not reuse anywhere else."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change.html:48
+#: .\guard\templates\guard\views\ads\index.html:191
+#: .\guard\templates\guard\views\events\index.html:536
+#: .\guard\templates\guard\views\guides\index.html:103
+#: .\guard\templates\guard\views\hiking\index.html:408
+#: .\guard\templates\guard\views\locations\index.html:515
+#: .\guard\templates\guard\views\pages\index.html:208
+#: .\guard\templates\guard\views\partners\delete.html:16
+#: .\guard\templates\guard\views\partners\index.html:274
+#: .\guard\templates\guard\views\publicTransports\index.html:274
+#: .\guard\templates\guard\views\sponsors\delete.html:16
+#: .\guard\templates\guard\views\sponsors\index.html:68
+#: .\guard\templates\guard\views\tips\index.html:167
+#: .\templates\partners\ads\confirm.html:80
+#: .\templates\partners\ads\create.html:125
+#: .\templates\partners\events\create.html:322
+msgid "Cancel"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change.html:52
+msgid "Save new password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change_done.html:4
+#: .\guard\templates\guard\auth\password_reset_complete.html:4
+msgid "Password updated"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change_done.html:10
+msgid "Password changed successfully"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change_done.html:13
+msgid "Your password has been updated. You can now continue working securely."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_change_done.html:16
+msgid "Back to settings"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:4
+msgid "Reset password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:12
+msgid "Forgot your password?"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:15
+msgid ""
+"Enter the email associated with your account and we will send you a link to "
+"reset your password."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:38
+msgid "Email reset instructions"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:42
+msgid "Remembered your password?"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset.html:42
+msgid "Back to login"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_complete.html:12
+msgid "Your password has been reset"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_complete.html:15
+msgid "You can now sign in using your new credentials."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:4
+msgid "Choose a new password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:13
+msgid "Set your new password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:41
+#: .\templates\partners\account.html:101
+msgid "Update password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:46
+msgid "Invalid or expired link"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:49
+msgid "Please restart the password reset process to receive a new link."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_confirm.html:53
+msgid "Request another link"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_done.html:4
+msgid "Email sent"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_done.html:12
+msgid "Check your inbox"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_done.html:15
+msgid "If an account with that email exists, you will receive a link shortly."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_done.html:18
+msgid "Return to login"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_email.txt:2
+#, python-format
+msgid "You requested a password reset for your account on %(site_name)s."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_email.txt:6
+msgid "Please click the link below to choose a new password:"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_email.txt:10
+msgid "If you did not request this, you can ignore this email."
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_email.txt:12
+msgid "Thanks,"
+msgstr ""
+
+#: .\guard\templates\guard\auth\password_reset_subject.txt:2
+msgid "Reset your FielMedina password"
+msgstr ""
+
+#: .\guard\templates\guard\auth\register.html:4
+msgid "Register"
+msgstr ""
+
+#: .\guard\templates\guard\auth\register.html:15
+msgid "Create an account"
+msgstr ""
+
+#: .\guard\templates\guard\auth\register.html:44
+msgid "Create account"
+msgstr ""
+
+#: .\guard\templates\guard\auth\register.html:49
+msgid "Already have an account?"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:4
+#: .\guard\templates\guard\base\sidebar-left.html:81
+#: .\guard\templates\guard\base\sidebar-left.html:171
+#: .\guard\templates\guard\base\sidebar-left.html:337
+#: .\guard\templates\guard\base\topBar.html:49
+#: .\guard\templates\guard\base\topBar.html:53
+#: .\guard\templates\guard\base\topBar.html:57
+msgid "Settings"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:17
+msgid "Subscription expiring soon"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:18
+#, python-format
+msgid "You have %(days)s day(s) left. Renewal date: %(renew_date)s."
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:34
+msgid "Signed in as"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:41
+msgid "Unknown role"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:75
+msgid "Save changes"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:83
+msgid "Security"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:85
+msgid "Update your password frequently to keep your workspace safe."
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:92
+msgid "Session"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:94
+msgid "Need a fresh start? You can sign out of this device safely."
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:99
+msgid "Logout"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:109
+msgid "Subscription overview"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:111
+msgid ""
+"Konnect integration is coming soon. These values are placeholders for now."
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:115
+msgid "Open Konnect (Soon)"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:122
+msgid "Plan"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:123
+#: .\guard\templates\guard\views\ads\list.html:56
+#: .\guard\templates\guard\views\pages\list.html:41
+#: .\guard\templates\guard\views\partners\list.html:26
+#: .\guides\templates\guides\suggestions.html:20
+#: .\templates\partners\account.html:45
+msgid "Status"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:124
+msgid "Started"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:125
+msgid "Renews"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:126
+msgid "Days left"
+msgstr ""
+
+#: .\guard\templates\guard\auth\settings.html:149
+msgid ""
+"No subscription data yet. Konnect billing will appear here once connected."
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:24
+#: .\guard\templates\guard\base\sidebar-left.html:127
+#: .\guard\templates\guard\base\sidebar-left.html:214
+#: .\guard\templates\guard\views\ads\index.html:18
+#: .\guard\templates\guard\views\dashboard.html:5
+#: .\guard\templates\guard\views\events\index.html:23
+#: .\guard\templates\guard\views\hiking\index.html:18
+#: .\guard\templates\guard\views\locations\index.html:18
+#: .\guard\templates\guard\views\pages\index.html:18
+#: .\guard\templates\guard\views\publicTransports\index.html:18
+#: .\guard\templates\guard\views\publicTransports\list.html:12
+#: .\guard\templates\guard\views\tips\index.html:18
+msgid "Dashboard"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:61
+#: .\templates\partners\subscription.html:34
+msgid "Subscription"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:70
+#: .\guard\templates\guard\base\sidebar-left.html:160
+msgid "Account"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:139
+msgid "Suggestions"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:151
+msgid "Reviews"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:224
+#: .\guard\templates\guard\views\pages\index.html:24 .\shared\models.py:119
+msgid "Pages"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:246
+msgid "Subscribers"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:254
+msgid "Transports"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:270
+msgid "Receipts"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:286
+#: .\guard\templates\guard\views\guides\list.html:4
+msgid "Guides"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:294
+#: .\guard\templates\guard\views\sponsors\list.html:4
+msgid "Sponsors"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:302
+msgid "Pricing"
+msgstr ""
+
+#: .\guard\templates\guard\base\sidebar-left.html:312
+#: .\templates\partners\events\list.html:9
+msgid "My events"
+msgstr ""
+
+#: .\guard\templates\guard\base\topBar.html:29
+msgid "Open user menu"
+msgstr ""
+
+#: .\guard\templates\guard\base\topBar.html:65
+msgid "Sign out"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:6
+#: .\guard\templates\guard\views\ads\index.html:41
+msgid "Edit Ad"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:8
+#: .\guard\templates\guard\views\ads\index.html:43
+msgid "Add Ad"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:31
+#: .\guard\templates\guard\views\ads\list.html:110
+#: .\guard\templates\guard\views\events\index.html:47
+#: .\guard\templates\guard\views\events\list.html:80
+#: .\guard\templates\guard\views\hiking\index.html:31
+#: .\guard\templates\guard\views\hiking\list.html:62
+#: .\guard\templates\guard\views\locations\index.html:31
+#: .\guard\templates\guard\views\locations\list.html:88
+#: .\guard\templates\guard\views\pages\index.html:31
+#: .\guard\templates\guard\views\pages\list.html:77
+#: .\guard\templates\guard\views\publicTransports\index.html:31
+#: .\guard\templates\guard\views\publicTransports\list.html:199
+#: .\guard\templates\guard\views\sponsors\list.html:48
+#: .\guard\templates\guard\views\tips\index.html:31
+#: .\guard\templates\guard\views\tips\list.html:59
+msgid "Edit"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:31
+#: .\guard\templates\guard\views\ads\list.html:14
+#: .\guard\templates\guard\views\events\index.html:47
+#: .\guard\templates\guard\views\events\list.html:14
+#: .\guard\templates\guard\views\hiking\index.html:31
+#: .\guard\templates\guard\views\hiking\list.html:14
+#: .\guard\templates\guard\views\locations\index.html:31
+#: .\guard\templates\guard\views\locations\list.html:14
+#: .\guard\templates\guard\views\pages\index.html:31
+#: .\guard\templates\guard\views\pages\list.html:14
+#: .\guard\templates\guard\views\partners\list.html:14
+#: .\guard\templates\guard\views\publicTransports\index.html:31
+#: .\guard\templates\guard\views\sponsors\list.html:14
+#: .\guard\templates\guard\views\tips\index.html:31
+#: .\guard\templates\guard\views\tips\list.html:14
+msgid "Add"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:48
+msgid ""
+"Update the ad details below. Links are automatically tracked via Short.io."
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:50
+msgid ""
+"Fill in the details to create a new ad. The link will be automatically "
+"shortened for tracking."
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:74
+msgid "Ad Information"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:76
+msgid "Upload an image and enter the destination link"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:131
+msgid "Required size: 320x50 pixels"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:149
+msgid "Required size: 728x90 pixels"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:198
+msgid "Update Ad"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:198
+msgid "Save Ad"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:216
+msgid "Invalid dimension"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\index.html:216
+msgid "Required"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\list.html:4
+msgid "Ads List"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\list.html:10
+#: .\guard\templates\guard\views\events\list.html:10
+#: .\guard\templates\guard\views\hiking\list.html:10
+#: .\guard\templates\guard\views\locations\list.html:10
+#: .\guard\templates\guard\views\pages\list.html:10
+#: .\guard\templates\guard\views\partners\list.html:10
+#: .\guard\templates\guard\views\sponsors\list.html:10
+#: .\guard\templates\guard\views\tips\list.html:10
+msgid "List"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\list.html:100
+#: .\guard\templates\guard\views\pages\list.html:67
+msgid "Inactive"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\list.html:117
+#: .\guard\templates\guard\views\events\list.html:87
+msgid "Analytics"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\list.html:124
+#: .\guard\templates\guard\views\events\index.html:514
+#: .\guard\templates\guard\views\events\list.html:94
+#: .\guard\templates\guard\views\hiking\index.html:388
+#: .\guard\templates\guard\views\hiking\list.html:68
+#: .\guard\templates\guard\views\locations\index.html:495
+#: .\guard\templates\guard\views\locations\list.html:94
+#: .\guard\templates\guard\views\pages\list.html:83
+#: .\guard\templates\guard\views\partners\delete.html:19
+#: .\guard\templates\guard\views\publicTransports\index.html:254
+#: .\guard\templates\guard\views\publicTransports\list.html:203
+#: .\guard\templates\guard\views\sponsors\delete.html:19
+#: .\guard\templates\guard\views\sponsors\list.html:54
+#: .\guard\templates\guard\views\tips\list.html:65
+#: .\templates\partners\ads\list.html:158
+#: .\templates\partners\events\list.html:98
+msgid "Delete"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\confirm_model.html:7
+msgid "Delete ad"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\confirm_model.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the ad and its images "
+"will be permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\confirm_model.html:22
+#: .\guard\templates\guard\views\events\partials\confirm_model.html:22
+#: .\guard\templates\guard\views\locations\partials\confirm_model.html:22
+#: .\guard\templates\guard\views\pages\partials\confirm_model.html:22
+#: .\guard\templates\guard\views\partners\partials\confirm_modal.html:22
+#: .\guard\templates\guard\views\publicTransports\partials\confirm_model.html:22
+#: .\guard\templates\guard\views\sponsors\partials\confirm_modal.html:22
+msgid "I accept"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\confirm_model.html:24
+#: .\guard\templates\guard\views\events\partials\confirm_model.html:24
+#: .\guard\templates\guard\views\locations\partials\confirm_model.html:24
+#: .\guard\templates\guard\views\pages\partials\confirm_model.html:24
+#: .\guard\templates\guard\views\partners\partials\confirm_modal.html:24
+#: .\guard\templates\guard\views\publicTransports\partials\confirm_model.html:24
+#: .\guard\templates\guard\views\sponsors\partials\confirm_modal.html:24
+msgid "Decline"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:4
+#: .\guard\templates\guard\views\events\partials\tracking.html:4
+msgid "Tracking Dashboard"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:11
+#: .\guard\templates\guard\views\events\partials\tracking.html:11
+msgid "Analytics for:"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:22
+#: .\guard\templates\guard\views\events\partials\tracking.html:22
+msgid "Period:"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:24
+#: .\guard\templates\guard\views\events\partials\tracking.html:24
+msgid "Today"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:25
+#: .\guard\templates\guard\views\events\partials\tracking.html:25
+msgid "Yesterday"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:26
+#: .\guard\templates\guard\views\events\partials\tracking.html:26
+msgid "Last 7 Days"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:27
+#: .\guard\templates\guard\views\events\partials\tracking.html:27
+msgid "Last 30 Days"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:28
+#: .\guard\templates\guard\views\events\partials\tracking.html:28
+msgid "Last Month"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:29
+#: .\guard\templates\guard\views\events\partials\tracking.html:29
+msgid "All Time"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:42
+#: .\guard\templates\guard\views\events\partials\tracking.html:41
+msgid "Tracking Information"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:55
+#: .\guard\templates\guard\views\events\partials\tracking.html:54
+msgid "Short ID"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:69
+#: .\guard\templates\guard\views\events\partials\tracking.html:68
+msgid "Total clicks"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:87
+#: .\guard\templates\guard\views\events\partials\tracking.html:86
+msgid "Human clicks"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:107
+#: .\guard\templates\guard\views\events\partials\tracking.html:106
+msgid "Metric's Evolution Over Time"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:112
+#: .\guard\templates\guard\views\events\partials\tracking.html:111
+msgid "Top Countries"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:117
+#: .\guard\templates\guard\views\events\partials\tracking.html:115
+msgid "Top Cities"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:122
+#: .\guard\templates\guard\views\events\partials\tracking.html:120
+msgid "Top Browsers"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:127
+#: .\guard\templates\guard\views\events\partials\tracking.html:124
+msgid "Top Operating Systems"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:132
+#: .\guard\templates\guard\views\events\partials\tracking.html:129
+msgid "Top Social Referrers"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:139
+#: .\guard\templates\guard\views\events\partials\tracking.html:136
+msgid "Back"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:210
+#: .\guard\templates\guard\views\ads\partials\tracking.html:258
+#: .\guard\templates\guard\views\events\partials\tracking.html:207
+#: .\guard\templates\guard\views\events\partials\tracking.html:254
+msgid "Clicks"
+msgstr ""
+
+#: .\guard\templates\guard\views\ads\partials\tracking.html:273
+#: .\guard\templates\guard\views\events\partials\tracking.html:269
+msgid "No data available"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:12 .\partners\email_utils.py:65
+#: .\templates\partners\emails\verification.txt:2
+msgid "Hello"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:13
+msgid "Here is an overview of your activity"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:24
+#: .\templates\partners\events\list.html:25
+msgid "Account suspended"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:25
+msgid "Your account is suspended for non-payment."
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:27
+msgid "Renew now"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:38
+msgid "Contract"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:51
+msgid "Actif"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:51
+msgid "Inactif"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:52
+msgid "Expires on"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:66
+msgid "Published events"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:89
+msgid "Tableau de bord"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:90
+msgid "Vue d'ensemble de la plateforme"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:106
+msgid "this month"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:120
+msgid "upcoming"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:134
+msgid "trails"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:148
+msgid "active"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:154
+msgid "Partner space"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:164
+msgid "À valider"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:166
+msgid "Events  Partners"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:176
+#: .\guard\templates\guard\views\partners\list.html:71
+#: .\guides\templates\guides\suggestions.html:51 .\shared\models.py:189
+#: .\templates\partners\account.html:57
+#: .\templates\partners\events\list.html:56
+msgid "Pending"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:178
+msgid "Ads  Partners"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:188
+msgid "New"
+msgstr ""
+
+#: .\guard\templates\guard\views\dashboard.html:190
+msgid "Partners to check"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:6
+#: .\guard\templates\guard\views\events\index.html:57
+msgid "Edit Event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:8
+#: .\guard\templates\guard\views\events\index.html:59
+msgid "Add Event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:64
+msgid "Update the event details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:66
+msgid "Fill in the details to create a new event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:95
+#: .\templates\partners\events\create.html:50
+msgid "Enter the event name in different languages"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:129
+#: .\guard\templates\guard\views\events\index.html:247
+#: .\guard\templates\guard\views\hiking\index.html:84
+#: .\guard\templates\guard\views\hiking\index.html:173
+#: .\guard\templates\guard\views\locations\index.html:84
+#: .\guard\templates\guard\views\locations\index.html:278
+#: .\guard\templates\guard\views\pages\index.html:85
+#: .\guard\templates\guard\views\tips\index.html:95
+#: .\guides\templates\guides\settings.html:194
+msgid "English"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:141
+#: .\guard\templates\guard\views\events\index.html:260
+#: .\guard\templates\guard\views\hiking\index.html:92
+#: .\guard\templates\guard\views\hiking\index.html:181
+#: .\guard\templates\guard\views\locations\index.html:92
+#: .\guard\templates\guard\views\locations\index.html:286
+#: .\guard\templates\guard\views\pages\index.html:93
+#: .\guard\templates\guard\views\tips\index.html:103
+#: .\guides\templates\guides\settings.html:180
+msgid "French"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:163
+#: .\guard\templates\guard\views\events\index.html:283
+#: .\guard\templates\guard\views\hiking\index.html:111
+#: .\guard\templates\guard\views\hiking\index.html:200
+#: .\guard\templates\guard\views\locations\index.html:111
+#: .\guard\templates\guard\views\locations\index.html:305
+#: .\guard\templates\guard\views\pages\index.html:111
+#: .\guard\templates\guard\views\pages\index.html:136
+#: .\guard\templates\guard\views\tips\index.html:122
+#: .\templates\partners\events\create.html:496
+#: .\templates\partners\events\create.html:524
+msgid "Translate to French"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:198
+#: .\guard\templates\guard\views\events\index.html:319
+#: .\guard\templates\guard\views\hiking\index.html:137
+#: .\guard\templates\guard\views\hiking\index.html:226
+#: .\guard\templates\guard\views\locations\index.html:140
+#: .\guard\templates\guard\views\locations\index.html:334
+#: .\guard\templates\guard\views\pages\index.html:158
+#: .\guard\templates\guard\views\pages\index.html:183
+#: .\guard\templates\guard\views\tips\index.html:148
+#: .\templates\partners\events\create.html:510
+#: .\templates\partners\events\create.html:538
+msgid "Translate to English"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:232
+#: .\templates\partners\events\create.html:109
+msgid "Event description and details"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:351
+#: .\templates\partners\events\create.html:203
+msgid "Event Details"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:353
+#: .\templates\partners\events\create.html:205
+msgid "Location, dates, time and pricing"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:483
+#: .\guard\templates\guard\views\hiking\index.html:360
+#: .\guard\templates\guard\views\locations\index.html:467
+#: .\templates\partners\events\create.html:274
+msgid "Images"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:485
+#: .\templates\partners\events\create.html:275
+msgid ""
+"Upload images for this event (max 10). Images will be automatically "
+"optimized."
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:502
+#: .\guard\templates\guard\views\hiking\index.html:377
+#: .\guard\templates\guard\views\locations\index.html:484
+msgid "Replace Image"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:502
+#: .\guard\templates\guard\views\hiking\index.html:377
+#: .\guard\templates\guard\views\locations\index.html:484
+#: .\templates\partners\events\create.html:280
+#: .\templates\partners\events\create.html:573
+msgid "Upload Image"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:528
+#: .\guard\templates\guard\views\hiking\index.html:401
+#: .\guard\templates\guard\views\locations\index.html:508
+#: .\templates\partners\events\create.html:302
+msgid "Add Another Image"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:546
+msgid "Update Event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\index.html:546
+msgid "Save Event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\list.html:4
+msgid "Events List"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\partials\confirm_model.html:7
+msgid "Delete event"
+msgstr ""
+
+#: .\guard\templates\guard\views\events\partials\confirm_model.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the event will be "
+"permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\delete.html:4
+msgid "Delete Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\delete.html:13
+msgid "Are you sure you want to delete this guide:"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\delete.html:20
+msgid "Yes, I'm sure"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\delete.html:23
+msgid "No, cancel"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:5
+#: .\guard\templates\guard\views\guides\index.html:18
+msgid "Edit Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:5
+msgid "Add Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:18
+#: .\guard\templates\guard\views\guides\list.html:22
+msgid "Register New Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:21
+msgid "Credentials will be sent via email automatically."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:21
+msgid "Update existing guide information."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:27
+msgid "Back to Dashboard"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:47
+msgid "Profile Identity"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:57
+msgid "Upload Photo"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:65
+msgid "Change Image"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:76
+#: .\guides\templates\guides\dashboard.html:86
+msgid "Note Administrateur"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:77
+#, python-format
+msgid ""
+"Évaluation interne de la plateforme (0-5). Contribue à 40%% du score global."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:94
+msgid "Quick Actions"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:95
+msgid "Save your progress or cancel modifications."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:99
+#: .\guides\templates\guides\settings.html:13
+#: .\guides\templates\guides\settings.html:205
+msgid "Save Changes"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:99
+msgid "Finalize Registration"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:117
+msgid "Personal Information"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:122
+#: .\guides\templates\guides\settings.html:31
+msgid "First Name"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:127
+#: .\guides\templates\guides\settings.html:36
+msgid "Last Name"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:132
+#: .\guard\templates\guard\views\partners\index.html:44
+#: .\guides\templates\guides\settings.html:41
+msgid "Email Address"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:137
+msgid "Phone Number"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:150
+msgid "Professional Background"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:155
+msgid "Languages Mastery"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:173
+msgid "Profile Description"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:176
+msgid "Writing a compelling biography helps attraction."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:187
+#: .\guides\templates\guides\settings.html:130
+msgid "Service Pricing"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:196
+msgid "Family Friendly?"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:199
+msgid "Policy"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:201
+msgid ""
+"Enable this if the guide can accommodate children and offer special rates."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:206
+msgid "Price per Adult (TND)"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\index.html:215
+msgid "Price per Child >6 yrs (TND)"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:15
+msgid "Guide Management"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:16
+msgid "Review and manage all registered tour guides."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:32
+msgid "Identity"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:33
+msgid "Contact & Support"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:34
+msgid "Earnings"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:35
+msgid "Total Brut (Approuvé)"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:36
+msgid "Commission Plateforme"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:37
+msgid "Account Status"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:38
+msgid "Management"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:69
+msgid "TND Balance"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:91
+msgid "Edit Profile"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:94
+msgid "Remove Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:107
+msgid "No guides registered"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:108
+msgid "Start building your network by adding your first tour guide."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:111
+msgid "Add First Guide"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:130
+msgid "Search professional guides..."
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:131
+msgid "No guides found"
+msgstr ""
+
+#: .\guard\templates\guard\views\guides\list.html:132
+#, python-brace-format
+msgid "Showing {start} to {end} of {rows} entries"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:6
+#: .\guard\templates\guard\views\hiking\index.html:41
+msgid "Edit Hiking"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:8
+#: .\guard\templates\guard\views\hiking\index.html:43
+msgid "Add Hiking"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:48
+msgid "Update the hiking details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:50
+msgid "Fill in the details to create a new hiking trail"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:74
+msgid "Enter the hiking name in different languages"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:163
+msgid "Hiking description and details"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:250
+msgid "Location and City"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:252
+msgid "Select the relevant locations and city"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:279
+msgid "Route Locations (Ordered)"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:281
+msgid "Add locations in the order they appear on the route."
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:306
+msgid "Remove"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:320
+msgid "Add Next Location"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:330
+msgid "Set the terminus point coordinates"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:361
+msgid ""
+"Upload images for this hiking trail (max 10). Images will be automatically "
+"optimized."
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:415
+msgid "Update Hiking"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\index.html:415
+msgid "Save Hiking"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\list.html:4
+msgid "Hiking List"
+msgstr ""
+
+#: .\guard\templates\guard\views\hiking\list.html:41
+#: .\guard\templates\guard\views\pages\list.html:49
+#: .\guard\templates\guard\views\tips\list.html:41
+msgid "Created At"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:6
+#: .\guard\templates\guard\views\locations\index.html:41
+msgid "Edit Location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:8
+#: .\guard\templates\guard\views\locations\index.html:43
+msgid "Add Location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:48
+msgid "Update the location details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:50
+msgid "Fill in the details to create a new location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:74
+msgid "Enter the location name in different languages"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:170
+msgid "Geographic and category information"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:268
+msgid "Location story and description"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:361
+msgid "Operational Details"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:363
+msgid "Opening hours and pricing information"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:439
+msgid "Status & Settings"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:441
+msgid "Location visibility and features"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:468
+msgid ""
+"Upload images for this location (max 10). Images will be automatically "
+"optimized."
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:522
+msgid "Update Location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\index.html:522
+msgid "Save Location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\list.html:4
+msgid "Locations List"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\list.html:18
+msgid "Categories"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\partials\confirm_model.html:7
+msgid "Delete location"
+msgstr ""
+
+#: .\guard\templates\guard\views\locations\partials\confirm_model.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the location will be "
+"permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:6
+#: .\guard\templates\guard\views\pages\index.html:41
+msgid "Edit Page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:8
+#: .\guard\templates\guard\views\pages\index.html:43
+msgid "Add Page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:48
+msgid "Update the page details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:50
+msgid "Fill in the details to create a new page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:73
+msgid "Page Content"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:75
+msgid "Enter the page title, slug and content in different languages"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:215
+msgid "Update Page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\index.html:215
+msgid "Save Page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\list.html:4
+msgid "Pages List"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\list.html:25 .\shared\models.py:114
+#: .\templates\partners\ads\confirm.html:30
+msgid "Title"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\list.html:33
+msgid "Slug"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\partials\confirm_model.html:7
+msgid "Delete page"
+msgstr ""
+
+#: .\guard\templates\guard\views\pages\partials\confirm_model.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the page will be "
+"permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\delete.html:4
+#: .\guard\templates\guard\views\partners\delete.html:8
+msgid "Delete Partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\delete.html:10
+#: .\guard\templates\guard\views\sponsors\delete.html:10
+#, python-format
+msgid "Are you sure you want to delete \"%(name)s\"?"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:5
+#: .\guard\templates\guard\views\partners\index.html:12
+msgid "Edit Partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:5
+#: .\guard\templates\guard\views\partners\index.html:12
+msgid "Add Partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:15
+msgid "Upload a 300x200 logo and provide details."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:19
+#: .\guard\templates\guard\views\sponsors\index.html:19
+msgid "Back to list"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:90
+#: .\guard\templates\guard\views\partners\index.html:193
+msgid "Select category"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:119
+#: .\guard\templates\guard\views\partners\index.html:205
+msgid "Please select a city to show locations."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:125
+msgid "Can't find your location? Add it manually"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:142
+msgid "Note: Manually added locations will be reviewed by our team."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:147
+msgid "No locations match these filters."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:195
+msgid "selected"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:277
+msgid "Update Partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\index.html:277
+msgid "Save Partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:22
+#: .\guard\templates\guard\views\sponsors\list.html:22
+msgid "Logo"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:37
+#: .\guard\templates\guard\views\sponsors\list.html:35
+msgid "No image"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:51
+msgid "No locations"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:66
+#: .\templates\partners\account.html:52
+msgid "Verified"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:102
+msgid "Search partners..."
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:103
+msgid "No partners found"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\list.html:104
+#, python-brace-format
+msgid "Showing {start} to {end} of {rows} partners"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\partials\confirm_modal.html:7
+msgid "Delete partner"
+msgstr ""
+
+#: .\guard\templates\guard\views\partners\partials\confirm_modal.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the partner will be "
+"permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:6
+#: .\guard\templates\guard\views\publicTransports\index.html:40
+msgid "Edit Public Transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:8
+#: .\guard\templates\guard\views\publicTransports\index.html:40
+#: .\guard\templates\guard\views\publicTransports\list.html:33
+msgid "Add Public Transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:43
+msgid "Update the transport route details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:43
+msgid "Fill in the details to create a new transport route"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:63
+msgid "Transport Details"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:66
+msgid "Select the transport type"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:94
+msgid "Required for Bus only"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:144
+msgid "Check this box if this is a return journey"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:160
+msgid "Route"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:163
+#: .\guard\templates\guard\views\publicTransports\index.html:428
+#: .\guard\templates\guard\views\publicTransports\index.html:443
+msgid "Select departure and arrival regions"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:173
+msgid "Loading..."
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:180
+msgid "Filter regions by city"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:188
+msgid "Select a city to load its regions"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:218
+msgid "For Metro: Fill either (Cities) OR (Regions), not both"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:231
+msgid "Departure Times"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:233
+msgid "Add the departure times for this route (at least one required)"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:243
+msgid "Departure Time"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:266
+msgid "Add Another Time"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:280
+msgid "Update Transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:280
+msgid "Save Transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:447
+#: .\guard\templates\guard\views\publicTransports\index.html:517
+#: .\guard\templates\guard\views\publicTransports\index.html:577
+msgid "Loading regions..."
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:475
+msgid "Select departure and arrival stations (cities)"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:498
+msgid "Select departure and arrival (cities OR regions)"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\index.html:556
+msgid "Maximum number of times reached (20)"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:27
+msgid "Manage bus, train, and metro routes (Aller & Retour)"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:41
+msgid "All"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:58
+msgid "Type"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:59
+msgid "Number"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:60
+msgid "Direction"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:61
+msgid "From"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:62
+msgid "To"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:63
+msgid "Times"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:64
+#: .\guides\templates\guides\dashboard.html:237
+#: .\guides\templates\guides\suggestions.html:25
+msgid "Actions"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:78
+msgid "Bus"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:86
+msgid "Train"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:94
+msgid "Metro"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:114
+msgid "RETURN"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:118
+msgid "ONWARD"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:216
+msgid "No transports"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:217
+msgid "Get started by creating a new public transport route."
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:223
+msgid "New Transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\list.html:252
+msgid "Are you sure you want to delete this transport?"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\partials\confirm_model.html:7
+msgid "Delete transport"
+msgstr ""
+
+#: .\guard\templates\guard\views\publicTransports\partials\confirm_model.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the transport route "
+"and all its departure times will be permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\delete.html:4
+#: .\guard\templates\guard\views\sponsors\delete.html:8
+msgid "Delete Sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:5
+#: .\guard\templates\guard\views\sponsors\index.html:12
+msgid "Edit Sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:5
+#: .\guard\templates\guard\views\sponsors\index.html:12
+msgid "Add Sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:15
+msgid "Upload a 300x200 logo and provide the link."
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:57
+msgid "Current image"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:74
+msgid "Update Sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\index.html:74
+msgid "Save Sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\partials\confirm_modal.html:7
+msgid "Delete sponsor"
+msgstr ""
+
+#: .\guard\templates\guard\views\sponsors\partials\confirm_modal.html:16
+msgid ""
+"Warning: This action cannot be undone. If you confirm, the sponsor will be "
+"permanently deleted."
+msgstr ""
+
+#: .\guard\templates\guard\views\subscribers\index.html:6
+#: .\guard\templates\guard\views\subscribers\index.html:13
+msgid "Edit Subscriber"
+msgstr ""
+
+#: .\guard\templates\guard\views\subscribers\index.html:8
+#: .\guard\templates\guard\views\subscribers\index.html:13
+msgid "Add Subscriber"
+msgstr ""
+
+#: .\guard\templates\guard\views\subscribers\list.html:4
+msgid "Subscribers List"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:6
+#: .\guard\templates\guard\views\tips\index.html:41
+msgid "Edit Tip"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:8
+#: .\guard\templates\guard\views\tips\index.html:43
+msgid "Add Tip"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:48
+msgid "Update the tip details below"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:50
+msgid "Fill in the details to create a new tip"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:72
+msgid "Tip Information"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:74
+msgid "Select the city and enter the tip description"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:174
+msgid "Update Tip"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\index.html:174
+msgid "Save Tip"
+msgstr ""
+
+#: .\guard\templates\guard\views\tips\list.html:4
+msgid "Tips List"
+msgstr ""
+
+#: .\guard\views.py:156
+msgid "Lieu créé."
+msgstr ""
+
+#: .\guard\views.py:177
+msgid "Lieu mis à jour."
+msgstr ""
+
+#: .\guard\views.py:197
+msgid "Événement créé."
+msgstr ""
+
+#: .\guard\views.py:218
+msgid "Événement mis à jour."
+msgstr ""
+
+#: .\guard\views.py:258
+msgid "Event created successfully."
+msgstr ""
+
+#: .\guard\views.py:282
+msgid "Veuillez télécharger au moins une image."
+msgstr ""
+
+#: .\guard\views.py:308
+msgid "Event updated successfully."
+msgstr ""
+
+#: .\guard\views.py:333 .\guard\views.py:790
+msgid "Veuillez conserver ou télécharger au moins une image."
+msgstr ""
+
+#: .\guard\views.py:384
+msgid "Unfortunately, this event has been deleted"
+msgstr ""
+
+#: .\guard\views.py:407
+msgid "Publicité créée."
+msgstr ""
+
+#: .\guard\views.py:410
+msgid "Publicité mise à jour."
+msgstr ""
+
+#: .\guard\views.py:446
+msgid "Pub créée. Complétez le paiement pour l'activer."
+msgstr ""
+
+#: .\guard\views.py:460
+msgid "Pub mise à jour avec succès"
+msgstr ""
+
+#: .\guard\views.py:465
+msgid "Cette pub est verrouillée après paiement. Aucune modification possible."
+msgstr ""
+
+#: .\guard\views.py:506
+msgid "Ad deleted successfully"
+msgstr ""
+
+#: .\guard\views.py:652
+msgid "Paiement confirmé ! Votre pub est maintenant active et verrouillée."
+msgstr ""
+
+#: .\guard\views.py:654
+msgid "Le paiement est en cours de traitement. Veuillez patienter."
+msgstr ""
+
+#: .\guard\views.py:675
+msgid "Tip created successfully"
+msgstr ""
+
+#: .\guard\views.py:678
+msgid "Error creating tip. Please check the form."
+msgstr ""
+
+#: .\guard\views.py:689
+msgid "Tip updated successfully"
+msgstr ""
+
+#: .\guard\views.py:692
+msgid "Error updating tip. Please check the form."
+msgstr ""
+
+#: .\guard\views.py:701
+msgid "Tip deleted successfully"
+msgstr ""
+
+#: .\guard\views.py:726
+msgid "Hiking created successfully"
+msgstr ""
+
+#: .\guard\views.py:748
+msgid "Please upload at least one image."
+msgstr ""
+
+#: .\guard\views.py:759
+msgid "Error creating hiking. Please check the form."
+msgstr ""
+
+#: .\guard\views.py:770
+msgid "Hiking updated successfully"
+msgstr ""
+
+#: .\guard\views.py:801
+msgid "Error updating hiking. Please check the form."
+msgstr ""
+
+#: .\guard\views.py:810
+msgid "Hiking deleted successfully"
+msgstr ""
+
+#: .\guard\views.py:848
+msgid "Public transport created successfully."
+msgstr ""
+
+#: .\guard\views.py:870
+msgid "Please add at least one departure time."
+msgstr ""
+
+#: .\guard\views.py:887
+msgid "Public transport updated successfully."
+msgstr ""
+
+#: .\guard\views.py:907
+msgid "Please keep or add at least one departure time."
+msgstr ""
+
+#: .\guard\views.py:922
+msgid "Public transport has been deleted."
+msgstr ""
+
+#: .\guard\views.py:1042
+msgid ""
+"Partner created, but validation email could not be sent. Please check your "
+"SMTP settings."
+msgstr ""
+
+#: .\guard\views.py:1045
+msgid "An error occurred while sending the validation email."
+msgstr ""
+
+#: .\guard\views.py:1066
+msgid "Partner created successfully."
+msgstr ""
+
+#: .\guard\views.py:1108
+msgid "Partner updated successfully."
+msgstr ""
+
+#: .\guard\views.py:1116
+msgid "Partner deleted successfully."
+msgstr ""
+
+#: .\guard\views.py:1212
+msgid "Guide created successfully. An email with credentials was sent."
+msgstr ""
+
+#: .\guard\views.py:1215
+msgid "Guide created, but welcome email could not be sent."
+msgstr ""
+
+#: .\guard\views.py:1240
+msgid "Guide updated successfully."
+msgstr ""
+
+#: .\guard\views.py:1247
+msgid "Guide deleted successfully."
+msgstr ""
+
+#: .\guard\views.py:1278
+msgid "Sponsor created successfully."
+msgstr ""
+
+#: .\guard\views.py:1287
+msgid "Sponsor updated successfully."
+msgstr ""
+
+#: .\guard\views.py:1295
+msgid "Sponsor deleted successfully."
+msgstr ""
+
+#: .\guides\email_utils.py:14
+msgid "Bienvenue sur FielMedina - Vos identifiants Guide"
+msgstr "Welcome to FielMedina - Your Guide Credentials"
+
+#: .\guides\email_utils.py:151
+msgid "Confirmez votre nouvelle adresse email - FielMedina"
+msgstr "Confirm your new email address - FielMedina"
+
+#: .\guides\forms.py:25 .\guides\templates\guides\settings.html:104
+msgid "Spoken Languages"
+msgstr ""
+
+#: .\guides\forms.py:94
+msgid "La photo de profil est obligatoire."
+msgstr "Profile photo is required."
+
+#: .\guides\forms.py:100
+msgid "La description est obligatoire."
+msgstr "Description is required."
+
+#: .\guides\forms.py:106
+msgid "Arabe 🇹🇳"
+msgstr "Arabic 🇹🇳"
+
+#: .\guides\forms.py:107
+msgid "Français 🇫🇷"
+msgstr "French 🇫🇷"
+
+#: .\guides\forms.py:108
+msgid "Anglais 🇬🇧"
+msgstr "English 🇬🇧"
+
+#: .\guides\forms.py:109
+msgid "Espagnol 🇪🇸"
+msgstr "Spanish 🇪🇸"
+
+#: .\guides\forms.py:110
+msgid "Italien 🇮🇹"
+msgstr "Italian 🇮🇹"
+
+#: .\guides\forms.py:111
+msgid "Allemand 🇩🇪"
+msgstr "German 🇩🇪"
+
+#: .\guides\forms.py:112
+msgid "Russe 🇷🇺"
+msgstr "Russian 🇷🇺"
+
+#: .\guides\forms.py:113
+msgid "Chinois 🇨🇳"
+msgstr "Chinese 🇨🇳"
+
+#: .\guides\forms.py:114
+msgid "Japonais 🇯🇵"
+msgstr "Japanese 🇯🇵"
+
+#: .\guides\forms.py:115
+msgid "Portugais 🇵🇹"
+msgstr "Portuguese 🇵🇹"
+
+#: .\guides\forms.py:116
+msgid "Néerlandais 🇳🇱"
+msgstr "Dutch 🇳🇱"
+
+#: .\guides\forms.py:117
+msgid "Turc 🇹🇷"
+msgstr "Turkish 🇹🇷"
+
+#: .\guides\forms.py:122
+msgid "Prénom"
+msgstr ""
+
+#: .\guides\forms.py:124
+msgid "Nom"
+msgstr ""
+
+#: .\guides\forms.py:130
+msgid "Langues parlées"
+msgstr ""
+
+#: .\guides\forms.py:140
+msgid "Note Administrateur (étoiles)"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:9
+msgid "Welcome back"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:10
 msgid "dashboard_hero_subtitle"
-msgstr "Your professional performance at a glance. Manage your suggestions and track your earnings here."
+msgstr ""
+"Your professional performance at a glance. Manage your suggestions and track "
+"your earnings here."
 
+#: .\guides\templates\guides\dashboard.html:26
+msgid "Wallet Balance"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:32
+msgid "Brut encaissé"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:36
+#: .\guides\templates\guides\dashboard.html:173
+#: .\guides\templates\guides\suggestions.html:23
+#, python-format
+msgid "Commission (5%%)"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:40
+msgid "Net reçu"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:53
+msgid "Note Clients"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:69
+msgid "avis"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:72
+msgid "Voir tous les avis"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:102
+msgid "évaluation interne"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:106
+msgid "Attribuée par l'équipe FielMedina suite à vos missions."
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:119
+msgid "Score Global"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:153
+#: .\guides\templates\guides\dashboard.html:224
+msgid "Pending Requests"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:164
+msgid "Récapitulatif Financier (Missions Approuvées)"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:170
+msgid "Mission (Client)"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:171
+#: .\guides\templates\guides\dashboard.html:235
+msgid "Date"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:172
+#: .\guides\templates\guides\suggestions.html:22
+msgid "Montant Brut"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:174
+msgid "Net Reçu"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:207
+msgid "No approved missions yet."
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:226
+#: .\guides\templates\guides\dashboard.html:286
+msgid "See all"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:236
+msgid "Group"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:258
+#: .\guides\templates\guides\suggestions.html:76
+msgid "Approve"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:261
+#: .\guides\templates\guides\suggestions.html:79
+msgid "Reject"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:269
+msgid "No pending suggestions at the moment."
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:284
+msgid "Latest Client Reviews"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:305
+msgid "No reviews received yet."
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:312
+msgid "Profile Tips"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:313
 msgid "guide_tips_description"
-msgstr "Guides with detailed descriptions and multiple languages receive 40% more suggestions on average."
+msgstr ""
+"Guides with detailed descriptions and multiple languages receive 40% more "
+"suggestions on average."
 
+#: .\guides\templates\guides\dashboard.html:315
+msgid "Update Profile"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:329
+msgid "January"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:329
+msgid "February"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:329
+msgid "March"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:330
+msgid "April"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:330
+msgid "May"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:330
+msgid "June"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:331
+msgid "July"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:331
+msgid "August"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:331
+msgid "September"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:332
+msgid "October"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:332
+msgid "November"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:332
+msgid "December"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:335
+msgid "Mon"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:335
+msgid "Tue"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:335
+msgid "Wed"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:336
+msgid "Thu"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:336
+msgid "Fri"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:336
+msgid "Sat"
+msgstr ""
+
+#: .\guides\templates\guides\dashboard.html:336
+msgid "Sun"
+msgstr ""
+
+#: .\guides\templates\guides\reviews.html:8
+msgid "Client Feedback"
+msgstr ""
+
+#: .\guides\templates\guides\reviews.html:9
+msgid "Detailed reviews and ratings from your past tour participants."
+msgstr ""
+
+#: .\guides\templates\guides\reviews.html:42
+msgid "No reviews yet"
+msgstr ""
+
+#: .\guides\templates\guides\reviews.html:43
+msgid "When clients leave feedback, it will appear here."
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:9
+msgid "Profile Settings"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:10
+msgid "Manage your professional identity and service preferences."
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:26
+msgid "Account Information"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:44
+msgid "Note: Changing your email will require verification."
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:55
+msgid "Professional Profile"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:77
+msgid "Profile Photo"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:80
+msgid "Choose a professional photo..."
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:81
+msgid "Browse"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:90
+msgid "Contact Phone"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:98
+msgid "About You (Bio)"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:139
+msgid "Family Friendly (Accepts Children)"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:142
+msgid "Base Price per Adult (TND)"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:149
+msgid "Price per Child > 6yrs (TND)"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:152
+msgid "* Children under 6 are free by default."
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:164
+msgid "Notification Language"
+msgstr ""
+
+#: .\guides\templates\guides\settings.html:165
+msgid "Email and WhatsApp notifications will be sent in this language."
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:8
+msgid "Suggestions History"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:9
+msgid "View and manage all your tour guide requests."
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:18
+msgid "Client Detail"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:19
+msgid "Visit Date"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:21
+msgid "Group Composition"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:24
+msgid "Net Guide"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:43
+#: .\templates\partners\events\list.html:46
+msgid "Approved"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:47
+#: .\templates\partners\events\list.html:51
+msgid "Rejected"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:58
+msgid "Child >6"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:59
+msgid "Child <6"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:83
+msgid "Processed"
+msgstr ""
+
+#: .\guides\templates\guides\suggestions.html:90
+msgid "No suggestions history available."
+msgstr ""
+
+#: .\guides\views.py:100
+#, python-brace-format
+msgid ""
+"Un email de confirmation a été envoyé à {new_email}. Le changement sera "
+"effectif après confirmation."
+msgstr "A confirmation email has been sent to {new_email}. The change will take effect after confirmation."
+
+#: .\guides\views.py:103
+msgid "Profil mis à jour avec succès."
+msgstr "Profile updated successfully."
+
+#: .\guides\views.py:125
+#, python-brace-format
+msgid "Suggestion du {date} approuvée. Votre portefeuille a été crédité."
+msgstr "Suggestion on {date} approved. Your wallet has been credited."
+
+#: .\guides\views.py:136
+#, python-brace-format
+msgid "Suggestion du {date} rejetée."
+msgstr "Suggestion on {date} rejected."
+
+#: .\guides\views.py:161
+#, python-brace-format
+msgid "Votre email a été mis à jour avec succès : {new_email}"
+msgstr "Your email has been successfully updated: {new_email}"
+
+#: .\guides\views.py:164
+msgid "Lien de confirmation invalide ou expiré."
+msgstr "Invalid or expired confirmation link."
+
+#: .\partners\email_utils.py:63
+msgid "Confirm your new email address"
+msgstr ""
+
+#: .\partners\email_utils.py:64
+msgid "Email address change request"
+msgstr ""
+
+#: .\partners\email_utils.py:66
+msgid ""
+"We received a request to change the email address associated with your "
+"partner account. Please confirm your new address by clicking the button "
+"below."
+msgstr ""
+
+#: .\partners\email_utils.py:67
+msgid "New email address"
+msgstr ""
+
+#: .\partners\email_utils.py:68
+msgid "This link expires in <strong>1 hour</strong>"
+msgstr ""
+
+#: .\partners\email_utils.py:69
+msgid "Confirm my new email"
+msgstr ""
+
+#: .\partners\email_utils.py:70
+msgid "If the button doesn't work, copy and paste this link into your browser:"
+msgstr ""
+
+#: .\partners\email_utils.py:71
+msgid "Didn't request this change?"
+msgstr ""
+
+#: .\partners\email_utils.py:72
+msgid ""
+"Simply ignore this email — your current address will remain unchanged. If "
+"you believe your account has been compromised, please contact our support "
+"team immediately."
+msgstr ""
+
+#: .\partners\email_utils.py:73
+msgid "This email was sent automatically by"
+msgstr ""
+
+#: .\partners\email_utils.py:74
+msgid "Please do not reply to this email."
+msgstr ""
+
+#: .\partners\email_utils.py:93
+msgid "Confirm your new email address — FielMedina"
+msgstr ""
+
+#: .\partners\pricing.py:28 .\templates\partners\subscription.html:37
+#: .\templates\partners\subscription.html:194
+msgid "1 month"
+msgstr ""
+
+#: .\partners\pricing.py:29 .\templates\partners\subscription.html:38
+#: .\templates\partners\subscription.html:195
+msgid "3 months"
+msgstr ""
+
+#: .\partners\pricing.py:30 .\templates\partners\subscription.html:39
+#: .\templates\partners\subscription.html:196
+msgid "6 months"
+msgstr ""
+
+#: .\partners\pricing.py:31 .\templates\partners\subscription.html:40
+#: .\templates\partners\subscription.html:197
+msgid "10 months"
+msgstr ""
+
+#: .\partners\pricing.py:32 .\templates\partners\subscription.html:41
+#: .\templates\partners\subscription.html:198
+msgid "1 year"
+msgstr ""
+
+#: .\partners\views.py:34
+msgid "Votre compte partenaire n'est pas encore vérifié."
+msgstr ""
+
+#: .\shared\forms.py:53 .\shared\forms.py:105
+msgid "Username"
+msgstr ""
+
+#: .\shared\forms.py:56
+msgid "Your username"
+msgstr ""
+
+#: .\shared\forms.py:61
+msgid "Please enter your username."
+msgstr ""
+
+#: .\shared\forms.py:68
+msgid "Your password"
+msgstr ""
+
+#: .\shared\forms.py:73
+msgid "Please enter your password."
+msgstr ""
+
+#: .\shared\forms.py:83
+msgid "Create a password"
+msgstr ""
+
+#: .\shared\forms.py:87
+msgid "Use at least 8 characters."
+msgstr ""
+
+#: .\shared\forms.py:88
+msgid "Password is required."
+msgstr ""
+
+#: .\shared\forms.py:91
+msgid "Confirm Password"
+msgstr ""
+
+#: .\shared\forms.py:94
+msgid "Confirm your password"
+msgstr ""
+
+#: .\shared\forms.py:98
+msgid "Please confirm your password."
+msgstr ""
+
+#: .\shared\forms.py:106
+msgid "Email address"
+msgstr ""
+
+#: .\shared\forms.py:111
+msgid "Choose a username"
+msgstr ""
+
+#: .\shared\forms.py:117 .\shared\forms.py:192
+msgid "name@example.com"
+msgstr ""
+
+#: .\shared\forms.py:123
+msgid "Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: .\shared\forms.py:127
+msgid "Username is required."
+msgstr ""
+
+#: .\shared\forms.py:128
+msgid "This username is already taken."
+msgstr ""
+
+#: .\shared\forms.py:131
+msgid "Email is required."
+msgstr ""
+
+#: .\shared\forms.py:132
+msgid "Enter a valid email address."
+msgstr ""
+
+#: .\shared\forms.py:140
+msgid "Passwords do not match."
+msgstr ""
+
+#: .\shared\forms.py:173
+msgid "First name"
+msgstr ""
+
+#: .\shared\forms.py:174
+msgid "Last name"
+msgstr ""
+
+#: .\shared\forms.py:180
+msgid "Your first name"
+msgstr ""
+
+#: .\shared\forms.py:186
+msgid "Your last name"
+msgstr ""
+
+#: .\shared\forms.py:204
+msgid "This email is already in use."
+msgstr ""
+
+#: .\shared\forms.py:210
+msgid "Title (English)"
+msgstr ""
+
+#: .\shared\forms.py:215
+msgid "Title (French)"
+msgstr ""
+
+#: .\shared\forms.py:220
+msgid "Content (English)"
+msgstr ""
+
+#: .\shared\forms.py:225
+msgid "Content (French)"
+msgstr ""
+
+#: .\shared\forms.py:230
+msgid "Slug (English)"
+msgstr ""
+
+#: .\shared\forms.py:234
+msgid "Slug (French)"
+msgstr ""
+
+#: .\shared\models.py:109
+msgid "URL Slug"
+msgstr ""
+
+#: .\shared\models.py:118
+msgid "Page"
+msgstr ""
+
+#: .\shared\models.py:131
+msgid "Staff"
+msgstr ""
+
+#: .\shared\models.py:132
+msgid "Client / Partners"
+msgstr ""
+
+#: .\shared\models.py:146
+msgid "Placeholder until Konnect subscription is attached."
+msgstr ""
+
+#: .\shared\models.py:159
+msgid "User profile"
+msgstr ""
+
+#: .\shared\models.py:160
+msgid "User profiles"
+msgstr ""
+
+#: .\shared\models.py:183
+msgid "Trial"
+msgstr ""
+
+#: .\shared\models.py:185
+msgid "Grace period"
+msgstr ""
+
+#: .\shared\models.py:186
+msgid "Expired"
+msgstr ""
+
+#: .\shared\models.py:224
+msgid "First visit"
+msgstr ""
+
+#: .\shared\models.py:225
+msgid "Traveling with"
+msgstr ""
+
+#: .\shared\models.py:226
+msgid "Interests"
+msgstr ""
+
+#: .\shared\models.py:231
+msgid "User Preference"
+msgstr ""
+
+#: .\shared\models.py:232
+msgid "User Preferences"
+msgstr ""
+
+#: .\shared\models.py:244 .\templates\partners\ads\confirm.html:38
+#: .\templates\partners\ads\payment.html:26
+#: .\templates\partners\subscription.html:76
+#: .\templates\partners\subscription.html:155
+msgid "Duration"
+msgstr ""
+
+#: .\shared\models.py:245
+msgid "Duration Unit"
+msgstr ""
+
+#: .\shared\models.py:246
+msgid "Features"
+msgstr ""
+
+#: .\shared\models.py:252
+msgid "Package"
+msgstr ""
+
+#: .\shared\models.py:253
+msgid "Packages"
+msgstr ""
+
+#: .\shared\models.py:262 .\shared\models.py:263 .\shared\models.py:305
+#: .\shared\models.py:306
+msgid "Paramètres de prix"
+msgstr ""
+
+#: .\shared\models.py:287
+msgid "Prix boost événement (TND/jour)"
+msgstr ""
+
+#: .\shared\models.py:288
+msgid "Prix facturé par jour pour booster un événement partenaire."
+msgstr ""
+
+#: .\shared\models.py:293
+msgid "Prix publicité (TND/jour)"
+msgstr ""
+
+#: .\shared\models.py:294
+msgid "Prix facturé par jour pour une publicité partenaire."
+msgstr ""
+
+#: .\shared\templates\shared\js\translation_utils.html:33
+msgid "Please enter some text to translate"
+msgstr ""
+
+#: .\shared\templates\shared\js\translation_utils.html:75
+#: .\shared\templates\shared\js\translation_utils.html:78
+msgid "Translation failed"
+msgstr ""
+
+#: .\shared\templates\shared\js\translation_utils.html:75
+msgid "Unknown error"
+msgstr ""
+
+#: .\shared\utils.py:69
+#, python-format
+msgid "Validate your FielMedina account — %(partner_name)s"
+msgstr ""
+
+#: .\shared\views.py:80
+msgid "Welcome back!"
+msgstr ""
+
+#: .\shared\views.py:92
+msgid "Account created successfully. Please log in."
+msgstr ""
+
+#: .\shared\views.py:129
+msgid "Password updated successfully."
+msgstr ""
+
+#: .\shared\views.py:147
+msgid "Profile updated successfully."
+msgstr ""
+
+#: .\shared\views.py:166
+msgid "Konnect subscription"
+msgstr ""
+
+#: .\shared\views.py:167
+msgid "Not available"
+msgstr ""
+
+#: .\shared\views.py:170 .\shared\views.py:180
+msgid "—"
+msgstr ""
+
+#: .\shared\views.py:176
+msgid "Pending Konnect setup"
+msgstr ""
+
+#: .\shared\views.py:209
+msgid "Page created successfully."
+msgstr ""
+
+#: .\shared\views.py:220
+msgid "Page updated successfully."
+msgstr ""
+
+#: .\shared\views.py:229
+msgid "Page deleted successfully."
+msgstr ""
+
+#: .\templates\partners\account.html:3 .\templates\partners\account.html:9
+msgid "My Account"
+msgstr ""
+
+#: .\templates\partners\account.html:10
+msgid "Manage your personal information"
+msgstr ""
+
+#: .\templates\partners\account.html:14
+msgid "Information"
+msgstr ""
+
+#: .\templates\partners\account.html:18
+msgid "Company"
+msgstr ""
+
+#: .\templates\partners\account.html:29
+msgid "Pending email"
+msgstr ""
+
+#: .\templates\partners\account.html:34
+msgid "Check your inbox to verify"
+msgstr ""
+
+#: .\templates\partners\account.html:40
+msgid "Phone"
+msgstr ""
+
+#: .\templates\partners\account.html:78
+msgid "Current password"
+msgstr ""
+
+#: .\templates\partners\account.html:79
+msgid "current_password"
+msgstr ""
+
+#: .\templates\partners\account.html:84
+msgid "New password"
+msgstr ""
+
+#: .\templates\partners\account.html:85
+msgid "new_password"
+msgstr ""
+
+#: .\templates\partners\account.html:90
+msgid "Confirm new password"
+msgstr ""
+
+#: .\templates\partners\account.html:95
+msgid "Passwords do not match"
+msgstr ""
+
+#: .\templates\partners\account.html:113
+msgid "Change email address"
+msgstr ""
+
+#: .\templates\partners\account.html:116
+msgid "A verification link will be sent to your new email address."
+msgstr ""
+
+#: .\templates\partners\account.html:138
+msgid "New email"
+msgstr ""
+
+#: .\templates\partners\account.html:148
+msgid "Send verification email"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:3
+msgid "Confirm Ad"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:14
+#: .\templates\partners\ads\create.html:14
+#: .\templates\partners\ads\payment.html:10
+msgid "Back to ads"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:16
+msgid "Confirm your ad"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:17
+msgid "Check the details before proceeding to payment"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:34
+#: .\templates\partners\ads\payment.html:22
+msgid "Period"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:46
+msgid "Total to pay"
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:58
+msgid "After confirmation, the ad cannot be modified or deleted."
+msgstr ""
+
+#: .\templates\partners\ads\confirm.html:71
+msgid "Confirm and pay"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:3
+#: .\templates\partners\ads\create.html:16
+#: .\templates\partners\ads\list.html:18 .\templates\partners\ads\list.html:184
+msgid "New Ad"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:17
+msgid "Price:"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:17
+msgid "Price calculated automatically"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:34
+msgid "Leave empty for auto-generated name (ADS-XXXXXX)."
+msgstr ""
+
+#: .\templates\partners\ads\create.html:41
+msgid "Mobile Image (320×50)"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:43
+#: .\templates\partners\ads\create.html:65
+msgid "GIF, PNG, JPG — max 5MB"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:49
+#: .\templates\partners\ads\create.html:71
+msgid "Click to select"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:63
+msgid "Tablet Image (728×90)"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:88
+msgid "The URL to which the ad redirects"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:110
+msgid "Calculated Price"
+msgstr ""
+
+#: .\templates\partners\ads\create.html:121
+msgid "Continue to confirmation"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:3 .\templates\partners\ads\list.html:9
+msgid "My Ads"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:10
+msgid "day"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:74
+#: .\templates\partners\ads\payment.html:12
+#: .\templates\partners\events\boost_payment.html:14
+msgid "Payment"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:82
+msgid "Paid"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:123
+msgid "View"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:138
+#: .\templates\partners\ads\payment.html:48
+#: .\templates\partners\events\boost_payment.html:48
+msgid "Pay"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:147
+msgid "Confirm"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:150
+msgid "Delete this ad?"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:176
+msgid "No ads"
+msgstr ""
+
+#: .\templates\partners\ads\list.html:177
+msgid "Create your first ad to promote your business."
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:3
+msgid "Paiement Publicité"
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:13
+msgid "Finalize your ad via Konnect"
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:30
+#: .\templates\partners\events\boost_payment.html:28
+#: .\templates\partners\subscription.html:156
+msgid "Total"
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:39
+#: .\templates\partners\events\boost_payment.html:39
+msgid "Secure payment via Konnect"
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:40
+msgid "Credit card, Wallet or e-DINAR accepted"
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:53
+#: .\templates\partners\events\boost_payment.html:53
+msgid "You will be redirected to the Konnect payment platform."
+msgstr ""
+
+#: .\templates\partners\ads\payment.html:54
+msgid "Your ad will be activated automatically after confirmation."
+msgstr ""
+
+#: .\templates\partners\coupon.html:3 .\templates\partners\coupon.html:12
+msgid "Coupon de réduction"
+msgstr ""
+
+#: .\templates\partners\coupon.html:13
+msgid "Enter your code to get a discount"
+msgstr ""
+
+#: .\templates\partners\coupon.html:20
+msgid "Coupon code"
+msgstr ""
+
+#: .\templates\partners\coupon.html:29
+msgid "Coupon valide !"
+msgstr ""
+
+#: .\templates\partners\coupon.html:31
+msgid "Discount of"
+msgstr ""
+
+#: .\templates\partners\coupon.html:32
+msgid "on"
+msgstr ""
+
+#: .\templates\partners\coupon.html:45
+msgid "Vérifier le coupon"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:26
+msgid "Verify your account"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:27
+msgid "Partner account activation"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:30
+#, python-format
+msgid "Hello <strong>%(company_name)s</strong>,"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:31
+msgid "Thank you for registering on our partner management platform."
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:35
+#: .\templates\partners\emails\verification.txt:7
+msgid "Your login credentials:"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:37
+#: .\templates\partners\emails\verification.txt:8
+msgid "Username:"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:40
+#: .\templates\partners\emails\verification.txt:9
+msgid "Password:"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:42
+#: .\templates\partners\emails\verification.txt:11
+msgid "Please keep this information secure."
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:46
+#: .\templates\partners\emails\verification.txt:14
+msgid "To activate your account, please click on the link below:"
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:51
+msgid ""
+"This security link will expire in <span class=\"emphasis\">24 hours</span>."
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:55
+msgid "&copy; 2026 FielMedina. All rights reserved."
+msgstr ""
+
+#: .\templates\partners\emails\verification.html:56
+msgid "If you did not make this request, you can safely ignore this email."
+msgstr ""
+
+#: .\templates\partners\emails\verification.txt:4
+msgid "Thank you for joining FielMedina!"
+msgstr ""
+
+#: .\templates\partners\emails\verification.txt:18
+msgid "This link will expire in 24 hours."
+msgstr ""
+
+#: .\templates\partners\emails\verification.txt:20
+msgid "If you did not create an account, you can safely ignore this email."
+msgstr ""
+
+#: .\templates\partners\emails\verification.txt:22
+msgid "The FielMedina Team"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:3
+msgid "Boost Payment"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:10
+#: .\templates\partners\events\create.html:19
+msgid "Back to events"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:16
+msgid "Finalize your boost via Konnect"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:24
+msgid "Event date"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:40
+msgid "Bank card, Wallet or e-DINAR accepted"
+msgstr ""
+
+#: .\templates\partners\events\boost_payment.html:54
+msgid "Your boost will be activated automatically after confirmation."
+msgstr ""
+
+#: .\templates\partners\events\create.html:3
+#: .\templates\partners\events\create.html:21
+msgid "New Event"
+msgstr ""
+
+#: .\templates\partners\events\create.html:27
+msgid "The start date must be at least 7 days from now."
+msgstr ""
+
+#: .\templates\partners\events\create.html:28
+msgid "The "
+msgstr ""
+
+#: .\templates\partners\events\create.html:28
+#: .\templates\partners\events\list.html:90
+msgid "Boost"
+msgstr ""
+
+#: .\templates\partners\events\create.html:28
+msgid " button will be available if it is in ≥ 14 days."
+msgstr ""
+
+#: .\templates\partners\events\create.html:135
+#: .\templates\partners\events\create.html:171
+msgid "Insert a link"
+msgstr ""
+
+#: .\templates\partners\events\create.html:145
+msgid "Enter event description in English..."
+msgstr ""
+
+#: .\templates\partners\events\create.html:181
+msgid "Enter event description in French..."
+msgstr ""
+
+#: .\templates\partners\events\create.html:250
+msgid "Date rules:"
+msgstr ""
+
+#: .\templates\partners\events\create.html:251
+msgid "Start date < 7 days → Refused"
+msgstr ""
+
+#: .\templates\partners\events\create.html:252
+msgid "Start date ≥ 7 days → Accepted"
+msgstr ""
+
+#: .\templates\partners\events\create.html:253
+msgid "Start date ≥ 14 days → Booster button available"
+msgstr ""
+
+#: .\templates\partners\events\create.html:284
+#: .\templates\partners\events\create.html:577
+msgid "Choose a file"
+msgstr ""
+
+#: .\templates\partners\events\create.html:286
+#: .\templates\partners\events\create.html:579
+#: .\templates\partners\events\create.html:610
+msgid "No file chosen"
+msgstr ""
+
+#: .\templates\partners\events\create.html:304
+msgid "Maximum 10 images reached."
+msgstr ""
+
+#: .\templates\partners\events\create.html:315
+msgid "Create Event"
+msgstr ""
+
+#: .\templates\partners\events\create.html:463
+msgid "Link URL:"
+msgstr ""
+
+#: .\templates\partners\events\create.html:487
+msgid "Please enter the English title first."
+msgstr ""
+
+#: .\templates\partners\events\create.html:495
+#: .\templates\partners\events\create.html:509
+#: .\templates\partners\events\create.html:523
+#: .\templates\partners\events\create.html:537
+msgid "Translation failed. Please try again."
+msgstr ""
+
+#: .\templates\partners\events\create.html:501
+msgid "Please enter the French title first."
+msgstr ""
+
+#: .\templates\partners\events\create.html:515
+msgid "Please enter the English description first."
+msgstr ""
+
+#: .\templates\partners\events\create.html:529
+msgid "Please enter the French description first."
+msgstr ""
+
+#: .\templates\partners\events\create.html:643
+msgid "Choose"
+msgstr ""
+
+#: .\templates\partners\events\list.html:3
+msgid "My Events"
+msgstr ""
+
+#: .\templates\partners\events\list.html:10
+msgid "Manage your published events"
+msgstr ""
+
+#: .\templates\partners\events\list.html:18
+msgid "New event"
+msgstr ""
+
+#: .\templates\partners\events\list.html:41
+#: .\templates\partners\events\list.html:84
+msgid "Boosted"
+msgstr ""
+
+#: .\templates\partners\events\list.html:61
+#, python-format
+msgid "In %(days)sd"
+msgstr ""
+
+#: .\templates\partners\events\list.html:61
+msgid "In progress"
+msgstr ""
+
+#: .\templates\partners\events\list.html:94
+msgid "Delete this event?"
+msgstr ""
+
+#: .\templates\partners\events\list.html:126
+msgid "No events"
+msgstr ""
+
+#: .\templates\partners\events\list.html:127
+msgid "Create your first event to display it here."
+msgstr ""
+
+#: .\templates\partners\events\list.html:131
+msgid "Create an event"
+msgstr ""
+
+#: .\templates\partners\subscription.html:3
+msgid "My Subscription"
+msgstr ""
+
+#: .\templates\partners\subscription.html:9
+msgid "My subscription"
+msgstr ""
+
+#: .\templates\partners\subscription.html:10
+msgid "Choose your plan and proceed to payment"
+msgstr ""
+
+#: .\templates\partners\subscription.html:20
+msgid "Active subscription"
+msgstr ""
+
+#: .\templates\partners\subscription.html:20
+msgid "Expired subscription"
+msgstr ""
+
+#: .\templates\partners\subscription.html:22
+msgid "expires on"
+msgstr ""
+
+#: .\templates\partners\subscription.html:24
+#, python-format
+msgid "in %(days)s day(s)"
+msgstr ""
+
+#: .\templates\partners\subscription.html:24
+msgid "expired"
+msgstr ""
+
+#: .\templates\partners\subscription.html:35
+msgid "Platform access"
+msgstr ""
+
+#: .\templates\partners\subscription.html:46
+msgid "Event boost"
+msgstr ""
+
+#: .\templates\partners\subscription.html:47
+msgid "Highlight"
+msgstr ""
+
+#: .\templates\partners\subscription.html:49
+#: .\templates\partners\subscription.html:59
+msgid "Price / day"
+msgstr ""
+
+#: .\templates\partners\subscription.html:50
+msgid "Min. start"
+msgstr ""
+
+#: .\templates\partners\subscription.html:50
+msgid "days"
+msgstr ""
+
+#: .\templates\partners\subscription.html:51
+msgid "Display priority"
+msgstr ""
+
+#: .\templates\partners\subscription.html:51
+#: .\templates\partners\subscription.html:61
+msgid "Yes"
+msgstr ""
+
+#: .\templates\partners\subscription.html:56
+msgid "Advertising"
+msgstr ""
+
+#: .\templates\partners\subscription.html:57
+msgid "App banners"
+msgstr ""
+
+#: .\templates\partners\subscription.html:60
+msgid "Format"
+msgstr ""
+
+#: .\templates\partners\subscription.html:61
+msgid "Custom link"
+msgstr ""
+
+#: .\templates\partners\subscription.html:70
+msgid "Subscribe"
+msgstr ""
+
+#: .\templates\partners\subscription.html:97
+msgid "Payment type"
+msgstr ""
+
+#: .\templates\partners\subscription.html:102
+#: .\templates\partners\subscription.html:210
+msgid "Full payment"
+msgstr ""
+
+#: .\templates\partners\subscription.html:103
+msgid "All at once"
+msgstr ""
+
+#: .\templates\partners\subscription.html:109
+msgid "Monthly payment"
+msgstr ""
+
+#: .\templates\partners\subscription.html:110
+msgid "Month by month"
+msgstr ""
+
+#: .\templates\partners\subscription.html:117
+msgid "Coupon code (optional)"
+msgstr ""
+
+#: .\templates\partners\subscription.html:125
+msgid "Verify"
+msgstr ""
+
+#: .\templates\partners\subscription.html:134
+msgid "1 Month — Full payment"
+msgstr ""
+
+#: .\templates\partners\subscription.html:143
+msgid "Pay with Konnect"
+msgstr ""
+
+#: .\templates\partners\subscription.html:150
+msgid "Pricing table"
+msgstr ""
+
+#: .\templates\partners\subscription.html:157
+msgid "month"
+msgstr ""
+
+#: .\templates\partners\subscription.html:158
+msgid "Saving"
+msgstr ""
+
+#: .\templates\partners\subscription.html:210
+msgid "Monthly"
+msgstr ""
+
+#: .\templates\partners\subscription.html:211
+msgid "After discount"
+msgstr ""
+
+#: .\templates\partners\subscription.html:231
+msgid "Valid coupon"
+msgstr ""
+
+#: .\templates\partners\subscription.html:231
+msgid "discount"
+msgstr ""
+
+#: .\templates\verification_success.html:255
+msgid "Welcome, "
+msgstr ""
+
+#: .\templates\verification_success.html:259
+msgid ""
+"Your partner account has been successfully verified. You are now part of the "
+"FielMedina community."
+msgstr ""
+
+#: .\templates\verification_success.html:262
+msgid "Your partner account has been successfully verified."
+msgstr ""
+
+#: .\templates\verification_success.html:263
+msgid "Access to partner features"
+msgstr ""
+
+#: .\templates\verification_success.html:264
+msgid "Visibility on the platform"
+msgstr ""
+
+#: .\templates\verification_success.html:267
+msgid "Access the platform"
+msgstr ""
+
+#: .\templates\verification_success.html:269
+msgid "© 2026 FielMedina · All rights reserved."
+msgstr ""
